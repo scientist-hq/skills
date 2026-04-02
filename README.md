@@ -1,2 +1,9 @@
 # skills
-Skills for code agents by Scientist.com
+
+Claude Code skills for Scientist.com projects. Built on the [skills](https://skills.sh) standard.
+
+## usage
+
+```bash
+npx skills add scientist-hq/skills
+```
