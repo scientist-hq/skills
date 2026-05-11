@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "scientist-hq-skills",
+  "description": "Scientist.com's catalog of Claude Code plugins. Team-blessed and personal-share plugins live here alongside the multi-agent skills.sh packages under skills/.",
+  "owner": {
+    "name": "Scientist.com"
+  },
+  "plugins": [
+    {
+      "name": "rx",
+      "description": "Team-blessed RX workflow commands: architect, implement, review, test, qa, pr, commit, and more. The canonical Scientist.com agentic-development command set for the RX Rails monorepo.",
+      "source": "./plugins/rx",
+      "category": "development"
+    },
+    {
+      "name": "rranauro",
+      "description": "Worktree-first RX ticket lifecycle: architect → start-ticket → review → cleanup. Personal-share plugin, opt-in.",
+      "source": "./plugins/rranauro",
+      "category": "development"
+    }
+  ]
+}

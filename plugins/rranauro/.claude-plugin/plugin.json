@@ -1,0 +1,8 @@
+{
+  "name": "rranauro",
+  "description": "Worktree-first RX ticket lifecycle commands: architect → start-ticket → review → cleanup. Personal-share plugin, opt-in, not team policy.",
+  "author": {
+    "name": "Ron Ranauro",
+    "email": "ron@scientist.com"
+  }
+}
