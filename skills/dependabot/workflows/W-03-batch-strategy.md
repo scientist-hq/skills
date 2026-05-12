@@ -10,6 +10,19 @@ Group dependencies by coupling and risk. Never mix unrelated upgrades in one PR.
 4. **Major version bumps get their own batch.** Devise 4→5, ViewComponent 3→4 — these need dedicated attention.
 5. **Transitive deps with no direct usage = low risk.** net-imap, uri, etc. if your app doesn't use them directly.
 
+## ⚠️ Strict PR Isolation
+
+**Each PR must address exactly ONE dependency or ONE tightly-coupled group.** Do NOT bundle unrelated upgrades into the same PR, even if they touch the same lockfile.
+
+**Bad:** A PR titled "Upgrade Rails to 7.2" that also bumps Devise 4→5. These are separate concerns with separate risk profiles and must be separate PRs.
+
+**When a major version bump is forced by another upgrade:**
+If upgrading dependency A *requires* upgrading dependency B to a new major version (e.g., `bundle update` fails without it):
+1. **Preferred:** Create the dependent major upgrade as its own PR first, merge it, then do the original upgrade in a follow-up PR.
+2. **If truly inseparable:** Include both in one PR but **prominently flag the major version bump** in the PR title AND description. Example title: `Security: Upgrade foo 1.2→1.3 (⚠️ requires bar 2.x→3.x major bump)`. The PR body must explain WHY the major bump is required and what breaking changes it introduces.
+
+**Never silently include a major version bump.** Major bumps (X.0→Y.0) change APIs, remove deprecations, and can break production. They deserve explicit reviewer attention.
+
 ## Risk Classification
 
 | Risk | Criteria | Examples |

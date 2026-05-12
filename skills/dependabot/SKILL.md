@@ -39,7 +39,7 @@ Load this file first, then load workflows and references as needed.
 
 1. **Read the changelog BEFORE upgrading.** Compare breaking changes against actual codebase usage. A "minor" bump can break everything if you use a deprecated API.
 2. **Harden specs BEFORE upgrading.** Write tests on the CURRENT version that exercise the dependency's behavior. These are your canary — if they pass before and after, the upgrade is safe.
-3. **One concern per PR.** A nokogiri PR should not also upgrade Rails. Use `bundle update --conservative` religiously.
+3. **⚠️ One concern per PR — strict isolation.** Each PR addresses exactly ONE dependency or tightly-coupled group. A Rails PR must not also bump Devise. If a major bump is forced by another upgrade, split into two PRs or flag it loudly. Use `bundle update --conservative` religiously. See W-03 for full rules.
 4. **Batch by coupling, not by severity.** Rails gems go together. Nokogiri + rexml go together. Don't mix framework upgrades with unrelated patches.
 5. **Low-risk first.** Merge existing Dependabot PRs (free wins) → dismiss already-patched → patch bumps → minor bumps → major bumps.
 
