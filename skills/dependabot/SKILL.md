@@ -29,6 +29,7 @@ Load this file first, then load workflows and references as needed.
 | File | Content |
 |------|---------|
 | references/api-patterns.md | gh API queries, jq filters, pagination |
+| references/bootboot.md | Dual-lockfile upgrades with bootboot (rx-specific) |
 | references/linked-issue-exemption.md | Fix linked-issue CI checks for Dependabot branches |
 | references/rails-72-upgrade.md | Rails 7.1→7.2 specific CI failures and fixes |
 | references/major-version-blockers.md | Companion gem ceiling detection and resolution |
@@ -46,6 +47,7 @@ Load this file first, then load workflows and references as needed.
 
 - **rx** is a monorepo — git root ≠ Rails app root. The Rails app is at `rx/` within the repo. Run git commands from repo root, bundle commands from `rx/`.
 - **rx** is on Rails 8.0.x. **benchmate** is on Rails 7.1→7.2 upgrade path.
+- **rx uses bootboot** for dual-lockfile builds. Every gem upgrade must update BOTH `Gemfile.lock` AND `Gemfile_next.lock`. See references/bootboot.md.
 - Both repos use `hattan/verify-linked-issue-action@v1.1.5` for linked-issue checks — Dependabot branches need exemption (see references/linked-issue-exemption.md).
 - Both repos use `brakeman` with `--ensure-no-obsolete-ignore-entries` — stale ignores fail CI.
 - Private gems are hosted on `rubygems.pkg.github.com/scientist-hq` — bundle needs GitHub auth.

@@ -111,10 +111,21 @@ bundle update gem1 --conservative
 If even that fails (private gems pin Ruby version in gemspec):
 
 1. Get exact dependency spec: `gem specification <gem> -v <target_version> --remote`
-2. Manually edit Gemfile.lock — replace old version/deps block with new
+2. Manually edit Gemfile.lock — replace version and deps block with new
 3. Note in PR body that lockfile was manually edited; CI validates with correct Ruby
 
 This is safe for single-gem upgrades. For complex multi-gem changes, use Docker.
+
+### Dual-lockfile repos (bootboot)
+
+If the repo uses bootboot (rx does), update BOTH lockfiles:
+
+```bash
+bundle update gem1 gem2 --conservative
+DEPENDENCIES_NEXT=1 bundle update gem1 gem2 --conservative
+```
+
+Verify both appear in `git diff --stat`. See references/bootboot.md for details.
 
 ## Step 4: Verify
 
