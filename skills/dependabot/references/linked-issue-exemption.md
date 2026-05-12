@@ -4,6 +4,18 @@
 
 Both rx and benchmate enforce that every PR has a linked GitHub Issue via `hattan/verify-linked-issue-action@v1.1.5`. Dependabot PRs don't create Issues — the security advisory IS the issue.
 
+## Finding the Workflow File
+
+The filename may vary across repos. Search for it:
+
+```bash
+# Local checkout
+grep -r "linked.issue\|verify.*issue\|Ensure Pull Request" .github/ --include="*.yml" -l
+
+# If not in local checkout
+gh api repos/ORG/REPO/actions/workflows --jq '.workflows[] | select(.name | test("issue|verify"; "i")) | {name, path}'
+```
+
 ## Solution
 
 Add a job-level `if` condition to skip the check for Dependabot branches:

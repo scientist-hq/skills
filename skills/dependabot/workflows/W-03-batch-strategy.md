@@ -68,3 +68,12 @@ Low-risk batches that don't touch the same files can run in parallel via `delega
 - Different lockfiles in a monorepo
 
 Do NOT parallelize batches that modify the same Gemfile.lock — they'll produce conflicting lockfiles.
+
+**`delegate_task` call syntax:**
+```
+delegate_task(tasks: [
+  {goal: "Batch 6: Small gems on rx + benchmate", toolsets: ["terminal", "file", "web"]},
+  {goal: "Batch 7: npm deps on rx", toolsets: ["terminal", "file", "web"]},
+  {goal: "Batch 4: net-imap on rx + benchmate", toolsets: ["terminal", "file", "web"]},
+])
+```

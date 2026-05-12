@@ -78,6 +78,8 @@ These specs must PASS on the current version. If they don't, fix them before pro
 git checkout -b security/batch-N-description
 ```
 
+**Monorepo worktree paths:** When the git root and the app root differ (e.g., `~/src/rx` is git root, `~/src/rx/rx/` is the Rails app), `git worktree add` creates a copy of the git root. So `git worktree add ../rx-batch5 origin/main -b branch` creates `~/src/rx-batch5/` where the Rails app is at `~/src/rx-batch5/rx/`. Run git ops from the worktree root, bundle ops from the app subdirectory.
+
 ### Update conservatively
 
 ```bash
@@ -109,6 +111,10 @@ bundle update gem1 --conservative
 ```
 
 If even that fails (private gems pin Ruby version in gemspec):
+
+**Why `BUNDLE_IGNORE_RUBY=1` won't help:** This env var only affects the `ruby` directive in the Gemfile. If a private gem (like `scientist_api_v2`) has `required_ruby_version = 3.3.8` in its gemspec, Bundler still rejects it. Additionally, the bootboot plugin ignores `BUNDLE_IGNORE_RUBY=1` entirely.
+
+Fallback — manually edit Gemfile.lock:
 
 1. Get exact dependency spec: `gem specification <gem> -v <target_version> --remote`
 2. Manually edit Gemfile.lock — replace version and deps block with new
