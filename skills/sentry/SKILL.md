@@ -98,10 +98,18 @@ The skill loads SKILL.md → WORKFLOW.md → W-01 and walks through triage inter
 | test-writer | Writes a failing test that reproduces the Sentry error | agents/test-writer.md |
 | fix-author | Minimal fix + draft PR, in a git worktree | agents/fix-author.md |
 
+## References
+
+| File | Content |
+|------|---------|
+| references/operations.md | Org details, auth, triage message format, classification, resolution workflow |
+| references/github-issue-linking-api.md | Undocumented Sentry API for linking/creating external GitHub issues |
+| references/rx-sentry-js-config.md | RX browser-side Sentry SDK setup (CDN loader, haml partial, noise patterns) |
+
 ## Templates
 
 | File | Purpose |
-|------|---------|
+|------|---------| 
 | templates/gh-issue-from-sentry.md | Body the issue-filer agent fills when creating a GH issue |
 
 ## Quick start
