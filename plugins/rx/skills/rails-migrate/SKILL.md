@@ -26,7 +26,7 @@ Use `bundle exec rails generate migration <MigrationName>` to generate the file 
 
 The migration name should be descriptive and match Rails conventions: `AddColumnToTable`, `CreateTableName`, `RemoveColumnFromTable`, `BackfillColumnOnTable`, `AddIndexToTable`.
 
-Reference the examples in `examples/` for each migration type before writing. They reflect real RX patterns and should be your starting point.
+Reference the examples in `patterns/` for each migration type before writing. They reflect real RX patterns and should be your starting point.
 
 ### Conventions to follow
 
