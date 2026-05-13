@@ -1,0 +1,8 @@
+{
+  "name": "rx",
+  "description": "Team-blessed RX workflow commands: architect, implement, review, test, qa, pr, commit, and more. The canonical Scientist.com agentic-development command set for the RX Rails monorepo.",
+  "author": {
+    "name": "Scientist.com",
+    "email": "engineering@scientist.com"
+  }
+}
