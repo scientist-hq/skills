@@ -27,6 +27,14 @@ When creating a PR:
 2. If no issue exists, create one first describing the problem/change
 3. Include the `Closes #NNNN` link in the PR body before opening
 
+## PR Title Style
+
+Use backticks in PR titles for filenames, version numbers, method names, and other code references. This makes titles easier to scan in a list.
+
+- ✅ `chore: sync \`Gemfile_next.lock\` with \`Gemfile.lock\``
+- ✅ `fix: handle nil in \`OrderService#total\``
+- ❌ `chore: sync Gemfile_next.lock with Gemfile.lock`
+
 ## Common Mistake
 
 Opening a PR for a quick fix (dependency sync, typo, config change) without creating an issue first. Even trivial changes need an issue for the VerifyIssue check to pass.
