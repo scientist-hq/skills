@@ -31,6 +31,19 @@ Load this file first, then load specific rules/patterns as needed for the task a
 | ST-05 | Minimal factory setup in tests | sacred-taste/ST-05-factory-minimalism.md |
 | ST-06 | Pagy for pagination | sacred-taste/ST-06-pagy-pagination.md |
 
+## Sacred Rules (cont.)
+
+| ID | Rule | File |
+|----|------|------|
+| SR-09 | Every PR must link to an issue or preceding PR (VerifyIssue CI) | references/verify-issue-ci-check.md |
+
+## Infrastructure References
+
+| Topic | File |
+|-------|------|
+| Bootboot dual-lockfile setup & sync procedure | references/bootboot-lockfiles.md |
+| VerifyIssue CI check — PR linking requirement | references/verify-issue-ci-check.md |
+
 ## Patterns (Reference implementations from the RX codebase)
 
 | ID | Pattern | File |
