@@ -3,7 +3,7 @@ Clean up a feature-branch worktree after its PR has been merged on GitHub.
 **Arguments:** $ARGUMENTS
 Optional: a branch name, worktree path, or PR number. If omitted, infer from the current branch.
 
-This command targets the worktree case from `/start-ticket` (worktree at `.claude/worktrees/<branch-name>/`). If the branch was bundled onto an existing worktree instead of getting its own, only Step 6's branch deletion applies — no worktree to remove.
+This command targets the worktree case from `/rranauro:start-ticket` (worktree at `.claude/worktrees/<branch-name>/`). If the branch was bundled onto an existing worktree instead of getting its own, only Step 6's branch deletion applies — no worktree to remove.
 
 **Step 1 — Resolve the target:**
 - If `$ARGUMENTS` is a PR number: `gh pr view <num> --json headRefName,state,mergedAt` and take `headRefName` as the branch.

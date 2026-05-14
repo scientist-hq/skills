@@ -1,10 +1,10 @@
 # Start Work on an RX Ticket (Worktree-First)
 
-RX-specific `/start-ticket`: always creates a git worktree of the scientist
+RX-specific `/rranauro:start-ticket`: always creates a git worktree of the scientist
 monorepo, symlinks personal/untracked files via the manifest, and hands off
 to a new Claude session in the worktree.
 
-**Usage:** `/start-ticket <github_issue_url_or_number>`
+**Usage:** `/rranauro:start-ticket <github_issue_url_or_number>`
 
 ## Step 1: Read the Ticket
 
@@ -54,7 +54,7 @@ Because `rx/plans/` is symlinked across all worktrees via the manifest, plan
 files are always visible from the home worktree and every active worktree.
 
 **First check `rx/plans/`** for an existing file matching the issue number
-(e.g. `rx/plans/34500-*.md`). `/architect` may have written one already.
+(e.g. `rx/plans/34500-*.md`). `/rranauro:architect` may have written one already.
 
 **If an existing plan file is found:**
 1. Read it and present it to the user

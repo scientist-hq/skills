@@ -2,7 +2,7 @@
 
 This command removes git worktrees whose branches have already been merged into main.
 
-**Usage:** `/worktree-gc`
+**Usage:** `/rranauro:worktree-gc`
 
 ## Step 1: List All Worktrees
 

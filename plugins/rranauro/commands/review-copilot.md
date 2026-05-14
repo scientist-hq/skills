@@ -42,14 +42,14 @@ For each comment, in order:
   - <path>:<line> [Optional] <one-line reasoning> — skipped (nitpick)
   ```
 
-  Use the same four categories from Step 3.3. **Include skipped comments too** — the durable record of "we considered this and decided not to act" is the point. If Step 6 delegates to `/commit`, pass this body as the intended message rather than letting `/commit` draft its own.
+  Use the same four categories from Step 3.3. **Include skipped comments too** — the durable record of "we considered this and decided not to act" is the point. If Step 6 delegates to `/rx:commit`, pass this body as the intended message rather than letting `/rx:commit` draft its own.
 - If no fixes were made (all comments skipped/ignored), do NOT create a commit. The evaluation summary lives only in the conversation; there is nothing to push.
 
 **Step 6 — Quality gates (if any fixes were made):**
-- Run the /commit skill
+- Run the /rx:commit skill
 
 **Step 7 — Push:**
 - Push the branch to origin.
 
 **Arguments:** $ARGUMENTS
-If the user passes a PR number (e.g., `/review-copilot 228`), use that instead of the current branch's PR.
+If the user passes a PR number (e.g., `/rranauro:review-copilot 228`), use that instead of the current branch's PR.

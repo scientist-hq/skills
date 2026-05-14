@@ -6,7 +6,7 @@ branch. When the PR is authored by `rranauro`, the command doubles as the
 **comprehensive self-review** process — catch everything a colleague might
 flag before they see it.
 
-**Usage:** `/start-review <pr_url_or_number>`
+**Usage:** `/rranauro:start-review <pr_url_or_number>`
 
 ## Step 1: Read the PR
 
@@ -101,7 +101,7 @@ notes"** heading so colleagues can see what's already been considered:
 ### Step 6: Act on Copilot's suggestions (if any)
 
 If the claude-reviewer report flagged any Copilot comments as "Agree" or
-worth acting on, run `/review-copilot <pr>` — it triages each Copilot
+worth acting on, run `/rranauro:review-copilot <pr>` — it triages each Copilot
 comment, applies the valid ones in its own worktree, runs the affected
 specs, and pushes.
 
@@ -120,7 +120,7 @@ In the review worktree (or your feature worktree — your call):
 ### Step 8: Push fixes; optional second pass
 
 Push your fixes. If the fix set was non-trivial, re-run
-`/start-rx-review <pr>` on the updated HEAD for a diff-only second pass to
+`/rranauro:start-review <pr>` on the updated HEAD for a diff-only second pass to
 confirm nothing regressed.
 
 ---
