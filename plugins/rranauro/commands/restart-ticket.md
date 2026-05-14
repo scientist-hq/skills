@@ -2,7 +2,7 @@
 
 This command picks up where you left off on an in-progress GitHub issue by assessing current state and identifying remaining work.
 
-**Usage:** `/restart-ticket <github_issue_url>`
+**Usage:** `/rranauro:restart-ticket <github_issue_url>`
 
 ## Step 1: Read the Ticket
 
@@ -67,7 +67,7 @@ Present a clear summary to the user with these sections:
 
 ## Step 4: Update the Plan
 
-If a plan file exists, update the checkboxes to reflect completed steps. If no plan file exists, create one following the same format as `/start-ticket`.
+If a plan file exists, update the checkboxes to reflect completed steps. If no plan file exists, create one following the same format as `/rranauro:start-ticket`.
 
 **Wait for the user to confirm the assessment and agree on next steps before beginning any implementation work.**
 

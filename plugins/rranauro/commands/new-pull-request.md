@@ -1,6 +1,6 @@
 Create a GitHub pull request for the current branch.
 
-Always run the /commit skill first and confirm the branch is ready for a pull request
+Always run the /rx:commit skill first and confirm the branch is ready for a pull request
 
 **Step 1 — Push the branch:**
 - If the branch has not been pushed or is behind, push it with `git push -u origin <branch>`.
@@ -39,9 +39,9 @@ Print the PR URL so the user can review it.
 
 **Step 4a — Start polling for Copilot review:**
 GitHub Copilot reviews PRs automatically and usually takes 3–5 minutes. After printing the PR URL, tell the user:
-> "Starting `/loop 90s /wait-copilot <PR#>` to poll for Copilot's review — you'll get a macOS notification when it's ready, then stop the loop and I'll run `/review-copilot`."
+> "Starting `/loop 90s /rranauro:wait-copilot <PR#>` to poll for Copilot's review — you'll get a macOS notification when it's ready, then stop the loop and I'll run `/rranauro:review-copilot`."
 
-Then invoke `/loop` via the Skill tool with args `90s /wait-copilot <PR#>` so polling begins immediately.
+Then invoke `/loop` via the Skill tool with args `90s /rranauro:wait-copilot <PR#>` so polling begins immediately.
 
 **Arguments:** $ARGUMENTS
-If the user passed arguments, treat them as guidance for the PR title, scope, or target branch (e.g., `/new-pull-request ready for review` → mention readiness in the description).
+If the user passed arguments, treat them as guidance for the PR title, scope, or target branch (e.g., `/rranauro:new-pull-request ready for review` → mention readiness in the description).

@@ -1,6 +1,6 @@
-Poll a PR for GitHub Copilot's review and hand off to `/review-copilot` when comments arrive.
+Poll a PR for GitHub Copilot's review and hand off to `/rranauro:review-copilot` when comments arrive.
 
-Designed to be run via `/loop` (e.g. `/loop 90s /wait-copilot` or `/loop 90s /wait-copilot 612`). Each firing runs one check; on the firing where Copilot's review has landed, this command notifies the user and chains into `/review-copilot`.
+Designed to be run via `/loop` (e.g. `/loop 90s /rranauro:wait-copilot` or `/loop 90s /rranauro:wait-copilot 612`). Each firing runs one check; on the firing where Copilot's review has landed, this command notifies the user and chains into `/rranauro:review-copilot`.
 
 **Step 1 — Resolve the PR:**
 - If `$ARGUMENTS` contains a PR number, use it.
@@ -27,9 +27,9 @@ gh api repos/{owner}/{repo}/pulls/{N}/comments  --jq '[.[] | select(.user.login 
    ```
    osascript -e 'display notification "Copilot review ready for PR #N" with title "Claude Code" subtitle "<repo>" sound name "Glass"'
    ```
-2. Print: `Copilot review is in for PR #N. Stop the loop now with /loop stop — I'll start /review-copilot.`
-3. Invoke `/review-copilot N` via the Skill tool, passing the PR number explicitly so it doesn't have to re-resolve from the branch.
+2. Print: `Copilot review is in for PR #N. Stop the loop now with /loop stop — I'll start /rranauro:review-copilot.`
+3. Invoke `/rranauro:review-copilot N` via the Skill tool, passing the PR number explicitly so it doesn't have to re-resolve from the branch.
 
-**Why stop the loop on hit:** `/review-copilot` is interactive (asks you about each comment). If `/loop` fires again mid-review it will interrupt. The "Stop the loop" message is required output — don't omit it.
+**Why stop the loop on hit:** `/rranauro:review-copilot` is interactive (asks you about each comment). If `/loop` fires again mid-review it will interrupt. The "Stop the loop" message is required output — don't omit it.
 
 **Arguments:** `$ARGUMENTS` — optional PR number. If omitted, the current branch's PR is used (and re-resolved on every firing, which is fine).

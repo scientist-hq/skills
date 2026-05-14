@@ -2,7 +2,7 @@
 
 Address reviewer feedback on a pull request by understanding the PR context, the associated ticket, and the reviewer's comments, then proposing changes.
 
-**Usage:** `/review-feedback <github_pr_url>`
+**Usage:** `/rranauro:review-feedback <github_pr_url>`
 
 ## Step 1: Read the PR and Associated Ticket
 

@@ -2,7 +2,7 @@
 
 This command pushes new changes to an existing pull request and updates its description to reflect the latest state.
 
-**Usage:** `/update-main-pr <github_pr_url>`
+**Usage:** `/rranauro:update-main-pr <github_pr_url>`
 
 ## Step 1: Pre-Flight Checks
 
