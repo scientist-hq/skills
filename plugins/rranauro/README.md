@@ -134,9 +134,12 @@ Runs rubocop on changed Ruby files, runs targeted RSpec, pushes the branch, and 
 |---------|---------|
 | `/rranauro:architect` | Plan the work conversationally |
 | `/rranauro:start-ticket` | Set up dev worktree from a ticket |
+| `/rranauro:restart-ticket` | Resume an in-progress ticket — assess state, update plan |
+| `/rranauro:new-pull-request` | Personal PR variant (Closes #N, auto-starts wait-copilot loop) |
 | `/rranauro:wait-copilot` | Poll for Copilot's review |
 | `/rranauro:start-review` | Independent review in a separate worktree |
 | `/rranauro:review-copilot` | Walk Copilot comments and decide |
+| `/rranauro:review-feedback` | Address human-reviewer feedback on a PR |
 | `/rranauro:update-main-pr` | Lint, push, comment on the PR |
 | `/rranauro:cleanup-worktree` | Remove a worktree after PR merges |
 | `/rranauro:worktree-gc` | Sweep all merged-branch worktrees |
