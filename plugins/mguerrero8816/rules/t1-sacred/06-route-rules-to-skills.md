@@ -1,4 +1,4 @@
-# SR-06: Route Rules to the Skills Directory
+# Route Rules to the Skills Directory
 
 **Level:** MUST follow — no exceptions, no overrides
 **Category:** Workflow

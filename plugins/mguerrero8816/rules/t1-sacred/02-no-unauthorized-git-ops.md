@@ -1,4 +1,4 @@
-# SR-02: No Unauthorized Git Operations
+# No Unauthorized Git Operations
 
 **Level:** MUST follow — no exceptions, no overrides
 **Category:** Safety

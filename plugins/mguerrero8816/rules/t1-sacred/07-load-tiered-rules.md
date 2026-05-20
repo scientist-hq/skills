@@ -1,4 +1,4 @@
-# SR-07: Load Tiered Rules at Session Start
+# Load Tiered Rules at Session Start
 
 **Level:** MUST follow — no exceptions, no overrides
 **Category:** Workflow

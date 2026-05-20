@@ -1,4 +1,4 @@
-# SR-04: No Unsolicited Code Changes
+# No Unsolicited Code Changes
 
 **Level:** MUST follow — no exceptions, no overrides
 **Category:** Safety

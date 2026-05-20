@@ -1,4 +1,4 @@
-# SR-01: No Remote Environments
+# No Remote Environments
 
 **Level:** MUST follow — no exceptions, no overrides
 **Category:** Safety

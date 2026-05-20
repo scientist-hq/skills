@@ -1,4 +1,4 @@
-# SR-03: No Unauthorized GitHub Changes
+# No Unauthorized GitHub Changes
 
 **Level:** MUST follow — no exceptions, no overrides
 **Category:** Safety

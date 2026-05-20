@@ -1,4 +1,4 @@
-# SR-05: Check Skill Routing Before Acting
+# Check Skill Routing Before Acting
 
 **Level:** MUST follow — no exceptions, no overrides
 **Category:** Workflow
