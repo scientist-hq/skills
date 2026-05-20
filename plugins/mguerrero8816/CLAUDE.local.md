@@ -161,49 +161,10 @@ tmux send-keys -t 0:0 "" Enter
 - ❌ BAD: `UserActionItem.create(email: 'michael+user@scientist.com', ...)` (unless explicitly requested)
 - ✅ GOOD: `user = Pg::User.find_by(email: 'michael@scientist.com')`
 
-## Test Data Generation in PRs
-
-**🚨 CRITICAL RULE: When writing PR instructions for populating the database, ALWAYS use Rails console code 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **ALWAYS use Rails console commands** in PR test instructions, not terminal commands
-- Code blocks should be copy-pastable directly into `rails c`, not wrapped in `bundle exec rails runner`
-- ❌ BAD: `bundle exec rails runner "puts Provider.first.uuid"`
-- ✅ GOOD: `provider = Pg::Provider.first; puts provider.uuid`
-- Instructions should say "Open Rails console (`rails c`) and run:" or "run `rails console` and paste this code:" before code blocks
-- This makes it easier for reviewers to copy-paste commands during testing
-
-**This rule applies to:**
-- Pull request descriptions with test data setup instructions
-- Any PR testing instructions that require database setup
-- Documentation about creating test data
-
 ## Repository Notes
 
 - Repository was renamed from `assaydepot/rx` to `scientist-hq/rx`
 - Git remote should point to `git@github.com:scientist-hq/rx.git`
-
-## Branch Comparisons
-
-**🚨 CRITICAL RULE: When comparing branches, ALWAYS compare against the parent branch, not main 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- When the user asks to "check my branch" or "compare my branch" or "did I miss anything", **ALWAYS** compare against the branch it originated from
-- Use `git diff <parent-branch>...HEAD` to see what changed in the current branch
-- **NEVER** compare against `main` unless the user explicitly asks to compare against main
-- If unsure which branch is the parent, ask the user or check the branch naming pattern
-
-**How to determine the parent branch:**
-- Check git log to see where the branch diverged: `git log --graph --oneline --all`
-- Look at branch naming patterns (e.g., `mg11-foo` likely branched from `mg10-bar`)
-- Ask the user if unclear
-
-**Examples:**
-- User: "check my branch for BS5 issues" (on branch `mg11-providers-pt2-bs5` which came from `mg10-providers-index-bs5`)
-  - ✅ GOOD: Compare `mg10-providers-index-bs5...HEAD`
-  - ❌ BAD: Compare `main...HEAD`
-- User: "did I miss any BS5 patterns compared to main?"
-  - ✅ GOOD: Compare `main...HEAD` (user explicitly said "compared to main")
 
 ## Project Structure
 
