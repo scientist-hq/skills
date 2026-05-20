@@ -17,6 +17,7 @@ These are non-negotiable. Load all four at the start of every session regardless
 | SR-04 | No unsolicited code changes — never edit code without explicit instruction | `sacred-rules/SR-04-no-unsolicited-code-changes.md` |
 | SR-05 | Check skill routing before acting — read SKILL.md and load any matching skill first | `sacred-rules/SR-05-check-skill-routing.md` |
 | SR-06 | Route rules to the skills directory — never use auto-memory | `sacred-rules/SR-06-route-rules-to-skills.md` |
+| SR-07 | Load tiered rules (T2/T3/T4) at session start | `sacred-rules/SR-07-load-tiered-rules.md` |
 
 ---
 
