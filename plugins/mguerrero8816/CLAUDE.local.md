@@ -2,18 +2,6 @@
 
 This file contains personal preferences and instructions for working with this codebase.
 
-## Where to Put Rules
-
-**🚨 CRITICAL: When adding new rules derived from reviewing a process, put them in the most appropriate file — not CLAUDE.local.md by default 🚨**
-
-- **Spec writing rules** → `.claude/commands/spec-rules.md`
-- **PR rules** → `.claude/commands/pr-rules.md`
-- **Personal workflow preferences** → `CLAUDE.local.md`
-- **Narrow/derived rules** (apply only in a specific context, not broadly) → create a new focused rules file in `.claude/commands/` (e.g. `fee-cap-rules.md`, `billing-rules.md`) and load it with a slash command
-- Only add to `CLAUDE.local.md` if there is no more specific home for the rule
-- Derived rules from process reviews generally do NOT apply broadly — default to a new focused file over adding to an existing broad one
-- **NEVER edit `CLAUDE.md`** — it is a shared file checked into the repo and owned by the team
-
 ## Clarifying Scope Before Fixing Multi-Part Queries
 
 **🚨 CRITICAL: When a fix is described informally and the target code has multiple components, state your interpretation of exactly what changes before writing any code or specs 🚨**
@@ -66,14 +54,6 @@ The git status shown at the start of a conversation is a snapshot taken before t
 - **NEVER** invoke `/architect`, `/bug`, `/bump`, `/commit`, `/explain`, `/explore`, `/implement`, `/infra`, `/learn`, `/post-review`, `/pr`, `/qa`, `/recap`, `/review`, or `/test`
 - These commands exist in `.claude/commands/` but must not be used under any circumstances
 - This applies even if the task seems like a perfect match for one of these commands
-
-## Memory
-
-**🚨 CRITICAL: NEVER save memories 🚨**
-
-- **NEVER** use the memory system to save notes, feedback, or context
-- Use `CLAUDE.local.md` or `CLAUDE.md` for persistent instructions instead
-- If the user asks you to remember something, add it to `CLAUDE.local.md`
 
 ## Write Specs Before Making Code Changes
 

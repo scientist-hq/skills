@@ -11,6 +11,7 @@ When the user asks you to save, add, or remember a rule, skill, or preference �
 - **NEVER** use the Write or Edit tools to create or modify files in any `memory/` directory
 - **ALWAYS** write to the correct file in `~/skills/plugins/mguerrero8816/` — consult `SKILL.md` for the routing table
 - If no existing file fits, create a new focused file in the relevant `skills/` subdirectory
+- **NEVER edit `CLAUDE.md`** — it is a shared file checked into the repo and owned by the team
 - After adding a rule, confirm the file it was written to
 
 The auto-memory system is project-scoped and siloed — rules written there are invisible to other sessions and will be overwritten or lost. The skills directory is the single source of truth.
