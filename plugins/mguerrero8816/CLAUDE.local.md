@@ -224,44 +224,6 @@ tmux send-keys -t 0:0 "" Enter
 - ✅ GOOD: `cd rx && bundle exec rails runner "..."` (from `/Users/mike/rx`)
 - ✅ GOOD: Just run `bundle exec rails runner "..."` if already in `/Users/mike/rx/rx`
 
-## Working with Pull Requests
-
-
-**PR Description Content - CRITICAL RULE:**
-- **NEVER include the dynamic content check instruction** in PR descriptions
-- **DO NOT include**: "Remember to ensure that these changes do not break any scripts, configuration rules, or dynamic forms (see https://github.com/scientist-hq/rx/tree/main/docs/Checking-Dynamic-Content.md for instructions)."
-- This instruction should be omitted from all PR descriptions
-- Focus the description on what changed and why, without this boilerplate reminder
-
-**URL Parameters - UUIDs vs IDs vs Slugs:**
-- **IMPORTANT**: Most URLs that specify `:id` parameters are actually using UUIDs, not the numeric `id` column
-- When creating test data or test instructions, use `#{record.uuid}` not `#{record.id}`
-- Only a few specific routes use the actual numeric `id` column - these are exceptions
-- **Provider routes use UUID, NOT slug** — use `provider.uuid`, not `provider.slug` when constructing provider URLs (e.g., `/providers/612f95b7-.../saved_line_item_rate_cards`)
-- When in doubt, check the route definition or controller to see which is used
-
-**Editing GitHub Issues and PRs - CRITICAL RULE:**
-
-**🚨 CRITICAL: When editing issues or PRs, ALWAYS check for edits since your last interaction and NEVER remove screenshots 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **ALWAYS** fetch the latest version of the issue/PR before editing it
-- **NEVER** assume the content hasn't changed since you last read it
-- **ALWAYS** preserve all screenshots and images - even if you're updating other parts of the content
-- If you fetched an issue/PR earlier in the conversation, fetch it again before editing to ensure you have the latest version
-- The user may have added content (especially screenshots) between when you first read it and when you're editing it
-
-**Workflow for editing issues/PRs:**
-1. Fetch the current version of the issue/PR body
-2. Make your changes while preserving all existing screenshots and images
-3. If you're unsure whether content has changed, fetch it again before editing
-4. Double-check that all screenshot URLs are preserved in your edit
-
-**Examples:**
-- ❌ BAD: Fetch issue at start of conversation, make edits 5 minutes later without re-fetching
-- ✅ GOOD: Fetch issue immediately before making edits, preserve all screenshots
-- ❌ BAD: Replace entire issue body with your version, losing user's newly added screenshots
-- ✅ GOOD: Fetch latest version, merge your changes with existing content including all images
 
 ## Generating URLs
 
@@ -448,62 +410,6 @@ user = Pg::User.create!(
 )
 ```
 
-## GitHub Comment Attribution
-
-**🚨 CRITICAL RULE: ALWAYS place the "written by Claude" attribution at the TOP of GitHub comments, issues, and PRs 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **ALWAYS** include `🤖 Generated with [Claude Code](https://claude.com/claude-code)` as the **first line** of any comment, issue, or PR body written for GitHub
-- **NEVER** place the attribution at the bottom
-- This applies to:
-  - Pull request descriptions
-  - Issue bodies
-  - PR comments
-  - Issue comments
-  - Any text written to GitHub
-
-**Examples:**
-- ❌ BAD (attribution at bottom):
-  ```
-  ## Summary
-  Fixed the nil error in the provider controller.
-
-  🤖 Generated with Claude Code
-  ```
-- ✅ GOOD (attribution at top):
-  ```
-  🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-  ## Summary
-  Fixed the nil error in the provider controller.
-  ```
-
-## Tickets, Issues, and PRs - No Point of Contact
-
-**🚨 CRITICAL RULE: NEVER include a point of contact in any ticket, issue, or PR we open 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **NEVER** add a "Point of Contact", "Contact", "Owner", or similar field/section to issues or PRs
-- **NEVER** mention who to reach out to or who is responsible in the ticket body
-- Omit any such section entirely — do not include it even if a template suggests it
-
-## Tickets - Use Type Instead of Label
-
-**🚨 CRITICAL RULE: NEVER add a label to tickets — ALWAYS set a type instead 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **NEVER** use `--label` when creating issues/tickets
-- **ALWAYS** use `--type` with one of these values:
-  - `Bug` — for bug reports and error fixes
-  - `Feature` — for new features or enhancements
-  - `Task` — for anything else (chores, refactors, investigations, etc.)
-- This applies to all `gh issue create` commands
-
-**Examples:**
-- ❌ BAD: `gh issue create --title "..." --label "Bug"`
-- ✅ GOOD: `gh issue create --title "..." --type "Bug"`
-- ❌ BAD: `gh issue create --title "..." --label "enhancement"`
-- ✅ GOOD: `gh issue create --title "..." --type "Feature"`
 
 ## Test Documents
 

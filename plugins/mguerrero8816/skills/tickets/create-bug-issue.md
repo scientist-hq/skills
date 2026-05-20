@@ -57,8 +57,7 @@ All bug issues MUST follow this exact structure with these section headers:
 
 ## Type
 
-- **ALWAYS use `--type "Bug"`** when creating bug issues — do NOT use `--label`
-- This sets the issue type, not a label
+- **ALWAYS use `--type "Bug"`** when creating bug issues
 
 ## Important Notes
 

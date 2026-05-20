@@ -44,6 +44,7 @@ Then load the specific skill file for the current task.
 
 | When | File |
 |------|------|
+| Creating or interacting with any ticket or issue | `skills/tickets/general.md` |
 | Creating a bug issue | `skills/tickets/create-bug-issue.md` |
 
 ## Testing

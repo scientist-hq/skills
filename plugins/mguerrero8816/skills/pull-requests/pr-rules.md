@@ -153,6 +153,11 @@ Before creating the PR, gather:
 - Use the correct model name based on what you see in the controller/view code
 - Use the correct field (id vs uuid) based on how the route is defined (check the view links or route parameters)
 
+**UUIDs vs IDs vs Slugs:**
+- Most URLs that specify `:id` parameters are actually using UUIDs, not the numeric `id` column
+- **Provider routes use UUID, NOT slug** — use `provider.uuid`, not `provider.slug` when constructing provider URLs (e.g., `/providers/612f95b7-.../saved_line_item_rate_cards`)
+- When in doubt, check the route definition or controller to see which is used
+
 **Example URLs with Placeholders:**
 - `https://backoffice.test/accounting/order_requests/#{order_request.id}`
 - `https://backoffice.test/accounting/invoices/#{invoice.uuid}`
@@ -246,6 +251,24 @@ What changes for a user? Who are the users? (Researcher, Supplier, Scientist Adm
      ```
    - User will add screenshots by editing the PR description on GitHub
    - The blank lines inside `<td>` tags are where screenshots will be inserted
+
+**Never include the dynamic content check instruction:**
+- **DO NOT include**: "Remember to ensure that these changes do not break any scripts, configuration rules, or dynamic forms (see https://github.com/scientist-hq/rx/tree/main/docs/Checking-Dynamic-Content.md for instructions)."
+- Omit this boilerplate from all PR descriptions
+
+## Editing GitHub Issues and PRs
+
+**🚨 CRITICAL: When editing issues or PRs, ALWAYS check for edits since your last interaction and NEVER remove screenshots 🚨**
+
+- **ALWAYS** fetch the latest version of the issue/PR body immediately before editing it
+- **NEVER** assume the content hasn't changed since you first read it
+- **ALWAYS** preserve all screenshots and images — even if you're updating other parts of the content
+- The user may have added screenshots between when you first read it and when you're editing it
+
+**Workflow:**
+1. Fetch the current version of the issue/PR body
+2. Make your changes while preserving all existing screenshots and images
+3. Double-check that all screenshot URLs are preserved in your edit
 
 ## PR Creation Commands
 
