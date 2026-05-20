@@ -90,5 +90,4 @@ Then load the specific skill file for the current task.
 | When | File |
 |------|------|
 | Bumping a gem version or working on a Dependabot ticket | `skills/code-quality/gem-bump.md` |
-| Writing RuboCop-clean Ruby or fixing style violations | `skills/code-quality/rubocop-rules.md` |
 | Working on commission fee cap logic | `skills/code-quality/fee-cap-rules.md` |
