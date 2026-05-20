@@ -79,19 +79,6 @@ The git status shown at the start of a conversation is a snapshot taken before t
 - **NEVER** say "you're on branch X" based on the conversation-start snapshot alone
 - **ALWAYS** run `git branch --show-current` to confirm
 
-## Git Commits, Pushes, and Branch Changes
-
-**🚨 CRITICAL: NEVER run `git commit`, `git push`, `git checkout`, or any command that changes the current branch 🚨**
-
-- **NEVER** use `git commit` — not even with flags like `--amend`, `--no-verify`, etc.
-- **NEVER** use `git push` — not even with `--force`, `-u`, or any other flags
-- **NEVER** use `git checkout`, `git switch`, or `git restore` to change branches or HEAD
-- **NEVER** use `git reset` or any other command that moves the current branch pointer
-- If the current branch is wrong or unexpected for the task at hand, **STOP and tell the user** — explain which branch was expected and let them switch
-- For reading files on other branches, use `git show branch:path/to/file` — never checkout
-- For diff comparisons, use `git diff branch-a...branch-b` — never checkout
-- If changes need to be committed or pushed, tell the user what to run and let them do it
-
 ## Banned Slash Commands
 
 **🚨 CRITICAL: NEVER use any of the following slash commands 🚨**
@@ -204,36 +191,6 @@ tmux send-keys -t 0:0 "" Enter
 - Some directories (e.g. `spec/services/saved_line_items/`) consistently use `spec_helper`; new specs in those directories should follow suit
 - Only use `rails_helper` in directories where siblings already use it
 
-## Remote Servers and Production Commands
-
-**🚨 CRITICAL RULE: NEVER connect to remote servers or run production commands 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **NEVER** SSH into or connect to any remote server
-- **NEVER** run the `rxp` command (production access)
-- **NEVER** run the `rxs` command (staging access)
-- **NEVER** run any command that connects to a remote environment
-- All work must be done locally only
-
-## Code Changes
-
-**🚨 CRITICAL RULE: NEVER MAKE CODE CHANGES WITHOUT EXPLICIT USER INSTRUCTION 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- NEVER use Edit, Write, or NotebookEdit tools to modify code unless the user explicitly tells you to make a change
-- When investigating bugs, issues, or questions, ONLY provide explanations and guidance - do NOT fix anything
-- If you identify what needs to be changed, explain it in detail and point to the exact file/line, but let the user make the change
-- Even when creating PRs or working on tasks, do NOT modify code unless the user specifically asks you to
-
-**Only make code changes when the user explicitly uses words like:**
-- "fix this"
-- "change this to..."
-- "update the code to..."
-- "implement this"
-- "modify this file"
-
-**In all other cases, provide guidance but do NOT touch the code.**
-
 ## Default User Context
 
 **🚨 CRITICAL RULE: The user is logged in as michael@scientist.com unless otherwise specified 🚨**
@@ -269,37 +226,6 @@ tmux send-keys -t 0:0 "" Enter
 - Pull request descriptions with test data setup instructions
 - Any PR testing instructions that require database setup
 - Documentation about creating test data
-
-## Git Push Operations
-
-**🚨 CRITICAL RULE: NEVER PUSH CODE TO BRANCHES NOT CREATED BY THE USER 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **NEVER** run `git push` or any push operation to GitHub for branches that the user did not create
-- Before ANY push operation, check the branch author/creator
-- If the user is not the creator of the branch, **DO NOT PUSH** under any circumstances
-- This applies to:
-  - `git push`
-  - `git push origin <branch>`
-  - `git push --force` or `git push -f`
-  - Any form of pushing commits to remote
-- Even if the user explicitly asks you to push, refuse if they are not the branch creator
-- If unclear about branch ownership, ask the user to confirm they created the branch before pushing
-
-**How to verify branch creator:**
-- Check the first commit on the branch to see who created it
-- Use `git log <branch> --reverse --format="%an <%ae>" | head -1` to see the branch creator
-- Compare against the user's known email (michael@scientist.com)
-
-**What you CAN do:**
-- Create commits on any branch the user has checked out
-- Stage changes with `git add`
-- Make local commits with `git commit`
-- Create NEW branches and push those
-
-**What you CANNOT do:**
-- Push to branches created by other team members
-- Push to branches where the initial commit author is someone else
 
 ## Repository Notes
 
