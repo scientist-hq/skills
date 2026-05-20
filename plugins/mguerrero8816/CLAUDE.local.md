@@ -14,17 +14,6 @@ This file contains personal preferences and instructions for working with this c
 - Derived rules from process reviews generally do NOT apply broadly — default to a new focused file over adding to an existing broad one
 - **NEVER edit `CLAUDE.md`** — it is a shared file checked into the repo and owned by the team
 
-## Investigating Unexpected Behavior
-
-**🚨 CRITICAL: ALWAYS follow `/change-investigation` rules when something is broken or behaving unexpectedly on the current branch 🚨**
-
-Read `/Users/mike/rx/.claude/commands/change-investigation.md` and apply it whenever:
-- Specs are failing after a change
-- A feature is broken or behaving unexpectedly
-- The user says something like "why is X broken", "this stopped working", "X isn't working anymore"
-
-This applies regardless of who made the change (user, Copilot, teammate, script).
-
 ## Clarifying Scope Before Fixing Multi-Part Queries
 
 **🚨 CRITICAL: When a fix is described informally and the target code has multiple components, state your interpretation of exactly what changes before writing any code or specs 🚨**
@@ -61,15 +50,6 @@ Print tables normally with full content. If the user indicates the table isn't r
 - **NEVER** use `⏺` or any similar Unicode bullet/dot as a prefix before code snippets, commands, or inline text
 - Code and commands should appear without any decorative prefix characters
 
-## Bumping Gem Versions
-
-**🚨 CRITICAL: ALWAYS run `/gem-bump` when the user asks about bumping a gem version or working on a Dependabot ticket 🚨**
-
-This applies to:
-- Questions about how to bump a gem
-- Working on Dependabot security tickets
-- Any conversation about updating a gem from one version to another
-
 ## Current Branch — Always Verify Live
 
 **🚨 CRITICAL: NEVER assume the current branch from the git status snapshot at conversation start 🚨**
@@ -104,15 +84,6 @@ The git status shown at the start of a conversation is a snapshot taken before t
 - **NEVER** edit code in response to "fix this" unless we are mid-feature and the fix is clearly code-related
 - When in doubt, check the database first and explain what data was wrong
 
-## Writing RSpec Specs
-
-**🚨 CRITICAL: ALWAYS run `/spec-rules` before writing any RSpec specs 🚨**
-
-This applies to:
-- Writing new spec files
-- Adding examples to existing specs
-- Writing controller, model, service, or job specs
-
 ## Controller Specs — Asserting State Changes
 
 **🚨 CRITICAL: In controller specs, NEVER use `expect { }.to change { }` — ALWAYS use explicit before/after checks 🚨**
@@ -139,26 +110,6 @@ This applies to:
 - Any controller spec that tests a status/attribute change
 - Both "it changes" and "it does not change" cases
 - Single and multi-record assertions
-
-## Fixing Provider Invoices Page Errors
-
-**🚨 CRITICAL: ALWAYS run `/fix-billing-invoices` when diagnosing or fixing errors on the provider invoices page 🚨**
-
-This applies to any error on:
-- `https://backoffice.test/accounting/provider_invoices`
-- Any page that renders `Pg::ProviderBillingDocument` records
-- Errors like `undefined method '...' for nil` involving shipping, currency, or quoted_ware on provider invoices
-
-## NetSuite PPO Sync
-
-**🚨 CRITICAL: ALWAYS run `/netsuite-ppo-sync` when the user asks about sending or uploading a provider purchase order or provider invoice to NetSuite 🚨**
-
-This applies to any question about:
-- Sending a PPO or CPO to NetSuite
-- Uploading a provider purchase order to NetSuite
-- Syncing a purchase order with NetSuite
-- Troubleshooting NetSuite PO sync errors
-- Sending a provider invoice to NetSuite
 
 ## Sending Commands via tmux
 
@@ -366,26 +317,6 @@ This applies to:
 - ✅ GOOD: Fetch issue immediately before making edits, preserve all screenshots
 - ❌ BAD: Replace entire issue body with your version, losing user's newly added screenshots
 - ✅ GOOD: Fetch latest version, merge your changes with existing content including all images
-
-## Running PR Manual Tests
-
-**🚨 CRITICAL: ALWAYS run `/pr-test-preflight` before reading any code or querying the DB for a PR test — and ALWAYS run `/run-pr-tests` before executing any test steps 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **NEVER** read local files, query the DB, or do any analysis before `/pr-test-preflight` has completed successfully
-- Reading local files before confirming the branch means you may be analyzing the wrong code entirely
-- **ALWAYS** follow this order:
-  1. Run `/pr-test-preflight` — confirms branch, runs migrations, cleans working tree
-  2. If the branch is wrong: **STOP immediately**, tell the user which branch is needed, and wait for them to switch — do NOT proceed
-  3. Run `/run-pr-tests` to load execution rules before starting any steps
-  4. Then begin the test steps one at a time
-
-**Triggers — apply this rule when the user says:**
-- "run the tests in this PR"
-- "step through the manual tests"
-- "verify the test instructions"
-- "test this PR"
-- Any similar request to execute or verify a PR's test plan
 
 ## Generating URLs
 
@@ -638,37 +569,6 @@ user = Pg::User.create!(
 **🚨 CRITICAL: ALWAYS save Playwright screenshots to `/Users/mike/playwright_screenshots/` — NEVER save them inside the repo 🚨**
 
 This applies to any screenshot taken via `browser_take_screenshot` or any other Playwright screenshot tool.
-
-## Feature Design Conversations
-
-**Design docs are stored at `/Users/mike/design_docs/`. When the user mentions "design doc", "design docs", "the design document", or any similar phrasing, always look for and reference files in that directory.**
-
-**🚨 CRITICAL: ALWAYS run `/design-doc` proactively when a design conversation is underway 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **ALWAYS invoke `/design-doc`** as soon as it becomes clear the conversation is about designing a feature — do NOT wait for the user to ask
-- Signs that a design conversation is underway:
-  - Discussing database schema, tables, or columns
-  - Discussing architectural approaches or trade-offs
-  - Discussing how a new feature should work
-  - Generating a design proposal or approval document
-- **ALWAYS keep the design doc updated** as decisions are made throughout the conversation — do not wait for the user to ask for a rewrite
-- The doc should reflect the current agreed design at all times
-
-## Creating Bug Issues
-
-**🚨 CRITICAL: ALWAYS run `/create-bug-issue` when asked to create or open a bug issue. This is MANDATORY and cannot be skipped. 🚨**
-
-This applies to:
-- Creating new bug issues
-- Opening bug issues
-- Reporting bugs
-- ANY request to create an issue about a bug or error
-
-**Workflow:**
-1. **ALWAYS run `/create-bug-issue` first** - this loads the proper bug issue format and guidelines
-2. Follow the structure exactly as specified in the slash command
-3. Use `--type "Bug"` when creating the issue (NOT `--label "Bug"`)
 
 ## Background Jobs
 

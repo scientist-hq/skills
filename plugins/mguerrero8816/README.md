@@ -34,7 +34,7 @@ at every session start via a `SessionStart` hook in `~/rx/.claude/settings.local
   "SessionStart": [{
     "hooks": [{
       "type": "command",
-      "command": "RULES=\"$HOME/skills/plugins/mguerrero8816/sacred-rules\" && CL=\"$HOME/rx/CLAUDE.local.md\" && { awk '/<!-- SACRED_RULES_INJECTION_POINT -->/{print;exit}{print}' \"$CL\" && printf \"\\n\" && cat \"$RULES/SR-01-no-remote-environments.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-02-no-unauthorized-git-ops.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-03-no-unauthorized-github-changes.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-04-no-unsolicited-code-changes.md\"; } > /tmp/claude_local_tmp.md && mv /tmp/claude_local_tmp.md \"$CL\" 2>/dev/null || true"
+      "command": "RULES=\"$HOME/skills/plugins/mguerrero8816/sacred-rules\" && CL=\"$HOME/rx/CLAUDE.local.md\" && { awk '/<!-- SACRED_RULES_INJECTION_POINT -->/{print;exit}{print}' \"$CL\" && printf \"\\n\" && cat \"$RULES/SR-01-no-remote-environments.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-02-no-unauthorized-git-ops.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-03-no-unauthorized-github-changes.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-04-no-unsolicited-code-changes.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-05-check-skill-routing.md\"; } > /tmp/claude_local_tmp.md && mv /tmp/claude_local_tmp.md \"$CL\" 2>/dev/null || true"
     }]
   }]
 }
