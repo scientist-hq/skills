@@ -16,6 +16,19 @@ These are non-negotiable. Load all four at the start of every session regardless
 | SR-03 | No unauthorized GitHub changes — never edit others' PRs or issues | `sacred-rules/SR-03-no-unauthorized-github-changes.md` |
 | SR-04 | No unsolicited code changes — never edit code without explicit instruction | `sacred-rules/SR-04-no-unsolicited-code-changes.md` |
 
+> **How sacred rules differ from skills:** Sacred rules are injected into `~/rx/CLAUDE.local.md` automatically at every session start via a `SessionStart` hook in `~/rx/.claude/settings.local.json`. They are always in context — no invocation needed. Skills (everything below) are on-demand: Claude reads the relevant file only when the task calls for it. To update a sacred rule, edit the file in `sacred-rules/` and it takes effect at the next session start.
+>
+> ```json
+> "hooks": {
+>   "SessionStart": [{
+>     "hooks": [{
+>       "type": "command",
+>       "command": "RULES=\"$HOME/skills/plugins/mguerrero8816/sacred-rules\" && CL=\"$HOME/rx/CLAUDE.local.md\" && { awk '/<!-- SACRED_RULES_INJECTION_POINT -->/{print;exit}{print}' \"$CL\" && printf \"\\n\" && cat \"$RULES/SR-01-no-remote-environments.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-02-no-unauthorized-git-ops.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-03-no-unauthorized-github-changes.md\" && printf \"\\n---\\n\\n\" && cat \"$RULES/SR-04-no-unsolicited-code-changes.md\"; } > /tmp/claude_local_tmp.md && mv /tmp/claude_local_tmp.md \"$CL\" 2>/dev/null || true"
+>     }]
+>   }]
+> }
+> ```
+
 ---
 
 Then load the specific skill file for the current task.
