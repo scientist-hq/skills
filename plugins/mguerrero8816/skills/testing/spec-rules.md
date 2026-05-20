@@ -72,6 +72,12 @@ This applies to the block form `change { }` only — `change(object, :method)` d
 - ❌ BAD: `bundle exec rspec spec/actions/proposals/`
 - ✅ GOOD: `bundle exec rspec spec/actions/proposals/adjust_fee_cap_spec.rb spec/models/pg/proposal/manual_fee_cap_amount_spec.rb`
 
+**Always run specs after writing or editing them — never assume they're correct**
+- After adding or modifying any spec, run it immediately with `bundle exec rspec <path>` from `rx/`
+- A spec that has never been run is unverified — execution confirms the test logic is sound
+- Report the result before moving on
+
+
 ## Controller Specs — Asserting State Changes
 
 **Exception to the general "Asserting Changes" rule above: in controller specs, NEVER use `expect { }.to change { }` — use explicit before/after checks instead.**

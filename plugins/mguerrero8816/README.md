@@ -42,6 +42,10 @@ at every session start via a `SessionStart` hook in `~/rx/.claude/settings.local
 
 To update a sacred rule: edit the file in `sacred-rules/` — it takes effect at the next session start.
 
+## Pending Cleanup
+
+- **`/Users/mike/.claude/projects/-Users-mike-rx/memory/MEMORY.md`** — accumulated auto-memory from past sessions. Needs a full review: migrate anything worth keeping into the correct skill files, then wipe the directory. Do this after CLAUDE.local.md cleanup is complete.
+
 **Skills** (`skills/`) are on-demand. Claude reads a skill file only when the current task calls
 for it, as directed by the routing tables in `SKILL.md`.
 

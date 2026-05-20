@@ -75,6 +75,10 @@ The git status shown at the start of a conversation is a snapshot taken before t
 - Use `CLAUDE.local.md` or `CLAUDE.md` for persistent instructions instead
 - If the user asks you to remember something, add it to `CLAUDE.local.md`
 
+## Write Specs Before Making Code Changes
+
+When a task requires a spec, write it first and confirm it fails for the right reason before making the implementation change. This ensures the spec actually validates the intended behavior and doesn't pass trivially.
+
 ## "Fix This" Means the Database
 
 **🚨 CRITICAL: When the user asks to "fix" an error or page issue, assume the fix is in the database — NOT the code 🚨**
