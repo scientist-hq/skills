@@ -326,12 +326,6 @@ This rule applies to **call sites** — the code that creates records. It does N
 
 **Test docs are stored at `/Users/mike/test_docs/`. When creating manual test documents or the user mentions "test doc", always save to that directory — NEVER inside the repo.**
 
-## Playwright Screenshots
-
-**🚨 CRITICAL: ALWAYS save Playwright screenshots to `/Users/mike/playwright_screenshots/` — NEVER save them inside the repo 🚨**
-
-This applies to any screenshot taken via `browser_take_screenshot` or any other Playwright screenshot tool.
-
 ## Background Jobs
 
 ### Queue Assignment
@@ -665,57 +659,6 @@ When a view needs to distinguish between a populated array and an empty one, che
 **Examples:**
 - ❌ BAD: `providers: provider_names.presence` in a model method, then `- if file[:providers]` in a view
 - ✅ GOOD: `providers: provider_names` in the model, then `- if file[:providers].present?` in the view
-
-## Browser Automation Skills
-
-Personal skills for automating browser tasks in the local dev environment. These live in `~/.claude/skills/` and are not in the repo.
-
-**`/playwright-qa`** — base Playwright skill (`~/.claude/skills/playwright-qa/SKILL.md`)
-- Knows all dev credentials, org subdomains, and login flows
-- Use for general multi-step browser automation
-- Other browser skills build on this one
-
-**`/storefront-index`** — open the storefront index (`~/.claude/skills/storefront-index/SKILL.md`)
-- Use when the user says "open the storefront", "go to az.test", "open the [org] storefront", etc.
-- Defaults to `az` if no org is specified
-- ALWAYS use this skill instead of `playwright-qa` when the task is just opening the storefront index
-
-**`/storefront-create-request`** — create a new request from the storefront (`~/.claude/skills/storefront-create-request/SKILL.md`)
-- Use when the user wants to create a request or search for a service on the storefront
-- Opens the storefront index first, then searches "hbs" and selects Human Biological Samples
-- Builds on storefront-index
-
-**`/open-proposal-form`** — open the new proposal form (`~/.claude/skills/open-proposal-form/SKILL.md`)
-- Use when the user wants to open a proposal form, inspect it, or get to the proposal creation page
-- Starts from the storefront request page: sends to suppliers → opens backoffice → selects a quoted ware → clicks Start Proposal
-- Stops at the open blank form and reports the URL — does NOT fill or submit
-
-**`/create-proposal`** — fill and submit a proposal (`~/.claude/skills/create-proposal/SKILL.md`)
-- Use when the user wants to create and submit a full proposal (SOW, fees, line items)
-- Builds on open-proposal-form to get to the form, then fills and submits it
-
-**`/create-purchase-order`** — create a purchase order from a proposal (`~/.claude/skills/create-purchase-order/SKILL.md`)
-- Use when the user wants to create a purchase order or complete the PO workflow
-- Builds on create-proposal, then returns to the storefront request page to initiate the PO
-
-**`/create-change-order`** — create a change order against an existing PO (`~/.claude/skills/create-change-order/SKILL.md`)
-- Use when the user wants to create a change order or modify scope on an in-progress request
-- Builds on send-po-to-netsuite; action is in the backoffice quoted ware sidebar, not the storefront
-
-**`/send-po-to-netsuite`** — send a PO to NetSuite (`~/.claude/skills/send-po-to-netsuite/SKILL.md`)
-- Use when the user wants to send a PO to NetSuite or sync a purchase order
-- Goes to `backoffice/accounting/purchase_orders`, finds the PO, opens Actions → Send → Send Purchase Order & Sales Order to Netsuite
-- Note: AZ org will fail with `customerLegalEntity` error in dev — use an org with NetSuite configured (e.g. BMS) for a full end-to-end test
-
-**🚨 CRITICAL: ALWAYS run `/storefront-index` when the user wants to open or navigate to a storefront — do NOT use playwright-qa directly for this task 🚨**
-
-**🚨 CRITICAL: ALWAYS run `/storefront-create-request` when the user wants to create a request from the storefront 🚨**
-
-**🚨 CRITICAL: ALWAYS run `/open-proposal-form` when the user wants to open or inspect the proposal form — do NOT use create-proposal if the user only wants to open the form 🚨**
-
-**🚨 CRITICAL: ALWAYS run `/create-proposal` when the user wants to create and submit a complete proposal 🚨**
-
-**🚨 CRITICAL: ALWAYS run `/create-purchase-order` when the user wants to create a purchase order 🚨**
 
 ## CSS `text-decoration` on Child Inline Elements
 

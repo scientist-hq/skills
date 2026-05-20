@@ -53,7 +53,7 @@ Then load the specific skill file for the current task.
 | When | File |
 |------|------|
 | Writing or debugging any RSpec spec | `skills/testing/spec/spec-rules.md` |
-| Using Playwright or verifying UI flows in the browser | `skills/testing/qa/browser-testing-rules.md` |
+| Using Playwright or verifying UI flows in the browser | `skills/testing/qa/playwright/base-rules.md` |
 | Creating test data for organizations | `skills/testing/spec/test-data-organization.md` |
 | Creating test data for requests (quote groups / quoted wares) | `skills/testing/spec/test-data-request.md` |
 | Creating test data for proposals (SOW / amendments) | `skills/testing/spec/test-data-proposal.md` |
