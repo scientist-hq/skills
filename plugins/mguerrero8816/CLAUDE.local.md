@@ -320,29 +320,6 @@ This rule applies to **call sites** — the code that creates records. It does N
 - ✅ GOOD: `PreferredQuoteGroupProvider.insert({ quote_group_id: qg.id, provider_id: p.id }, unique_by: %i[quote_group_id provider_id])`
 - ✅ GOOD: `validates :provider_id, uniqueness: { scope: :quote_group_id }` — standard model validation, not a concern
 
-## Creating Test Users
-
-**🚨 CRITICAL RULE: When creating test users, ALWAYS use the password !Testing1234 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **ALWAYS** set user passwords to `!Testing1234`
-- This password meets all security requirements:
-  - 12 characters or longer
-  - Contains uppercase letters
-  - Contains lowercase letters
-  - Contains digits
-  - Contains special characters
-- Using a consistent password makes testing easier for the user
-
-**Examples:**
-```ruby
-user = Pg::User.create!(
-  email: 'test@example.com',
-  password: '!Testing1234',
-  password_confirmation: '!Testing1234',
-  # ... other attributes
-)
-```
 
 
 ## Test Documents

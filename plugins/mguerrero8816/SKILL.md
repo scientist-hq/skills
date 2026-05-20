@@ -59,6 +59,7 @@ Then load the specific skill file for the current task.
 | Creating test data for proposals (SOW / amendments) | `skills/testing/test-data-proposal.md` |
 | Creating test data for purchase orders (CPO / PPO) | `skills/testing/test-data-purchase-order.md` |
 | Creating test data for users | `skills/testing/test-data-user.md` |
+| Creating test users in development (Rails console, manual QA) | `skills/testing/manual/test-users.md` |
 
 ## Integrations
 
