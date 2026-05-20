@@ -45,6 +45,29 @@ at every session start via a `SessionStart` hook in `~/rx/.claude/settings.local
 
 To update a sacred rule: edit the file in `rules/t1-sacred/` — it takes effect at the next session start.
 
+## RX Repo — Sparse Checkout
+
+The rx repo is configured with sparse checkout to exclude the team's `.claude/` directory from the local working tree. This prevents shared slash commands and team settings from polluting the personal Claude setup.
+
+**Config:** `~/rx/.git/info/sparse-checkout`
+```
+/*
+!.claude/
+```
+
+**To undo** (restore the full working tree):
+```bash
+git config core.sparseCheckout false
+git read-tree -mu HEAD
+```
+
+**To re-enable:**
+```bash
+git config core.sparseCheckout true
+printf '/*\n!.claude/\n' > .git/info/sparse-checkout
+git read-tree -mu HEAD
+```
+
 ## Pending Cleanup
 
 - **`/Users/mike/.claude/projects/-Users-mike-rx/memory/MEMORY.md`** — accumulated auto-memory from past sessions. Needs a full review: migrate anything worth keeping into the correct skill files, then wipe the directory. Do this after CLAUDE.local.md cleanup is complete.
