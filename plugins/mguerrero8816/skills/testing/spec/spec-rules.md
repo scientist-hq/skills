@@ -56,11 +56,11 @@ This applies to the block form `change { }` only — `change(object, :method)` d
 - Existing specs may themselves be over-specified; don't treat them as a template for what's needed
 - **NEVER use FactoryBot** — always hand-roll records with only the minimum required fields
 - For canonical creation patterns, consult the test-data files before checking model validations or other specs:
-  - `Pg::Organization` → `test-data-organization.md`
-  - `Pg::User` → `test-data-user.md`
-  - `Pg::Ware`, `Pg::Provider`, `Pg::QuoteGroup`, `Pg::QuotedWare` → `test-data-request.md`
-  - `Pg::Proposal` (SOW / Amendment) → `test-data-proposal.md`
-  - CPO / PPO → `test-data-purchase-order.md`
+  - `Pg::Organization` → `skills/testing/spec/test-data-organization.md`
+  - `Pg::User` → `skills/testing/spec/test-data-user.md`
+  - `Pg::Ware`, `Pg::Provider`, `Pg::QuoteGroup`, `Pg::QuotedWare` → `skills/testing/spec/test-data-request.md`
+  - `Pg::Proposal` (SOW / Amendment) → `skills/testing/spec/test-data-proposal.md`
+  - CPO / PPO → `skills/testing/spec/test-data-purchase-order.md`
 
 ## Running Specs
 

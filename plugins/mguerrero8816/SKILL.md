@@ -52,14 +52,14 @@ Then load the specific skill file for the current task.
 
 | When | File |
 |------|------|
-| Writing or debugging any RSpec spec | `skills/testing/spec-rules.md` |
-| Using Playwright or verifying UI flows in the browser | `skills/testing/browser-testing-rules.md` |
-| Creating test data for organizations | `skills/testing/test-data-organization.md` |
-| Creating test data for requests (quote groups / quoted wares) | `skills/testing/test-data-request.md` |
-| Creating test data for proposals (SOW / amendments) | `skills/testing/test-data-proposal.md` |
-| Creating test data for purchase orders (CPO / PPO) | `skills/testing/test-data-purchase-order.md` |
-| Creating test data for users | `skills/testing/test-data-user.md` |
-| Creating test users in development (Rails console, manual QA) | `skills/testing/manual/test-users.md` |
+| Writing or debugging any RSpec spec | `skills/testing/spec/spec-rules.md` |
+| Using Playwright or verifying UI flows in the browser | `skills/testing/qa/browser-testing-rules.md` |
+| Creating test data for organizations | `skills/testing/spec/test-data-organization.md` |
+| Creating test data for requests (quote groups / quoted wares) | `skills/testing/spec/test-data-request.md` |
+| Creating test data for proposals (SOW / amendments) | `skills/testing/spec/test-data-proposal.md` |
+| Creating test data for purchase orders (CPO / PPO) | `skills/testing/spec/test-data-purchase-order.md` |
+| Creating test data for users | `skills/testing/spec/test-data-user.md` |
+| Creating test users in development (Rails console, manual QA) | `skills/testing/qa/test-users.md` |
 
 ## Integrations
 

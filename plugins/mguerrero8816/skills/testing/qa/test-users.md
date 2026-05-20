@@ -2,7 +2,7 @@
 
 Rules for creating users in development (Rails console, demos, manual QA) — not for specs.
 
-For spec user creation, see `../test-data-user.md` which uses a different password (`Sp3c$Password`) to keep spec credentials distinct from dev credentials.
+For spec user creation, see `skills/testing/spec/test-data-user.md` which uses a different password (`Sp3c$Password`) to keep spec credentials distinct from dev credentials.
 
 ## Password
 
