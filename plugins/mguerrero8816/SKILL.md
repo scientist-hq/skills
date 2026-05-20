@@ -25,7 +25,7 @@ Then load the specific skill file for the current task.
 
 | When | File |
 |------|------|
-| Creating, editing, or interacting with any PR | `skills/pull-requests/pr-rules.md` |
+| Creating, editing, or interacting with any PR | `skills/pull-requests/base-rules.md` |
 | About to run or step through a PR's manual tests | `skills/pull-requests/pr-test-preflight.md` |
 | Executing PR test steps | `skills/pull-requests/run-pr-tests.md` |
 | Opening a hotfix PR (urgent production fix) | `skills/pull-requests/open-hotfix-pr.md` |
@@ -44,7 +44,7 @@ Then load the specific skill file for the current task.
 
 | When | File |
 |------|------|
-| Creating or interacting with any ticket or issue | `skills/tickets/general.md` |
+| Creating or interacting with any ticket or issue | `skills/tickets/base-rules.md` |
 | Creating a bug issue | `skills/tickets/create-bug-issue.md` |
 
 ## Testing

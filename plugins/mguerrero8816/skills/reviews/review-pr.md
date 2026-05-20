@@ -38,8 +38,8 @@ Each agent prompt must include:
 
 **A. Code Review (same as below)**
 **B. Formatting Review:**
-- Run `/pr-rules` to load all PR formatting rules
-- Check that the PR follows all rules from `/pr-rules`:
+- Run `base-rules.md` to load all PR formatting rules
+- Check that the PR follows all rules from `base-rules.md`:
   - Is it a draft PR?
   - Does it have the correct title format?
   - Does it have appropriate labels?

@@ -4,14 +4,14 @@ This command creates a pull request for hotfix work (urgent production fixes).
 
 ## Step 1: Load Universal PR Rules
 
-**CRITICAL: You MUST run `/pr-rules` immediately before doing anything else.** This loads all universal PR creation rules including:
+**CRITICAL: You MUST run `base-rules.md` immediately before doing anything else.** This loads all universal PR creation rules including:
 - Draft mode requirement (ALL PRs must be created in draft mode)
 - Branch checks
 - Context gathering
 - URL generation
 - And other essential rules
 
-**Run `/pr-rules` now before continuing with Step 2.**
+**Run `base-rules.md` now before continuing with Step 2.**
 
 ## Step 2: Apply Hotfix Specific Rules
 
@@ -123,7 +123,7 @@ Because active also looks at the existence of the obsoleted boolean #33768 actua
 
 ## Workflow Summary
 
-1. Run `/pr-rules` first (MANDATORY)
+1. Run `base-rules.md` first (MANDATORY)
 2. Verify you're on the correct branch with `git branch --show-current`
 3. Gather context (commits, diff, files changed)
 4. Create draft PR with `--draft` flag and `--base production`

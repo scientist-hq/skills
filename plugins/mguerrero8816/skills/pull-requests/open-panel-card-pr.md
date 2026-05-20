@@ -4,14 +4,14 @@ This command creates a pull request for migrating Bootstrap 3 `.panel` elements 
 
 ## Step 1: Load Universal PR Rules
 
-**CRITICAL: You MUST run `/pr-rules` immediately before doing anything else.** This loads all universal PR creation rules including:
+**CRITICAL: You MUST run `base-rules.md` immediately before doing anything else.** This loads all universal PR creation rules including:
 - Draft mode requirement (ALL PRs must be created in draft mode)
 - Branch checks
 - Context gathering
 - URL generation
 - And other essential rules
 
-**Run `/pr-rules` now before continuing with Step 2.**
+**Run `base-rules.md` now before continuing with Step 2.**
 
 ## Step 2: Apply Panel-to-Card Specific Rules
 
