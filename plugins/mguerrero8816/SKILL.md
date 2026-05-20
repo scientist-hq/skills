@@ -5,7 +5,20 @@ description: Personal skills and workflow rules for Mike Guerrero working on the
 
 # Personal Skills — Mike Guerrero
 
-Load this file first, then load the specific skill file for the current task.
+## ⛔ Sacred Rules — ALWAYS load these immediately, before anything else
+
+These are non-negotiable. Load all four at the start of every session regardless of task.
+
+| ID | Rule | File |
+|----|------|------|
+| SR-01 | No remote environments — never rxp, rxs, or any remote server | `sacred-rules/SR-01-no-remote-environments.md` |
+| SR-02 | No unauthorized git operations — never commit, push, or checkout | `sacred-rules/SR-02-no-unauthorized-git-ops.md` |
+| SR-03 | No unauthorized GitHub changes — never edit others' PRs or issues | `sacred-rules/SR-03-no-unauthorized-github-changes.md` |
+| SR-04 | No unsolicited code changes — never edit code without explicit instruction | `sacred-rules/SR-04-no-unsolicited-code-changes.md` |
+
+---
+
+Then load the specific skill file for the current task.
 
 ## Pull Requests
 
