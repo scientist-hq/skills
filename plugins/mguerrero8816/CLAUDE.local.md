@@ -84,32 +84,6 @@ The git status shown at the start of a conversation is a snapshot taken before t
 - **NEVER** edit code in response to "fix this" unless we are mid-feature and the fix is clearly code-related
 - When in doubt, check the database first and explain what data was wrong
 
-## Controller Specs — Asserting State Changes
-
-**🚨 CRITICAL: In controller specs, NEVER use `expect { }.to change { }` — ALWAYS use explicit before/after checks 🚨**
-
-Rubocop does not allow `change { }` blocks in controller specs. Instead, assert the state before the action and again after:
-
-```ruby
-# ❌ BAD
-it 'marks the invoice as paid' do
-  expect {
-    post :update_statuses, params: { ... }
-  }.to change { invoice.reload.status }.to('paid')
-end
-
-# ✅ GOOD
-it 'marks the invoice as paid' do
-  expect(invoice.status).to eq('in_review')
-  post :update_statuses, params: { ... }
-  expect(invoice.reload.status).to eq('paid')
-end
-```
-
-This applies to:
-- Any controller spec that tests a status/attribute change
-- Both "it changes" and "it does not change" cases
-- Single and multi-record assertions
 
 ## Sending Commands via tmux
 
@@ -136,11 +110,6 @@ tmux send-keys -t 0:0 "" Enter
   - ❌ BAD: `cd rx\nbundle exec rspec spec/foo_spec.rb`
   - ✅ GOOD: `cd rx && bundle exec rspec spec/foo_spec.rb`
 
-## RSpec Require Convention
-
-- **Always match the `require` used by sibling specs in the same directory** — do not assume `rails_helper`
-- Some directories (e.g. `spec/services/saved_line_items/`) consistently use `spec_helper`; new specs in those directories should follow suit
-- Only use `rails_helper` in directories where siblings already use it
 
 ## Default User Context
 

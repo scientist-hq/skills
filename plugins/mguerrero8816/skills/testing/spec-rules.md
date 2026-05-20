@@ -72,6 +72,37 @@ This applies to the block form `change { }` only — `change(object, :method)` d
 - ❌ BAD: `bundle exec rspec spec/actions/proposals/`
 - ✅ GOOD: `bundle exec rspec spec/actions/proposals/adjust_fee_cap_spec.rb spec/models/pg/proposal/manual_fee_cap_amount_spec.rb`
 
+## Controller Specs — Asserting State Changes
+
+**Exception to the general "Asserting Changes" rule above: in controller specs, NEVER use `expect { }.to change { }` — use explicit before/after checks instead.**
+
+RuboCop does not allow `change { }` blocks in controller specs:
+
+```ruby
+# ❌ BAD
+it 'marks the invoice as paid' do
+  expect {
+    post :update_statuses, params: { ... }
+  }.to change { invoice.reload.status }.to('paid')
+end
+
+# ✅ GOOD
+it 'marks the invoice as paid' do
+  expect(invoice.status).to eq('in_review')
+  post :update_statuses, params: { ... }
+  expect(invoice.reload.status).to eq('paid')
+end
+```
+
+Applies to: any controller spec testing a status/attribute change, both "it changes" and "it does not change" cases, single and multi-record assertions.
+
+## Require Convention
+
+**Always match the `require` used by sibling specs in the same directory — do not assume `rails_helper`.**
+
+- Some directories (e.g. `spec/services/saved_line_items/`) consistently use `spec_helper`; new specs in those directories should follow suit
+- Only use `rails_helper` in directories where siblings already use it
+
 ## Stubbing Collaborator Services
 
 **When a spec depends on a collaborator service, check whether that collaborator has its own specs:**
