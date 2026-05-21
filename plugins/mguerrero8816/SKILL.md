@@ -23,6 +23,12 @@ These are non-negotiable. Load all four at the start of every session regardless
 
 Then load the specific skill file for the current task.
 
+## Skill Authoring
+
+| When | File |
+|------|------|
+| Writing a new skill for this plugin | `skills/authoring-index.md` |
+
 ## Pull Requests
 
 | When | File |
@@ -54,7 +60,16 @@ Then load the specific skill file for the current task.
 | When | File |
 |------|------|
 | Writing or debugging any RSpec spec | `skills/testing/spec/spec-rules.md` |
-| Using Playwright or verifying UI flows in the browser | `skills/testing/qa/playwright/base-rules.md` |
+| Using Playwright or automating browser flows (general) | `skills/playwright/qa-rules.md` |
+| Opening the storefront for an org | `skills/playwright/storefront-index.md` |
+| Creating a new request from the storefront | `skills/playwright/storefront-create-request.md` |
+| Opening the proposal form for a request | `skills/playwright/open-proposal-form.md` |
+| Creating and submitting a proposal | `skills/playwright/create-proposal.md` |
+| Creating a purchase order from a proposal | `skills/playwright/create-purchase-order.md` |
+| Creating a change order against an existing PO | `skills/playwright/create-change-order.md` |
+| Sending a PO to NetSuite via the browser | `skills/playwright/send-po-to-netsuite.md` |
+| Setting up a customer legal entity for NetSuite | `skills/playwright/setup-legal-entity.md` |
+| Creating a configuration rule via the admin UI | `skills/playwright/create-configuration-rule.md` |
 | Creating test data for organizations | `skills/testing/spec/test-data-organization.md` |
 | Creating test data for requests (quote groups / quoted wares) | `skills/testing/spec/test-data-request.md` |
 | Creating test data for proposals (SOW / amendments) | `skills/testing/spec/test-data-proposal.md` |
