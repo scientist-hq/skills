@@ -47,14 +47,6 @@ The git status shown at the start of a conversation is a snapshot taken before t
 - **NEVER** say "you're on branch X" based on the conversation-start snapshot alone
 - **ALWAYS** run `git branch --show-current` to confirm
 
-## Banned Slash Commands
-
-**🚨 CRITICAL: NEVER use any of the following slash commands 🚨**
-
-- **NEVER** invoke `/architect`, `/bug`, `/bump`, `/commit`, `/explain`, `/explore`, `/implement`, `/infra`, `/learn`, `/post-review`, `/pr`, `/qa`, `/recap`, `/review`, or `/test`
-- These commands exist in `.claude/commands/` but must not be used under any circumstances
-- This applies even if the task seems like a perfect match for one of these commands
-
 ## Write Specs Before Making Code Changes
 
 When a task requires a spec, write it first and confirm it fails for the right reason before making the implementation change. This ensures the spec actually validates the intended behavior and doesn't pass trivially.

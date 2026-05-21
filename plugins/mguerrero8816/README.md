@@ -45,6 +45,53 @@ at every session start via a `SessionStart` hook in `~/rx/.claude/settings.local
 
 To update a sacred rule: edit the file in `rules/t1-sacred/` — it takes effect at the next session start.
 
+## Skills Repo — Sparse Checkout
+
+The skills repo (`~/skills/`) is configured with sparse checkout to hide other developers' plugins (`plugins/rx/`, `plugins/rranauro/`, `skills/`) from the working tree. This prevents team and personal-share plugins from being discoverable by Claude via filesystem searches.
+
+**Config:** `~/skills/.git/info/sparse-checkout`
+```
+/plugins/mguerrero8816/
+/.gitignore
+/README.md
+```
+
+**To undo** (restore the full working tree):
+```bash
+git -C ~/skills config core.sparseCheckout false
+git -C ~/skills read-tree -mu HEAD
+```
+
+**To re-enable:**
+```bash
+git -C ~/skills config core.sparseCheckout true
+printf '/plugins/mguerrero8816/\n/.gitignore\n/README.md\n' > ~/skills/.git/info/sparse-checkout
+git -C ~/skills read-tree -mu HEAD
+```
+
+## RX Repo — Sparse Checkout
+
+The rx repo is configured with sparse checkout to exclude the team's `.claude/` directory from the local working tree. This prevents shared slash commands and team settings from polluting the personal Claude setup.
+
+**Config:** `~/rx/.git/info/sparse-checkout`
+```
+/*
+!.claude/
+```
+
+**To undo** (restore the full working tree):
+```bash
+git config core.sparseCheckout false
+git read-tree -mu HEAD
+```
+
+**To re-enable:**
+```bash
+git config core.sparseCheckout true
+printf '/*\n!.claude/\n' > .git/info/sparse-checkout
+git read-tree -mu HEAD
+```
+
 ## Pending Cleanup
 
 - **`/Users/mike/.claude/projects/-Users-mike-rx/memory/MEMORY.md`** — accumulated auto-memory from past sessions. Needs a full review: migrate anything worth keeping into the correct skill files, then wipe the directory. Do this after CLAUDE.local.md cleanup is complete.
