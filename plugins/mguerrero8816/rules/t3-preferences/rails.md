@@ -1,5 +1,11 @@
 # Rails Preferences
 
+## Default User
+
+Always use `michael@scientist.com` as the default user unless explicitly told otherwise. This applies to:
+- Creating test data, action items, invitations, or any user-specific records
+- Querying for "the current user" or "my user" in the Rails console or runner
+
 ## View Loop Membership Checks — Use Controller-Level `pluck`
 
 When a view needs to check whether each row in a loop belongs to a set (e.g. "is this provider preferred?"), default to loading the full set once in the controller via `pluck` into an instance variable, then check membership in the view.

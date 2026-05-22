@@ -90,6 +90,7 @@ Then load the specific skill file for the current task.
 | When | File |
 |------|------|
 | Something is broken or behaving unexpectedly after a change | `skills/debugging/change-investigation.md` |
+| A page has an error or isn't rendering correctly | `skills/debugging/fix-page-errors.md` |
 | Diagnosing or fixing errors on the provider invoices page | `skills/debugging/fix-billing-invoices.md` |
 
 ## Design
@@ -99,6 +100,31 @@ Then load the specific skill file for the current task.
 | Designing a new feature or discussing architecture | `skills/design/design-doc.md` |
 | Taking screenshots for PRs, docs, or demos | `skills/design/feature-screenshots.md` |
 | Working on anything that touches the request page display | `skills/design/request-page-anatomy.md` |
+
+## Database
+
+| When | File |
+|------|------|
+| Fixing, debugging, or extending any ActiveRecord query | `skills/query-building.md` |
+
+## tmux
+
+| When | File |
+|------|------|
+| Sending commands to any tmux pane | `skills/tmux.md` |
+
+## Bash
+
+| When | File |
+|------|------|
+| Using the Bash tool in Claude Code | `skills/bash.md` |
+| Running any bundle exec command | `skills/bundle.md` |
+
+## Explanations
+
+| When | File |
+|------|------|
+| Asked to trace exception propagation, service call flows, or callback chains | `skills/explain-causation.md` |
 
 ## Searchkick
 
