@@ -27,7 +27,7 @@ Then load the specific skill file for the current task.
 
 | When | File |
 |------|------|
-| Writing a new skill for this plugin | `skills/authoring-index.md` |
+| Writing a new skill or rule for this plugin | `skills/authoring.md` |
 
 ## Pull Requests
 
