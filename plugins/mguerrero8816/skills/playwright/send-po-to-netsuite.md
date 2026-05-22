@@ -1,5 +1,4 @@
 ---
-name: send-po-to-netsuite
 description: Sends a purchase order to NetSuite from the backoffice request page. Use when the user wants to send a PO to NetSuite or sync a purchase order with NetSuite.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_fill, mcp__playwright__browser_wait_for, mcp__playwright__browser_snapshot, mcp__playwright__browser_select_option
 model: sonnet

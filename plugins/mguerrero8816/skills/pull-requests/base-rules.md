@@ -1,6 +1,8 @@
-# General Pull Request Rules
+---
+description: Universal rules for all pull request creation including draft mode, ticket linking, branch safety checks, labeling, URL generation, and required PR description format.
+---
 
-These are universal rules that apply to ALL pull request creation, regardless of the type of work.
+# General Pull Request Rules
 
 ## Ticket Linking
 
@@ -204,6 +206,7 @@ What changes for a user? Who are the users? (Researcher, Supplier, Scientist Adm
    - Be detailed to assist reviewers
    - **For standard flows (request creation, proposal creation, PO creation)**: do NOT spell out those steps — reviewers know them. Write "On `https://az.test/`, create a request and land on the supplier selection page" and move on to the steps specific to the feature. Never specify which service type to select.
    - **For features that depend on specific data state**: think through what database state is required to actually exercise the behavior before writing the instructions. For example, if a feature locks a value at PO time, the test must set that value before the PO is created and change it after — otherwise the test doesn't demonstrate anything. Write the console setup steps explicitly
+   - **Never assume the reviewer has matching dev data**: if the test depends on a specific record relationship (e.g. a join table entry, a flag set on a record, an association between two models), do not tell the reviewer to "find one" — give them the exact console command to create it. Use anchors like `Model.last` to reference the record they just created in the previous step. Example: `PreferredQuoteGroupProvider.create!(quote_group: Pg::QuoteGroup.last, provider_id: Pg::QuoteGroup.last.quoted_wares.first.provider_id)`
    - **Database setup steps must use Rails console syntax** — code blocks should be copy-pastable directly into `rails c`, never wrapped in `bundle exec rails runner`. Prefix with "Open Rails console (`rails c`) and run:". Example: `provider = Pg::Provider.first; puts provider.uuid` not `bundle exec rails runner "puts Provider.first.uuid"`
    - **NEVER reference external documents or files** in the Instructions section — always write the full steps inline. Reviewers cannot access local docs files.
    - **NEVER tell the reviewer to log in** — they have their own admin account and will log in if needed. Do specify which marketplace/org to use (e.g. "On `https://az.test/`...").

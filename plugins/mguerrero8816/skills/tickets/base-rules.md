@@ -1,6 +1,8 @@
-# General Ticket / Issue Rules
+---
+description: Universal rules for all GitHub ticket and issue interactions, covering Claude attribution placement, no point-of-contact policy, using --type instead of --label, and preserving screenshots on edits.
+---
 
-These rules apply to ALL ticket and issue interactions — creating, editing, and commenting.
+# General Ticket / Issue Rules
 
 ## Attribution
 

@@ -1,3 +1,7 @@
+---
+description: Canonical patterns for creating Pg::Proposal (SOW and Change Order) records in specs, including value object usage and before_save caching gotchas.
+---
+
 # Test Data — Proposal (SOW / Amendment)
 
 **Prerequisites:** a `quoted_ware` — see `test-data-request.md`.

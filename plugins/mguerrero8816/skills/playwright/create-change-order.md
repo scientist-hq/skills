@@ -1,5 +1,4 @@
 ---
-name: create-change-order
 description: Creates a change order against an existing purchase order. Use when the user wants to create a change order, modify an existing PO, or add scope to an in-progress request.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_fill, mcp__playwright__browser_wait_for, mcp__playwright__browser_snapshot, mcp__playwright__browser_select_option
 model: sonnet

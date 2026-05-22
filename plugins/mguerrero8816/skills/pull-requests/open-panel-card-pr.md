@@ -1,6 +1,8 @@
-# Open Panel to Card Migration Pull Request
+---
+description: Command for creating a draft pull request for migrating Bootstrap 3 .panel elements to Bootstrap 5 .card elements, with checklist, labels, and PR template.
+---
 
-This command creates a pull request for migrating Bootstrap 3 `.panel` elements to Bootstrap 5 `.card` elements.
+# Open Panel to Card Migration Pull Request
 
 ## Step 1: Load Universal PR Rules
 

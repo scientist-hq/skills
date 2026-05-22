@@ -1,6 +1,8 @@
-# Open Bootstrap 5 Migration Pull Request
+---
+description: Command for creating a draft pull request for Bootstrap 5 migration work, with title format, labels, milestone, and PR template specific to BS5 migrations.
+---
 
-This command creates a pull request for Bootstrap 5 migration work.
+# Open Bootstrap 5 Migration Pull Request
 
 ## Step 1: Load Universal PR Rules
 

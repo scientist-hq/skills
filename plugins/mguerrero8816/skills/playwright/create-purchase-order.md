@@ -1,5 +1,4 @@
 ---
-name: create-purchase-order
 description: Creates a purchase order from a proposal using the storefront. Use when the user wants to create a purchase order, accept a proposal, or complete the purchase order workflow.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_snapshot, mcp__playwright__browser_select_option, mcp__playwright__browser_evaluate
 model: sonnet

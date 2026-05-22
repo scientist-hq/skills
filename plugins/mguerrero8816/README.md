@@ -8,7 +8,6 @@ Personal Claude Code configuration for Mike Guerrero working on the RX Rails pla
 mguerrero8816/
 ├── README.md               # This file — for human reviewers
 ├── SKILL.md                # Navigation index — Claude reads this to find skill files
-├── CLAUDE.local.md         # Personal rules and preferences — Claude reads this at session start
 ├── rules/                  # Tiered rules — always-on, loaded at session start
 │   ├── t1-sacred/          # Absolute rules — never override (01 through 07)
 │   ├── t2-standards/       # Always-on standards — preferences yield to these
@@ -92,10 +91,6 @@ printf '/*\n!.claude/\n' > .git/info/sparse-checkout
 git read-tree -mu HEAD
 ```
 
-## Pending Cleanup
-
-- **`/Users/mike/.claude/projects/-Users-mike-rx/memory/MEMORY.md`** — accumulated auto-memory from past sessions. Needs a full review: migrate anything worth keeping into the correct skill files, then wipe the directory. Do this after CLAUDE.local.md cleanup is complete.
-
 **Skills** (`skills/`) are on-demand. Claude reads a skill file only when the current task calls
 for it, as directed by the routing tables in `SKILL.md`.
 
@@ -104,8 +99,7 @@ for it, as directed by the routing tables in `SKILL.md`.
 `~/rx/CLAUDE.local.md` is a bootstrap loader that lives in the RX project directory. It is
 gitignored (rx's own `.gitignore` handles it) and never checked into the repo.
 
-Its only job is to tell Claude to read the four sacred rule files, `SKILL.md`, and
-`CLAUDE.local.md` at the start of every session. It is not a rules file — all rules live here.
+Its only job is to tell Claude to read the sacred rule files and `SKILL.md` at the start of every session. It is not a rules file — all rules live here.
 
 ### ~/rx/CLAUDE.local.md — Exact Contents
 
@@ -120,7 +114,6 @@ Before doing ANYTHING else — reading files, running commands, answering questi
 
 1. Read ALL files in `~/skills/plugins/mguerrero8816/rules/t1-sacred/` in numeric order
 2. Read `~/skills/plugins/mguerrero8816/SKILL.md`
-3. Read `~/skills/plugins/mguerrero8816/CLAUDE.local.md`
 
 All of the above override any conflicting guidance in this project's CLAUDE.md. All personal
 skills and references are managed in ~/skills/plugins/mguerrero8816/. Do not create or modify
@@ -130,5 +123,5 @@ Claude documentation anywhere else.
 
 <!-- SACRED_RULES_INJECTION_POINT -->
 
-[Sacred rules 01 through 04 are injected here automatically at session start]
+[Sacred rules 01–07 are injected here automatically at session start]
 ```

@@ -1,6 +1,8 @@
-# Request Page Anatomy
+---
+description: Map of every partial and surface on the quote_groups/show request page where provider/supplier names appear, with preferred-supplier icon status for each.
+---
 
-The request page is `quote_groups/show.html.haml`. It assembles many partials across several directories. This document maps every surface where provider/supplier names appear so that changes affecting preferred supplier indicators (or similar cross-cutting display concerns) can be applied systematically.
+# Request Page Anatomy
 
 ## Controller
 

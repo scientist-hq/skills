@@ -1,6 +1,8 @@
-# Feature Screenshots
+---
+description: Rules for taking and saving feature screenshots with Playwright, including Bootstrap tooltip handling and stacking context gotchas.
+---
 
-Rules for taking screenshots of completed features — typically for PR descriptions, documentation, or stakeholder demos. This is a post-development activity, distinct from browser testing.
+# Feature Screenshots
 
 ## Save Location
 

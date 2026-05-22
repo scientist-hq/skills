@@ -1,6 +1,8 @@
-# Open Hotfix Pull Request
+---
+description: Command for creating a draft pull request targeting the production branch for urgent hotfix work, with title format, Slack link requirements, root cause explanation, and before/after screenshot template.
+---
 
-This command creates a pull request for hotfix work (urgent production fixes).
+# Open Hotfix Pull Request
 
 ## Step 1: Load Universal PR Rules
 

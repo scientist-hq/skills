@@ -1,6 +1,8 @@
-# Test Data — User
+---
+description: Minimal pattern for creating a Pg::User in specs with the correct spec-only password and required Devise fields.
+---
 
-Minimal pattern for creating a `Pg::User` in specs.
+# Test Data — User
 
 ```ruby
 let!(:user) do

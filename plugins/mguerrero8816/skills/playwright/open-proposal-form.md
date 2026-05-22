@@ -1,5 +1,4 @@
 ---
-name: open-proposal-form
 description: Opens the new proposal form in backoffice for a given request using the admin flow. Use when the user wants to open a proposal form, inspect the proposal form, or get to the proposal creation page. Starts from the storefront request page and ends with the blank proposal form open in backoffice.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_snapshot
 model: sonnet

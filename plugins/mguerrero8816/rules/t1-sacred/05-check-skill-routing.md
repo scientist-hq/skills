@@ -14,3 +14,8 @@ Before performing any non-trivial action, check the routing table in `~/skills/p
 This applies to: pull requests, reviews, tickets, specs, debugging, integrations, design conversations, code quality work — any task that has a row in the routing table.
 
 Do not skip this check because the task seems straightforward. The skill file may contain project-specific rules that override general behaviour.
+
+This also applies to specific **actions**, regardless of how the task is framed:
+
+- Before calling any `mcp__playwright__` tool → load `skills/playwright/qa-rules.md` first
+- Before writing or editing any file in `~/skills/plugins/mguerrero8816/` → load `skills/authoring.md` first

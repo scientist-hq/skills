@@ -23,11 +23,17 @@ These are non-negotiable. Load all four at the start of every session regardless
 
 Then load the specific skill file for the current task.
 
+## Maintenance
+
+| When | File |
+|------|------|
+| Cleaning up accumulated Claude auto-memory | `skills/cleanup-memory.md` |
+
 ## Skill Authoring
 
 | When | File |
 |------|------|
-| Writing a new skill for this plugin | `skills/authoring-index.md` |
+| Writing a new skill or rule for this plugin | `skills/authoring.md` |
 
 ## Pull Requests
 
@@ -76,6 +82,7 @@ Then load the specific skill file for the current task.
 | Creating test data for purchase orders (CPO / PPO) | `skills/testing/spec/test-data-purchase-order.md` |
 | Creating test data for users | `skills/testing/spec/test-data-user.md` |
 | Creating test users in development (Rails console, manual QA) | `skills/testing/qa/test-users.md` |
+| Creating test Pg::ProviderInvoice records in development | `skills/testing/qa/test-data-provider-invoices.md` |
 
 ## Integrations
 
@@ -90,6 +97,8 @@ Then load the specific skill file for the current task.
 | When | File |
 |------|------|
 | Something is broken or behaving unexpectedly after a change | `skills/debugging/change-investigation.md` |
+| A page has an error or isn't rendering correctly | `skills/debugging/fix-page-errors.md` |
+| A feature renders in some places but not others | `skills/debugging/partial-context-mismatch.md` |
 | Diagnosing or fixing errors on the provider invoices page | `skills/debugging/fix-billing-invoices.md` |
 
 ## Design
@@ -100,9 +109,64 @@ Then load the specific skill file for the current task.
 | Taking screenshots for PRs, docs, or demos | `skills/design/feature-screenshots.md` |
 | Working on anything that touches the request page display | `skills/design/request-page-anatomy.md` |
 
+## Features
+
+| When | File |
+|------|------|
+| Working on or finding test data for the preferred suppliers feature | `skills/preferred-suppliers.md` |
+
+## Database
+
+| When | File |
+|------|------|
+| Fixing, debugging, or extending any ActiveRecord query | `skills/query-building.md` |
+
+## tmux
+
+| When | File |
+|------|------|
+| Sending commands to any tmux pane | `skills/tmux.md` |
+
+## Bash
+
+| When | File |
+|------|------|
+| Using the Bash tool in Claude Code | `skills/bash.md` |
+| Running any bundle exec command | `skills/bundle.md` |
+
+## Explanations
+
+| When | File |
+|------|------|
+| Asked to trace exception propagation, service call flows, or callback chains | `skills/explain-causation.md` |
+
+## Searchkick
+
+| When | File |
+|------|------|
+| Working with any Searchkick model or Elasticsearch indexing | `skills/searchkick.md` |
+
+## Migrations
+
+| When | File |
+|------|------|
+| Writing or running any database migration | `skills/migrations.md` |
+
 ## Code Quality
 
 | When | File |
 |------|------|
 | Bumping a gem version or working on a Dependabot ticket | `skills/code-quality/gem-bump.md` |
 | Working on commission fee cap logic | `skills/code-quality/fee-cap-rules.md` |
+
+## CSS
+
+| When | File |
+|------|------|
+| Working on CSS styling, link underlines, or inline element decoration | `skills/css.md` |
+
+## URLs
+
+| When | File |
+|------|------|
+| Constructing or providing any development URL for the RX app | `skills/rx-urls.md` |

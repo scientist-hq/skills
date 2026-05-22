@@ -1,6 +1,8 @@
-# Open Staging Pull Request
+---
+description: Command for creating a draft pull request targeting the staging branch, with STAGING title prefix and standard PR description format.
+---
 
-This command creates a pull request targeting the `staging` branch.
+# Open Staging Pull Request
 
 ## Step 1: Load Universal PR Rules
 

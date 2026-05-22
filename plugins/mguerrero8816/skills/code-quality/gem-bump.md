@@ -1,3 +1,7 @@
+---
+description: Step-by-step process for safely bumping gem versions in a bootboot dual-lock-file Rails project, including breaking change checks and PR test instructions.
+---
+
 ## Bumping a Gem Version
 
 ### Step 1: Direct or Transitive?

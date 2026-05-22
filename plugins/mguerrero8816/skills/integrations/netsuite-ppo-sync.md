@@ -1,3 +1,7 @@
+---
+description: Step-by-step Rails console guide for wiring up and syncing a PPO/CPO (and provider invoice) to NetSuite Dev, including all required associations and common gotchas.
+---
+
 # Syncing a PPO/CPO to NetSuite Dev
 
 These steps assume you have an existing PPO and CPO that need to be sent to NetSuite.

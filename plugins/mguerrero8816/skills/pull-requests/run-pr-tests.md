@@ -1,6 +1,8 @@
-# PR Test Execution Rules
+---
+description: Rules for executing PR test plans interactively, including step-by-step pacing, reconstructing missing seed scripts, and running the preflight first.
+---
 
-Rules for running a PR test plan interactively.
+# PR Test Execution Rules
 
 ## Always Run Steps One at a Time
 

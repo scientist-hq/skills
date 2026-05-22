@@ -1,5 +1,4 @@
 ---
-name: playwright-base
 description: Base Playwright automation skill for the local RX dev environment. Use for multi-step browser flows, form filling, and UI verification tasks. More specific skills (e.g. storefront-index) build on this one — prefer those when they match the task.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_select_option, mcp__playwright__browser_hover, mcp__playwright__browser_evaluate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot
 model: sonnet

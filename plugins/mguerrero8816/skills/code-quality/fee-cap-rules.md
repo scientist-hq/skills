@@ -1,6 +1,8 @@
-# Fee Cap Rules
+---
+description: Rules for how commission fee caps work in RX, including nil cap semantics and amendment validation.
+---
 
-Rules specific to how commission fee caps work in RX.
+# Fee Cap Rules
 
 ## Nil Cap Semantics
 

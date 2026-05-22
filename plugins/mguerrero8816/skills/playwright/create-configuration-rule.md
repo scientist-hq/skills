@@ -1,5 +1,4 @@
 ---
-name: create-configuration-rule
 description: Creates a new configuration rule in the backoffice admin UI. Use when the user wants to create or test a configuration rule, add a directive via the GUI, or verify a directive works end-to-end.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_select_option, mcp__playwright__browser_snapshot, mcp__playwright__browser_evaluate
 model: sonnet
