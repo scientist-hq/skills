@@ -123,5 +123,5 @@ Claude documentation anywhere else.
 
 <!-- SACRED_RULES_INJECTION_POINT -->
 
-[Sacred rules 01 through 07 are injected here automatically at session start]
+[Sacred rules 01–07 are injected here automatically at session start]
 ```
