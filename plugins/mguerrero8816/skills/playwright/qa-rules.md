@@ -147,8 +147,8 @@ This rule applies when running a PR test plan or QA verification. It does NOT ap
 
 After confirming a browser test step passes:
 - Take a screenshot with `browser_take_screenshot`
-- Save to `/Users/mike/rx/tmp/screenshots/<step-name>.png` (create the directory if needed)
-- Tell the user the exact path: e.g. "Screenshot saved to `/Users/mike/rx/tmp/screenshots/step2-bell-badge.png`"
+- Save to `/Users/mike/playwright_screenshots/<step-name>.png`
+- Tell the user the exact path: e.g. "Screenshot saved to `/Users/mike/playwright_screenshots/step2-bell-badge.png`"
 - This gives the user a visual record they can open and verify independently
 
 **When this applies:** running steps from a PR description, QA checklist, or explicit "verify X works" request.

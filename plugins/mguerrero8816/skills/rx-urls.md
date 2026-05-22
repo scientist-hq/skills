@@ -16,6 +16,7 @@ description: How to build correct development URLs for the RX app — storefront
 |-----|---------------|---------|
 | Storefront | `https://{subdomain}.test/` | `https://az.test/quote_groups/...` |
 | Backoffice | `https://backoffice.test/` | `https://backoffice.test/providers/...` |
+| Backoffice (local dev) | `https://backoffice.scientist.dev/` | same as backoffice.test — Mike's local dev server, not remote |
 
 - ❌ `https://storefront.test/` is **not** a valid URL — storefront uses org subdomains
 - To get the subdomain: `record.organization.subdomain`
@@ -28,6 +29,17 @@ description: How to build correct development URLs for the RX app — storefront
 | `/providers/` | Backoffice | use `backoffice.test` |
 
 When in doubt: check whether the controller lives under `app/controllers/backoffice/` (backoffice) or not (storefront).
+
+## URL Parameter Types
+
+Most resources use UUID in their URLs (via `to_param`). The table below documents known exceptions and gotchas. Assume UUID unless listed here.
+
+| Resource | URL param | Gotcha |
+|----------|-----------|--------|
+| `providers` | UUID (`provider.uuid`) | Providers also have a `.slug` — do not use it in URLs |
+| `quoted_wares` | UUID (`quoted_ware.uuid`) | Route is `:id` in routes.rb but `to_param` returns UUID |
+
+If you encounter a resource that uses a numeric ID or slug, add it here.
 
 ## Page-Specific URL Rules
 
