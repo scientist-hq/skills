@@ -1,6 +1,9 @@
-# Design Doc
+---
+name: design-doc
+description: Command for creating and maintaining a living feature design document in /Users/mike/design_docs/ throughout a design conversation.
+---
 
-This command is used when starting a new feature design. It creates a design doc in `/tmp/design_docs/` and keeps it updated as the design evolves throughout the conversation.
+# Design Doc
 
 ## Behaviour
 

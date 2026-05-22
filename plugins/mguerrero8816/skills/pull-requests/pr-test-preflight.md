@@ -1,3 +1,8 @@
+---
+name: pr-test-preflight
+description: Pre-flight checklist to run before executing any PR test plan, covering branch verification, uncommitted changes, gem updates, and pending migrations.
+---
+
 # PR Test Pre-flight
 
 Run these steps before executing any PR test plan. The goal is to ensure the environment matches what the PR expects without leaving the repo in a dirty state.

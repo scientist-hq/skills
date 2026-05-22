@@ -1,6 +1,9 @@
-# General Pull Request Rules
+---
+name: base-rules
+description: Universal rules for all pull request creation including draft mode, ticket linking, branch safety checks, labeling, URL generation, and required PR description format.
+---
 
-These are universal rules that apply to ALL pull request creation, regardless of the type of work.
+# General Pull Request Rules
 
 ## Ticket Linking
 

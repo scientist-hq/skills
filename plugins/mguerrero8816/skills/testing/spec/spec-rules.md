@@ -1,6 +1,9 @@
-# RSpec Spec Writing Rules
+---
+name: spec-rules
+description: Universal RSpec rules for this codebase covering let! vs let, change matchers, minimum required fields, running specs, controller spec patterns, and stubbing collaborators.
+---
 
-These are universal rules that apply to ALL spec writing in this codebase.
+# RSpec Spec Writing Rules
 
 ## Record Creation
 

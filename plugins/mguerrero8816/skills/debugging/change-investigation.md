@@ -1,6 +1,9 @@
-# Investigating Unexpected Behavior After a Change
+---
+name: change-investigation
+description: Rules for investigating unexpected behavior after a code change, emphasizing diff-first investigation and revert-first thresholds.
+---
 
-Rules for when a user reports that something broke after making a change.
+# Investigating Unexpected Behavior After a Change
 
 ## Step 1: Always check what changed first
 

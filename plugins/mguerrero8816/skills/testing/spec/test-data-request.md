@@ -1,3 +1,8 @@
+---
+name: test-data-request
+description: Canonical patterns for creating Pg::QuoteGroup and Pg::QuotedWare (request) records in specs, including required address records and provider setup.
+---
+
 # Test Data — Request (Quote Group + Quoted Ware)
 
 A "request" in the RX domain is a `Pg::QuoteGroup` with one or more `Pg::QuotedWare` records.

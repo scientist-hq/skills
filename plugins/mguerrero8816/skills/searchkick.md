@@ -1,3 +1,8 @@
+---
+name: searchkick
+description: Rules for working with Searchkick models, specifically avoiding bulk database operations that bypass Elasticsearch reindexing callbacks.
+---
+
 # Searchkick
 
 ## Bulk Operations Bypass Reindexing

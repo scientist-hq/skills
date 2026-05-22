@@ -1,6 +1,9 @@
-# Creating a Customer Invoice from a Purchase Order (without NetSuite)
+---
+name: create-invoice-from-po
+description: Rails console recipe for manually creating a Pg::Invoice from a Pg::CustomerPurchaseOrder without going through the NetSuite-driven flow.
+---
 
-Use this when you need to manually create a `Pg::Invoice` from a `Pg::CustomerPurchaseOrder` — bypassing the normal NetSuite-driven flow.
+# Creating a Customer Invoice from a Purchase Order (without NetSuite)
 
 ## When to Use
 

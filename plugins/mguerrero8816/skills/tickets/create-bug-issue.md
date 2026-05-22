@@ -1,6 +1,9 @@
-# Create Bug Issue
+---
+name: create-bug-issue
+description: Guidelines and exact structure for creating GitHub bug issues, including required sections (User Impact, Bug Description, Expected Behavior, Steps To Reproduce, Screenshots) and the --type Bug flag.
+---
 
-This command provides guidelines for creating bug issues in the repository.
+# Create Bug Issue
 
 ## Issue Structure
 

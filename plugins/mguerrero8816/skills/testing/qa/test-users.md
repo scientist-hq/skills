@@ -1,6 +1,9 @@
-# Manual Test Users
+---
+name: test-users
+description: Rules for creating test users in development and manual QA, including the standard password and distinction from spec credentials.
+---
 
-Rules for creating users in development (Rails console, demos, manual QA) — not for specs.
+# Manual Test Users
 
 For spec user creation, see `skills/testing/spec/test-data-user.md` which uses a different password (`Sp3c$Password`) to keep spec credentials distinct from dev credentials.
 

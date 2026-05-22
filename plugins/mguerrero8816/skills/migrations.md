@@ -1,3 +1,8 @@
+---
+name: migrations
+description: Rules for generating and managing Rails database migrations, including timestamp hygiene, schema.rb cleanup, and FK type matching on legacy serial tables.
+---
+
 # Migrations
 
 ## Always Use the Rails Generator

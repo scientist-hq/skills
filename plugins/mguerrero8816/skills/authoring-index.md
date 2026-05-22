@@ -1,6 +1,9 @@
-# Skill Authoring Index
+---
+name: authoring-index
+description: Index of guides for writing new skills in this plugin, organized by skill category.
+---
 
-Guides for writing new skills in this plugin. Read the relevant guide before authoring a new skill in that category.
+# Skill Authoring Index
 
 | Skill type | Authoring guide |
 |------------|----------------|
