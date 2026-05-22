@@ -131,42 +131,6 @@ tmux send-keys -t 0:0 "" Enter
 - ✅ GOOD: Just run `bundle exec rails runner "..."` if already in `/Users/mike/rx/rx`
 
 
-## Generating URLs
-
-**🚨 CRITICAL: When asked for a URL, ALWAYS provide a live, working URL with actual database records 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **NEVER** provide placeholder URLs like `/providers/#{provider.uuid}/...`
-- **NEVER** provide instructions on how to generate URLs
-- **ALWAYS** search the database for actual records and construct complete, working URLs
-- Use `bundle exec rails runner` to query the database for real UUIDs, IDs, or other identifiers
-- Return the full URL that can be immediately copied and pasted into a browser
-
-**URL Format Rules:**
-- ❌ INCORRECT: `https://storefront.test/` is NOT a valid storefront URL
-- ✅ CORRECT: `https://{subdomain}.test/` (e.g., `https://az.test/`)
-- Storefront URLs use organization subdomains, not a generic "storefront" subdomain
-- ✅ CORRECT: `https://backoffice.test/` for backoffice URLs
-
-**Examples:**
-- ❌ BAD: "Visit `/providers/#{provider.uuid}/proposal_templates`"
-- ❌ BAD: "Visit `https://storefront.test/delayed_user_reports`"
-- ✅ GOOD: "Visit `https://backoffice.test/providers/e0b473d2-23af-46b6-9b0d-de5de272afbd/proposal_templates`"
-- ✅ GOOD: "Visit `https://az.test/delayed_user_reports`"
-
-**Storefront vs Backoffice URL Routing:**
-- `/quote_groups/` — **storefront** — use `https://{subdomain}.test/quote_groups/...`
-- `/providers/` — **backoffice** — use `https://backoffice.test/providers/...`
-- When in doubt, check whether the controller lives under `app/controllers/backoffice/` (backoffice) or not (storefront)
-- To get the subdomain, query `record.organization.subdomain` and use `https://{subdomain}.test/...`
-
-**When the user says "give me a url" or similar:**
-1. Query the database for actual records
-2. Determine if the page is storefront or backoffice (see routing rules above)
-3. Construct the complete URL with real data
-4. Use the correct domain pattern (subdomain.test for storefront, backoffice.test for backoffice)
-5. Provide the URL ready to use
-
 ## Verify Views in Browser Before Making Changes
 
 **🚨 CRITICAL: When asked to change something in a view, ALWAYS provide the URL and verify the current state in the browser before making any edits 🚨**
@@ -237,35 +201,3 @@ tmux send-keys -t 0:0 "" Enter
 
 
 
-## CSS `text-decoration` on Child Inline Elements
-
-When you need to hide the underline on a specific child inline element inside an `<a>` tag, `text-decoration: none` on the child does **not** work — the underline is drawn by the parent's box and passes through all children regardless.
-
-The correct approach:
-1. Set `text-decoration: underline` on the child (so it owns its own underline segment)
-2. Set `text-decoration-color: <background-hex>` to make that segment invisible
-
-**Examples:**
-- ❌ BAD: `style: "text-decoration: none;"` on a child `<i>` inside an `<a>` — has no effect
-- ✅ GOOD: `style: "text-decoration: underline; text-decoration-color: #f2f2f2;"` — child owns its segment and colors it to match the background
-
-Look up the exact background color hex before hardcoding it (e.g. `neutral-95` = `#f2f2f2`).
-
-## View Loop Membership Checks — Use Controller-Level `pluck`
-
-When a view needs to check whether each row in a loop belongs to a set (e.g. "is this provider preferred?"), default to loading the full set once in the controller via `pluck` into an instance variable, then check membership in the view.
-
-- ❌ BAD: Model methods that query per row (N+1), or methods that take two IDs when one object already implies the other
-- ✅ GOOD: `@preferred_provider_ids = PreferredQuoteGroupProvider.where(quote_group: @quote_group).pluck(:provider_id)` in the controller, then `@preferred_provider_ids&.include?(quoted_ware.provider_id)` in the view
-
-Only reach for a model method if the membership logic is complex enough to warrant encapsulation.
-
-## Backoffice URL for a Request (Quoted Ware)
-
-**🚨 CRITICAL RULE: When asked for the backoffice page for a request, use `/quoted_wares/:uuid/edit` 🚨**
-
-- The backoffice page for a request (quoted ware) is at `https://backoffice.test/quoted_wares/:uuid/edit`
-- Use the quoted ware's **UUID**, not its numeric `id`
-- This is the edit page — it shows invoices, credits, and other request details side by side
-- ❌ BAD: `https://backoffice.test/quoted_wares/10` (numeric id, show action)
-- ✅ GOOD: `https://backoffice.test/quoted_wares/589762de-6915-48e8-a6a4-c1d3ca244d9c/edit` (UUID, edit action)

@@ -118,3 +118,15 @@ Then load the specific skill file for the current task.
 |------|------|
 | Bumping a gem version or working on a Dependabot ticket | `skills/code-quality/gem-bump.md` |
 | Working on commission fee cap logic | `skills/code-quality/fee-cap-rules.md` |
+
+## CSS
+
+| When | File |
+|------|------|
+| Working on CSS styling, link underlines, or inline element decoration | `skills/css.md` |
+
+## URLs
+
+| When | File |
+|------|------|
+| Constructing or providing any development URL for the RX app | `skills/rx-urls.md` |
