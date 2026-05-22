@@ -1,0 +1,40 @@
+# Migrations
+
+## Always Use the Rails Generator
+
+**ALWAYS generate migration files with the Rails generator — never create them by hand:**
+
+```bash
+cd rx && bundle exec rails generate migration MigrationName
+```
+
+This gives you the correct timestamp automatically. Never hand-write the filename or its timestamp — the generator handles both.
+
+## Timestamp Must Be Real
+
+If for any reason a migration file must be created manually, use the actual current UTC time:
+
+```bash
+date -u +%Y%m%d%H%M%S
+```
+
+- **NEVER** use fake timestamps like `20260513000001` or any midnight/round-number timestamp
+- Placeholder timestamps risk colliding with a teammate's migration and breaking the migration order
+
+## Cleaning Up `schema.rb` After Running Migrations
+
+The dev database is shared and may contain migrations from unmerged branches being reviewed locally. Running `db:migrate` will apply those too, adding unrelated tables and columns to `schema.rb`.
+
+When `schema.rb` has unrelated changes after running a migration:
+- **DO NOT** re-run `db:migrate` on a reset schema — it will just re-apply everything again
+- **ALWAYS** clean `schema.rb` manually: compare against `main`, identify exactly what your migration adds (new table, new indexes, new FK entries, version bump), and revert everything else
+- Use `git diff main -- db/schema.rb` (working tree) to see the full picture, not `git diff main...HEAD` (which compares commits)
+
+## `t.references` on Legacy Serial Tables
+
+**Do NOT use `t.references` when creating foreign keys pointing at legacy `id: :serial` (integer) tables**
+
+Modern Rails defaults both `create_table` PKs and `t.references` columns to `bigint`. Legacy tables in this codebase (e.g. `providers`, `quote_groups`) were created with `id: :serial` — a 4-byte `integer`. PostgreSQL requires the FK column type to match the referenced PK type exactly, so a `bigint` FK against an `integer` PK will fail with a type mismatch error.
+
+- **ALWAYS** use `t.integer :xxx_id, null: false` for FK columns on legacy serial tables
+- Check `db/schema.rb` for `id: :serial` to confirm a table is legacy before deciding

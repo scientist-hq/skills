@@ -205,92 +205,7 @@ tmux send-keys -t 0:0 "" Enter
 3. Update the database accordingly
 4. Verify the condition now evaluates as expected
 
-## Migrations — Timestamp Must Be Real
 
-**🚨 CRITICAL: ALWAYS use the actual current UTC time as the migration timestamp — NEVER use a placeholder 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **NEVER** use fake timestamps like `20260513000001` or any midnight/round-number timestamp
-- **ALWAYS** run `date -u +%Y%m%d%H%M%S` first and use that value as the filename prefix
-- Placeholder timestamps risk colliding with a teammate's migration and breaking the migration order
-
-**Correct workflow:**
-1. Run `date -u +%Y%m%d%H%M%S` to get the current UTC timestamp
-2. Use that exact value as the migration filename prefix
-3. Example: `20260513160855_create_preferred_quote_group_providers.rb`
-
-## Migrations — Cleaning Up `schema.rb` After Running Migrations
-
-**The dev database is shared and may contain migrations from unmerged branches being reviewed locally. Running `db:migrate` will apply those too, adding unrelated tables and columns to `schema.rb`.**
-
-When `schema.rb` has unrelated changes after running a migration:
-- **DO NOT** re-run `db:migrate` on a reset schema — it will just re-apply everything again
-- **ALWAYS** clean `schema.rb` manually: compare against `main`, identify exactly what your migration adds (new table, new indexes, new FK entries, version bump), and revert everything else
-- Use `git diff main -- db/schema.rb` (working tree) to see the full picture, not `git diff main...HEAD` (which compares commits)
-
-## Migrations — `t.references` on Legacy Serial Tables
-
-**Do NOT use `t.references` when creating foreign keys pointing at legacy `id: :serial` (integer) tables**
-
-Modern Rails defaults both `create_table` PKs and `t.references` columns to `bigint`. Legacy tables in this codebase (e.g. `providers`, `quote_groups`) were created with `id: :serial` — a 4-byte `integer`. PostgreSQL requires the FK column type to match the referenced PK type exactly, so a `bigint` FK against an `integer` PK will fail with a type mismatch error.
-
-- **ALWAYS** use `t.integer :xxx_id, null: false` for FK columns on legacy serial tables
-- Check `db/schema.rb` for `id: :serial` to confirm a table is legacy before deciding
-
-## Database Operations and Search Indexing
-
-**🚨 CRITICAL RULE: NEVER use database operations that bypass ActiveRecord callbacks and skip reindexing 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- **NEVER** use `update_all`, `delete_all`, `insert_all`, or other bulk SQL operations on models that use Searchkick
-- These methods bypass ActiveRecord callbacks, which means Elasticsearch indexes won't be updated
-- The database and search index will become out of sync, causing incorrect search results
-- **ALWAYS** use individual record operations (`update`, `save`, `destroy`, etc.) or manually reindex after bulk operations
-
-**Problematic methods to AVOID:**
-- `Model.update_all(...)` - bypasses callbacks, no reindex
-- `Model.delete_all` - bypasses callbacks, no reindex
-- `Model.insert_all(...)` - bypasses callbacks, no reindex
-- Direct SQL via `ActiveRecord::Base.connection.execute(...)`
-
-**Safe alternatives:**
-- ✅ GOOD: `records.each { |r| r.update!(field: value) }` - triggers callbacks and reindexing
-- ✅ GOOD: `record.update!(field: value)` - triggers callbacks and reindexing
-- ✅ GOOD: `record.destroy` - triggers callbacks and reindexing
-- ✅ ACCEPTABLE: `Model.update_all(...) followed by Model.reindex` - but prefer individual updates
-
-**When you MUST use bulk operations:**
-1. Use the bulk operation
-2. Immediately reindex the model: `Model.reindex`
-3. Verify the search index is updated
-
-**Examples:**
-- ❌ BAD: `Pg::Certification.where(name: 'Test').update_all(region: 'au')`
-- ✅ GOOD: `Pg::Certification.where(name: 'Test').each { |c| c.update!(region: 'au') }`
-- ✅ ACCEPTABLE: `Pg::Certification.where(name: 'Test').update_all(region: 'au'); Pg::Certification.reindex`
-
-**Why this matters:**
-- Searchkick (Elasticsearch) relies on ActiveRecord callbacks to stay in sync
-- Bulk operations skip callbacks for performance, but break search functionality
-- Users see incorrect/incomplete search results when indexes are out of sync
-- Individual operations are slower but guarantee consistency
-
-## Insert-or-Skip with Composite Unique Indexes
-
-**🚨 CRITICAL: Use `Model.insert` with `unique_by` for atomic "create if not exists" operations — NEVER `find_or_create_by!` or bare `upsert` 🚨**
-
-This rule applies to **call sites** — the code that creates records. It does NOT apply to model-level `validates :uniqueness`, which is standard Rails convention and correct to have alongside a DB unique index.
-
-- `find_or_create_by!` is non-atomic — two concurrent calls can both pass the find check, then one raises `ActiveRecord::RecordNotUnique` on create
-- `upsert` without `unique_by` targets the primary key, not composite unique indexes — conflicts on composite indexes still raise
-- **ALWAYS** use `Model.insert(attrs, unique_by: %i[col1 col2])` for composite unique indexes — generates `ON CONFLICT (col1, col2) DO NOTHING`
-- `validates :uniqueness` on the model is fine and expected — it provides friendly error messages; the DB constraint enforces atomicity
-
-**Examples:**
-- ❌ BAD: `PreferredQuoteGroupProvider.find_or_create_by!(quote_group: qg, provider: p)` — non-atomic, raises on race
-- ❌ BAD: `PreferredQuoteGroupProvider.upsert({ quote_group_id: qg.id, provider_id: p.id })` — targets PK, not composite index
-- ✅ GOOD: `PreferredQuoteGroupProvider.insert({ quote_group_id: qg.id, provider_id: p.id }, unique_by: %i[quote_group_id provider_id])`
-- ✅ GOOD: `validates :provider_id, uniqueness: { scope: :quote_group_id }` — standard model validation, not a concern
 
 
 
@@ -298,94 +213,10 @@ This rule applies to **call sites** — the code that creates records. It does N
 
 **Test docs are stored at `/Users/mike/test_docs/`. When creating manual test documents or the user mentions "test doc", always save to that directory — NEVER inside the repo.**
 
-## Background Jobs
 
-### Queue Assignment
-- **Do NOT add `queue_as` to new jobs** — the majority of jobs in the codebase omit it and rely on the default queue
-- Only specify a queue if there is a specific, known reason (e.g. high memory jobs like data imports use `:high_memory`)
-- Do not flag missing `queue_as` as an issue during code reviews
 
-## JavaScript Code Standards
 
-### ESLint Strict Equality Rule
-- **ALWAYS use strict equality**: Use `===` and `!==` instead of `==` and `!=` in JavaScript code
-- **NEVER use loose equality**: The `==` operator will fail eslint checks with the `eqeqeq` rule
-- **Check existing code patterns**: If copying code from existing files, update `==` to `===` even if the source uses loose equality
 
-### ESLint No-New Rule
-- **🚨 CRITICAL: NEVER use `new` constructors for side effects without assigning to a variable**
-- **ALWAYS assign constructor results to a variable**, even if you don't use the variable afterward
-- The `no-new` ESLint rule will fail if constructors are called without assignment
-
-**Examples:**
-- ❌ BAD: `new bootstrap.Dropdown(element, options);`
-- ✅ GOOD: `const dropdown = new bootstrap.Dropdown(element, options);`
-- ❌ BAD: `new Modal(config);`
-- ✅ GOOD: `const modal = new Modal(config);`
-
-**When suggesting or writing JavaScript code:**
-- Any use of `new` MUST be assigned to a `const` or `let` variable
-- This applies to Bootstrap components, custom classes, or any constructor
-- Even if the variable isn't used later, it must be assigned
-
-## ActiveStorage
-
-### No Silent File Replacement
-- **NEVER purge and replace an attached file unless the user explicitly asks for replacement behaviour**
-- If a file is already attached when an attach is attempted, log an error and skip — do not silently overwrite
-- Guard against double-attachment at the earliest possible point (e.g. top of the method that orchestrates the operation)
-
-**Examples:**
-- ❌ BAD:
-  ```ruby
-  @document.file.purge if @document.file.attached?
-  @document.file.attach(...)
-  ```
-- ✅ GOOD:
-  ```ruby
-  if @document.file.attached?
-    Rails.logger.error("[MyClass] file already attached for document=#{@document.uuid} — skipping")
-  else
-    @document.file.attach(...)
-  end
-  ```
-
-## Namespacing — Never Add New Models to `app/models/pg/`
-
-**🚨 CRITICAL RULE: NEVER create new model files under `app/models/pg/` 🚨**
-
-**This is an absolute rule with NO exceptions:**
-- `app/models/pg/` is a legacy directory — new models go top-level or in a purpose-specific subdirectory
-- **NEVER** place a new model file under `app/models/pg/`
-- Referencing existing `Pg::` classes is fine — the ban is on creating new ones in that directory
-
-**Exception — configuration rule directives:**
-- Directives live in `app/models/configuration/pg/` and **all** use the `Pg::` namespace — follow that convention for new directives
-- ✅ GOOD: `class Pg::PreferredProviderDirective < Pg::Directive` in `app/models/configuration/pg/preferred_provider_directive.rb`
-
-## Rails Model Standards
-
-### `belongs_to` — Always Check `belongs_to_required_by_default`
-
-This app sets `config.active_record.belongs_to_required_by_default = false` in `config/application.rb`. This means `belongs_to` associations do **not** validate presence by default.
-
-- **ALWAYS add `optional: false`** to `belongs_to` associations where nil should never be allowed
-- Without it, a record with a nil FK will pass model validation and only fail at the DB constraint level (worse error messages, harder to debug)
-
-**Examples:**
-- ❌ BAD: `belongs_to :quote_group, class_name: 'Pg::QuoteGroup'`
-- ✅ GOOD: `belongs_to :quote_group, class_name: 'Pg::QuoteGroup', optional: false`
-
-### `has_many` in Namespaced Models — Always Specify `class_name` for Top-Level Models
-
-When adding `has_many` inside a namespaced model (e.g. `Pg::QuoteGroup`, `Pg::Provider`), Rails resolves the association class by prepending the current namespace first. A `has_many :preferred_quote_group_providers` inside `Pg::QuoteGroup` will try `Pg::PreferredQuoteGroupProvider` before falling back to `PreferredQuoteGroupProvider`.
-
-- **ALWAYS add `class_name:`** when the associated model lives in a different namespace than the declaring model
-- This applies in both directions: `belongs_to` pointing *into* a namespace, and `has_many` pointing *out* to a top-level model
-
-**Examples:**
-- ❌ BAD: `has_many :preferred_quote_group_providers, dependent: :destroy` (inside `Pg::QuoteGroup`)
-- ✅ GOOD: `has_many :preferred_quote_group_providers, class_name: 'PreferredQuoteGroupProvider', dependent: :destroy`
 
 ## Ruby Code Standards
 

@@ -100,6 +100,18 @@ Then load the specific skill file for the current task.
 | Taking screenshots for PRs, docs, or demos | `skills/design/feature-screenshots.md` |
 | Working on anything that touches the request page display | `skills/design/request-page-anatomy.md` |
 
+## Searchkick
+
+| When | File |
+|------|------|
+| Working with any Searchkick model or Elasticsearch indexing | `skills/searchkick.md` |
+
+## Migrations
+
+| When | File |
+|------|------|
+| Writing or running any database migration | `skills/migrations.md` |
+
 ## Code Quality
 
 | When | File |
