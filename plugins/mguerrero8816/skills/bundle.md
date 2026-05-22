@@ -1,5 +1,4 @@
 ---
-name: bundle
 description: Rules for running bundle exec commands in the RX repo — always run from the correct subdirectory.
 ---
 

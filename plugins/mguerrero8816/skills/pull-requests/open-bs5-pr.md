@@ -1,5 +1,4 @@
 ---
-name: open-bs5-pr
 description: Command for creating a draft pull request for Bootstrap 5 migration work, with title format, labels, milestone, and PR template specific to BS5 migrations.
 ---
 

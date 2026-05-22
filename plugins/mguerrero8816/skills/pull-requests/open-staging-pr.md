@@ -1,5 +1,4 @@
 ---
-name: open-staging-pr
 description: Command for creating a draft pull request targeting the staging branch, with STAGING title prefix and standard PR description format.
 ---
 

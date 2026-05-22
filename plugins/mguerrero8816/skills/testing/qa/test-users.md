@@ -1,5 +1,4 @@
 ---
-name: test-users
 description: Rules for creating test users in development and manual QA, including the standard password and distinction from spec credentials.
 ---
 

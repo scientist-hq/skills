@@ -1,5 +1,4 @@
 ---
-name: design-doc
 description: Command for creating and maintaining a living feature design document in /Users/mike/design_docs/ throughout a design conversation.
 ---
 

@@ -1,5 +1,4 @@
 ---
-name: open-panel-card-pr
 description: Command for creating a draft pull request for migrating Bootstrap 3 .panel elements to Bootstrap 5 .card elements, with checklist, labels, and PR template.
 ---
 

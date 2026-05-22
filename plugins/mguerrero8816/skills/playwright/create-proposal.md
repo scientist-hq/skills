@@ -1,5 +1,4 @@
 ---
-name: create-proposal
 description: Creates and submits a proposal in backoffice using the admin flow. Use when the user wants to create a proposal, fill in and submit a proposal form, or complete the full proposal creation workflow. Builds on open-proposal-form.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_snapshot, mcp__playwright__browser_select_option, mcp__playwright__browser_evaluate
 model: sonnet

@@ -1,5 +1,4 @@
 ---
-name: fee-cap-rules
 description: Rules for how commission fee caps work in RX, including nil cap semantics and amendment validation.
 ---
 

@@ -1,5 +1,4 @@
 ---
-name: setup-legal-entity
 description: Creates a customer legal entity for an org in backoffice and sends it to NetSuite. Use when the user wants to set up a legal entity, create a legal entity for an org, or fix a "customerLegalEntity not imported to NetSuite" error.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_snapshot, mcp__playwright__browser_select_option
 model: sonnet

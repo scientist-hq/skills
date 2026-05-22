@@ -1,5 +1,4 @@
 ---
-name: create-bug-issue
 description: Guidelines and exact structure for creating GitHub bug issues, including required sections (User Impact, Bug Description, Expected Behavior, Steps To Reproduce, Screenshots) and the --type Bug flag.
 ---
 

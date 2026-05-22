@@ -1,5 +1,4 @@
 ---
-name: explain-causation
 description: How to explain a chain of causation — exception propagation, service call flows, callback chains. Always include file and line number at every step.
 ---
 

@@ -1,5 +1,4 @@
 ---
-name: test-data-user
 description: Minimal pattern for creating a Pg::User in specs with the correct spec-only password and required Devise fields.
 ---
 

@@ -1,5 +1,4 @@
 ---
-name: qa-rules
 description: Rules and available skills for Playwright-based browser testing and automation in the local RX dev environment, including screenshot locations, reload discipline, and PR test verification standards.
 ---
 

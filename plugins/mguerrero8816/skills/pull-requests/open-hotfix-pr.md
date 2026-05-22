@@ -1,5 +1,4 @@
 ---
-name: open-hotfix-pr
 description: Command for creating a draft pull request targeting the production branch for urgent hotfix work, with title format, Slack link requirements, root cause explanation, and before/after screenshot template.
 ---
 

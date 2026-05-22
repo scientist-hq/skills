@@ -1,5 +1,4 @@
 ---
-name: test-data-organization
 description: Canonical patterns for creating Pg::Organization records in specs, including single org, org hierarchy, and default_values gotchas.
 ---
 

@@ -1,5 +1,4 @@
 ---
-name: rx-urls
 description: How to build correct development URLs for the RX app — storefront vs backoffice routing, subdomain patterns, and page-specific URL rules. Load whenever constructing or providing a URL.
 ---
 

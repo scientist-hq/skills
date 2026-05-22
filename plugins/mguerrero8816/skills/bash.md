@@ -1,5 +1,4 @@
 ---
-name: bash
 description: Rules for using the Bash tool in Claude Code — command chaining and style.
 ---
 

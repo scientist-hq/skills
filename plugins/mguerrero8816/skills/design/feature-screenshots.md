@@ -1,5 +1,4 @@
 ---
-name: feature-screenshots
 description: Rules for taking and saving feature screenshots with Playwright, including Bootstrap tooltip handling and stacking context gotchas.
 ---
 

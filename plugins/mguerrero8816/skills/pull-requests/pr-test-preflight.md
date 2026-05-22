@@ -1,5 +1,4 @@
 ---
-name: pr-test-preflight
 description: Pre-flight checklist to run before executing any PR test plan, covering branch verification, uncommitted changes, gem updates, and pending migrations.
 ---
 

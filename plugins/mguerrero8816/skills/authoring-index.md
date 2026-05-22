@@ -1,5 +1,4 @@
 ---
-name: authoring-index
 description: Index of guides for writing new skills in this plugin, organized by skill category.
 ---
 

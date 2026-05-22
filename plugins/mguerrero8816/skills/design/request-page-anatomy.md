@@ -1,5 +1,4 @@
 ---
-name: request-page-anatomy
 description: Map of every partial and surface on the quote_groups/show request page where provider/supplier names appear, with preferred-supplier icon status for each.
 ---
 

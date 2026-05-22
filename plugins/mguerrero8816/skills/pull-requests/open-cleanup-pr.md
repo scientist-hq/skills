@@ -1,5 +1,4 @@
 ---
-name: open-cleanup-pr
 description: Command for creating a draft pull request for removing unused code as part of Bootstrap 5 migration cleanup, with title format, labels, and PR template.
 ---
 

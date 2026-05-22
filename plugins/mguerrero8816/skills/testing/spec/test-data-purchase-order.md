@@ -1,5 +1,4 @@
 ---
-name: test-data-purchase-order
 description: Canonical patterns for creating CPO and PPO records in specs, including the required through-association between them and purchase_orders_only scope requirements.
 ---
 

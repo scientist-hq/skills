@@ -1,5 +1,4 @@
 ---
-name: query-building
 description: Rules for working on database queries — clarifying scope before making changes to multi-part queries. Load when fixing, debugging, or extending any ActiveRecord query.
 ---
 

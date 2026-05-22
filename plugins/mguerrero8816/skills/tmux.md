@@ -1,5 +1,4 @@
 ---
-name: tmux
 description: Rules for sending commands to tmux panes, including Claude Code TUI sessions.
 ---
 

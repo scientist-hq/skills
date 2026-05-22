@@ -1,5 +1,4 @@
 ---
-name: netsuite-scripts
 description: Reference guide for developing and modifying NetSuite SuiteScript 2.1 files in /Users/mike/netsuite_scripts/, covering module patterns, record types, custom fields, and known gotchas.
 ---
 

@@ -1,5 +1,4 @@
 ---
-name: test-data-request
 description: Canonical patterns for creating Pg::QuoteGroup and Pg::QuotedWare (request) records in specs, including required address records and provider setup.
 ---
 

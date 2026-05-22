@@ -1,5 +1,4 @@
 ---
-name: run-pr-tests
 description: Rules for executing PR test plans interactively, including step-by-step pacing, reconstructing missing seed scripts, and running the preflight first.
 ---
 

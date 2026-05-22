@@ -1,5 +1,4 @@
 ---
-name: base-rules
 description: Universal rules for all pull request creation including draft mode, ticket linking, branch safety checks, labeling, URL generation, and required PR description format.
 ---
 

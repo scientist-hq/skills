@@ -1,5 +1,4 @@
 ---
-name: storefront-create-request
 description: Creates a new request from the storefront by searching for a service. Use when the user wants to create a request, start a new request, or search for a service on the storefront.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_select_option, mcp__playwright__browser_snapshot
 model: sonnet

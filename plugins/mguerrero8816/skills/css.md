@@ -1,5 +1,4 @@
 ---
-name: css
 description: CSS patterns and gotchas for the RX frontend. Load when working on styling, especially inline element decoration or link styling.
 ---
 

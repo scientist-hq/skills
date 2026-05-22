@@ -1,5 +1,4 @@
 ---
-name: storefront-index
 description: Opens the storefront index for a given org in the local RX dev environment. Use when the user says "open the storefront", "go to the storefront", "open az.test", or names a specific org storefront. Defaults to az if no org is specified.
 tools: Bash, Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_snapshot
 model: sonnet

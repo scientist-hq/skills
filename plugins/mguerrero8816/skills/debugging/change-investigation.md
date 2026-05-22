@@ -1,5 +1,4 @@
 ---
-name: change-investigation
 description: Rules for investigating unexpected behavior after a code change, emphasizing diff-first investigation and revert-first thresholds.
 ---
 

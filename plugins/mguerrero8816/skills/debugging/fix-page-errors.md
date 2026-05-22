@@ -1,5 +1,4 @@
 ---
-name: fix-page-errors
 description: Default approach when a page has an error or isn't behaving as expected — fix the database, not the code.
 ---
 

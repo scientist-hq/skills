@@ -1,5 +1,4 @@
 ---
-name: test-data-proposal
 description: Canonical patterns for creating Pg::Proposal (SOW and Change Order) records in specs, including value object usage and before_save caching gotchas.
 ---
 

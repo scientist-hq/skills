@@ -1,5 +1,4 @@
 ---
-name: base-rules
 description: Universal rules for all GitHub ticket and issue interactions, covering Claude attribution placement, no point-of-contact policy, using --type instead of --label, and preserving screenshots on edits.
 ---
 
