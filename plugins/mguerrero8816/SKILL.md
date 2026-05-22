@@ -23,6 +23,12 @@ These are non-negotiable. Load all four at the start of every session regardless
 
 Then load the specific skill file for the current task.
 
+## Maintenance
+
+| When | File |
+|------|------|
+| Cleaning up accumulated Claude auto-memory | `skills/cleanup-memory.md` |
+
 ## Skill Authoring
 
 | When | File |
@@ -91,6 +97,7 @@ Then load the specific skill file for the current task.
 |------|------|
 | Something is broken or behaving unexpectedly after a change | `skills/debugging/change-investigation.md` |
 | A page has an error or isn't rendering correctly | `skills/debugging/fix-page-errors.md` |
+| A feature renders in some places but not others | `skills/debugging/partial-context-mismatch.md` |
 | Diagnosing or fixing errors on the provider invoices page | `skills/debugging/fix-billing-invoices.md` |
 
 ## Design
@@ -100,6 +107,12 @@ Then load the specific skill file for the current task.
 | Designing a new feature or discussing architecture | `skills/design/design-doc.md` |
 | Taking screenshots for PRs, docs, or demos | `skills/design/feature-screenshots.md` |
 | Working on anything that touches the request page display | `skills/design/request-page-anatomy.md` |
+
+## Features
+
+| When | File |
+|------|------|
+| Working on or finding test data for the preferred suppliers feature | `skills/preferred-suppliers.md` |
 
 ## Database
 
