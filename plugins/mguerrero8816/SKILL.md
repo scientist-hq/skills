@@ -35,6 +35,12 @@ Then load the specific skill file for the current task.
 |------|------|
 | Writing a new skill or rule for this plugin | `skills/authoring.md` |
 
+## Team
+
+| When | File |
+|------|------|
+| Listing open PRs for the Labyrinth team | `skills/team-prs.md` |
+
 ## Pull Requests
 
 | When | File |
