@@ -15,8 +15,15 @@ Use the GitHub MCP tools or `gh` CLI to fetch:
 - Base branch and head branch/ref
 - Changed files (summary)
 - Description and any review notes
+- **The PR's intent** — author description *and* the linked ticket's acceptance criteria. This is the lens for every later finding.
 
-Present a brief summary to the user.
+Present a brief summary to the user, including the intent.
+
+**Check whether the author already received a Copilot review**
+(`gh api repos/scientist-hq/rx/pulls/<pr_number>/reviews` and
+`.../pulls/<pr_number>/comments`, filtered for `copilot` login) and whether
+the author *replied to or addressed* those comments — we assess that in the
+colleague-PR flow below.
 
 **If the author is `rranauro` (self-review)**, check whether GitHub's
 Copilot review has already posted comments
@@ -49,7 +56,8 @@ Spawn the `claude-reviewer` subagent with a self-contained prompt:
 
 - `pr_number` — the PR under review
 - `worktree_path` — `/Users/ron/dev/scientist/rx-review-<pr_number>/`
-- Ticket URL + acceptance criteria, if known
+- **PR intent (required):** author description + ticket acceptance criteria. Instruct the agent to *anchor every finding to this intent* — a concern outside the PR's intent is at most a one-line question.
+- **Severity gate:** no finding may be labeled a blocker/bug from diff-only reasoning. Anything not observed in a running app is **"suspected — needs in-app check,"** never a verdict. Findings are tiered: `confirmed-in-browser` / `suspected-from-code` / `nit`.
 
 The agent reads the diff + changed files, opportunistically fetches any
 Copilot review, writes `rx/tmp/reviews/pr-<pr_number>/claude-review.md`, and
@@ -71,6 +79,33 @@ If the PR is complex, consider creating a review-notes file at
 
 Since `rx/plans/` is symlinked across worktrees, these notes stay visible
 from the home worktree too.
+
+---
+
+## Colleague PR flow (author ≠ `rranauro`)
+
+The author is the subject-matter expert. Goal: confirm the PR does what it
+intends, and surface genuine concerns as questions — not fix their code.
+
+### Observe-first verification
+- For any view/behavior change, **reproduce the intended flow before
+  concluding anything.** Static analysis tells you *what to look at*, not
+  *what to conclude*. (PR #36922 taught this: a confident diff-only "blocker"
+  was refuted the moment the feature was exercised in-browser.)
+- **Default to the author's own test instructions** — step Ron through them
+  and check each off. Generate custom console snippets *only* if Ron asks.
+- **Trust the author's setup.** Don't triage or fact-check their instructions
+  (a scope that errors locally, etc.) — work around it quietly; it's not ours
+  to pin.
+- After any side conversation, **re-state the in-app checklist** so we can
+  resume checking it off.
+
+### Assess Copilot (don't fix)
+- If the author received a Copilot review, assess whether they **addressed**
+  its comments, and give our own read on each.
+- May run `/rranauro:review-copilot <pr>` in **analysis-only** mode (triage
+  each comment) — **never the fix-it dialog.** We do not fix another person's
+  PR.
 
 ---
 
@@ -122,6 +157,18 @@ In the review worktree (or your feature worktree — your call):
 Push your fixes. If the fix set was non-trivial, re-run
 `/rranauro:start-review <pr>` on the updated HEAD for a diff-only second pass to
 confirm nothing regressed.
+
+---
+
+## Drafting comments for Ron
+
+- **Never post any comment without Ron's explicit permission.** Inline
+  comments stay pending; never `submit_pending` unless he says submit/send.
+- Frame findings as **questions** that leave the author latitude to
+  acknowledge, defer as out-of-scope, or ignore — unless it's a degenerate
+  case they genuinely should fix.
+- **1-2 sentences max.** Avoid pipes `|`, tables, and heavy markup so Ron can
+  paste straight into the GitHub review box.
 
 ---
 
