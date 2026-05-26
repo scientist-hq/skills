@@ -90,6 +90,7 @@ Then load the specific skill file for the current task.
 | Creating test data for users | `skills/testing/spec/test-data-user.md` |
 | Creating test users in development (Rails console, manual QA) | `skills/testing/qa/test-users.md` |
 | Creating test Pg::ProviderInvoice records in development | `skills/testing/qa/test-data-provider-invoices.md` |
+| Creating mock DocuSign envelope or signer records for manual QA | `skills/testing/qa/test-data-docusign.md` |
 
 ## Integrations
 

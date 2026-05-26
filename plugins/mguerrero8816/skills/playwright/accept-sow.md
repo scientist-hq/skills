@@ -75,6 +75,16 @@ The green `btn-success` link in the proposal panel header (distinct from the sid
 target: a.text-default.btn.btn-success.me-1
 ```
 
+## Pitfalls
+
+**`browser_wait_for(text: "Accept SOW")` is unreliable.** The SOW document body contains the phrase "Click the Accept SOW button to initiate a purchase requisition" — the wait resolves against that text, not the button. The wait will succeed even when no button exists. Use `browser_wait_for(text: "Reason(s) for choosing this Proposal")` instead, which only appears inside the loaded modal.
+
+**There are two buttons with the same label on the same page.** The Available Actions sidebar has `a[href="#"][class*="accept"]` and the proposal panel header has `a.text-default.btn.btn-success.me-1`. The panel button is not visible until the SOW dropdown has been expanded (Approach B). Targeting by text alone (`a:has-text("Submit for Approval")`) will be ambiguous — use the class selectors above.
+
+**The button label varies.** It reads "Accept SOW" when `compliant_sows?` is true and "Submit for Approval" otherwise. Do not rely on the label to confirm the button is present — use the CSS selector.
+
+---
+
 ## Verify the modal
 
 Wait for the purchase form content to load:
