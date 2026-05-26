@@ -29,10 +29,7 @@ date -u +%Y%m%d%H%M%S
 
 The dev database is shared and may contain migrations from unmerged branches being reviewed locally. Running `db:migrate` will apply those too, adding unrelated tables and columns to `schema.rb`.
 
-When `schema.rb` has unrelated changes after running a migration:
-- **DO NOT** re-run `db:migrate` on a reset schema — it will just re-apply everything again
-- **ALWAYS** clean `schema.rb` manually: compare against `main`, identify exactly what your migration adds (new table, new indexes, new FK entries, version bump), and revert everything else
-- Use `git diff main -- db/schema.rb` (working tree) to see the full picture, not `git diff main...HEAD` (which compares commits)
+**ALWAYS** load and follow **`skills/database/clean-schema.md`** after running any migration — not just when you notice a diff.
 
 ## `t.references` on Legacy Serial Tables
 

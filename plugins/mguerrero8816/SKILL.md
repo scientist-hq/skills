@@ -126,6 +126,7 @@ Then load the specific skill file for the current task.
 | When | File |
 |------|------|
 | Fixing, debugging, or extending any ActiveRecord query | `skills/query-building.md` |
+| Cleaning up schema.rb diffs after running migrations | `skills/database/clean-schema.md` |
 
 ## tmux
 
