@@ -48,6 +48,26 @@ Run this at the start of every session before navigating anywhere else:
 2. Navigate to `https://backoffice.test/login` — fill `michael@scientist.com` / `!Testing1234`, click sign in, dismiss any "Save password?" prompt with "Never"
 3. Both sessions are now authenticated — proceed with the task
 
+## Switching Users Mid-Session
+
+The Playwright MCP server maintains one persistent browser session for the entire conversation — there is no incognito/new-context support via the MCP tools. To switch to a different user:
+
+1. **Delete the current user's ActiveRecord sessions from the database** — this is the only reliable way to force a sign-out since the session cookie is HttpOnly and cannot be cleared via JavaScript:
+   ```ruby
+   bundle exec rails runner "
+   user = Pg::User.find_by(email: 'michael@scientist.com')
+   ActiveRecord::SessionStore::Session.all.select { |s|
+     s.data.to_s.include?(user.id.to_s) rescue false
+   }.each(&:destroy)
+   "
+   ```
+2. Navigate to `https://az.test/users/sign_in` — the session is now gone and the login form will appear
+3. Sign in as the target user with `!Testing1234`
+
+**Why not incognito?** The MCP server wraps a single persistent browser context. The `--isolated` flag (in-memory profile) only helps at server startup, not mid-session. The `storageState` trick from Playwright test scripts doesn't apply here.
+
+**Tip:** Avoid the need to switch by owning the test quote group as `michael@scientist.com` where possible.
+
 ## Selector Rules
 
 - **Always use CSS selectors** in the `target` field — text-label selectors like `link "Foo"` or ARIA-style selectors are not supported and will cause parse errors

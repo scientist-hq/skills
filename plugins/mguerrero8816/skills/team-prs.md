@@ -14,21 +14,22 @@ Run one query per member and combine the results:
 
 ```bash
 for user in rranauro mguerrero8816 micahiriye mrobock eyardley; do
-  gh pr list --repo scientist-hq/rx --author "$user" --state open --draft=false --json number,title,author,createdAt,url,reviewRequests,reviews
+  gh pr list --repo scientist-hq/rx --author "$user" --state open --draft=false --json number,title,author,createdAt,url,reviewRequests,reviews,assignees
 done | jq -s '[.[][]] | sort_by(.createdAt)'
 ```
 
-This returns a JSON array sorted oldest-first. Each item has: `number`, `title`, `author.login`, `createdAt`, `url`, `reviewRequests`, `reviews`.
+This returns a JSON array sorted oldest-first. Each item has: `number`, `title`, `author.login`, `createdAt`, `url`, `reviewRequests`, `reviews`, `assignees`.
 
 ## Output Format
 
 Present results as a markdown table:
 
-| Days | Reviewers | Copilot | URL | Author | Title |
-|------|-----------|---------|-----|--------|-------|
+| Days | Reviewers | Assignees | Copilot | URL | Author | Title |
+|------|-----------|-----------|---------|-----|--------|-------|
 
 - **Days**: number of days since `createdAt` — just the integer, no unit label.
 - **Reviewers**: comma-separated list of `login` values from `reviewRequests`, excluding any logins containing `copilot` or `[bot]`. Show `—` if empty.
+- **Assignees**: comma-separated list of `login` values from `assignees`. Show `—` if empty.
 - **Copilot**: check `reviews` for any entry whose `author.login` contains `copilot`. Show `Yes` if found, `-` if not.
 - **URL**: the full `url` field — never truncate.
 - **Author**: `author.login`
