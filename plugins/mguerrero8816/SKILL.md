@@ -79,6 +79,7 @@ Then load the specific skill file for the current task.
 | Creating and submitting a proposal | `skills/playwright/create-proposal.md` |
 | Creating a purchase order from a proposal | `skills/playwright/create-purchase-order.md` |
 | Creating a change order against an existing PO | `skills/playwright/create-change-order.md` |
+| Opening the Accept SOW / Submit for Approval purchase modal on a quote group page | `skills/playwright/accept-sow.md` |
 | Sending a PO to NetSuite via the browser | `skills/playwright/send-po-to-netsuite.md` |
 | Setting up a customer legal entity for NetSuite | `skills/playwright/setup-legal-entity.md` |
 | Creating a configuration rule via the admin UI | `skills/playwright/create-configuration-rule.md` |

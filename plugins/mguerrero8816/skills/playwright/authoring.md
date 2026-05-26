@@ -2,6 +2,51 @@
 
 Reference this document when writing a new skill that builds on `playwright-base`.
 
+## Step 0: Check for an Existing Skill to Build On
+
+Before writing anything, check whether an existing skill already gets the user to the starting point of your new skill. Read `SKILL.md` and scan the Playwright section. Ask: "where does the user need to be when my skill starts — does another skill already end there?"
+
+The existing chain is:
+
+```
+storefront-index
+  └── storefront-create-request
+        └── open-proposal-form
+              └── create-proposal
+                    └── accept-sow
+                          └── create-purchase-order
+```
+
+If your skill starts where an existing skill ends, embed that skill using the `!cat` pattern (see below) and write only the delta — the steps your skill adds beyond what the base already covers.
+
+If your skill is standalone (it doesn't build on any existing flow), skip embedding and document everything from navigation.
+
+---
+
+## Skill Chaining with `!cat`
+
+When a skill builds on another, embed the base skill's full content at the top using:
+
+```markdown
+## Base: Accept SOW
+
+!`cat ~/skills/plugins/mguerrero8816/skills/playwright/accept-sow.md`
+
+---
+
+## Task: My New Steps
+
+Continuing after the base skill completes...
+```
+
+Rules:
+- Use a `## Base: <Name>` heading before the `!cat` line so it's clear what's being embedded
+- Add a `---` divider after the embedded block before your new content
+- Start your section with "Continuing after..." so it's clear this is a delta, not a standalone flow
+- Only embed one level — don't add `!cat` in a skill that is itself embedded by another (the chain handles the nesting)
+
+---
+
 ## Required Sections
 
 ### `## Rails Models`

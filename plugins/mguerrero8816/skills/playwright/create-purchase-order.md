@@ -10,6 +10,12 @@ model: sonnet
 
 ---
 
+## Base: Accept SOW
+
+!`cat ~/skills/plugins/mguerrero8816/skills/playwright/accept-sow.md`
+
+---
+
 ## Rails Models
 
 - `Pg::ProviderPurchaseOrder` — the PO record created by this flow (NOT `PurchaseOrder` or `Pg::PurchaseOrder`)
@@ -23,10 +29,7 @@ Continuing after the proposal has been submitted:
 
 Navigate back to the storefront request detail page (use the URL from the request created earlier in the flow).
 
-In the **Available Actions** sidebar, click Accept SOW using this selector — do not use text matching, it is ambiguous:
-```
-a[href="#"][class*="accept"]
-```
+Use **Approach A** from the Accept SOW skill above (sidebar button: `a[href="#"][class*="accept"]`).
 
 In the modal, select a reason for choosing this proposal. CSS selectors for the reason checkboxes are ambiguous — use `browser_evaluate` to check one by label text:
 
@@ -40,8 +43,6 @@ for (const cb of cbs) {
 
 Then click **Purchase** using `browser_evaluate`:
 ```js
-document.querySelector('button.btn-success, button[type=button]').click()
-// or find by text:
 Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim() === 'Purchase').click()
 ```
 
