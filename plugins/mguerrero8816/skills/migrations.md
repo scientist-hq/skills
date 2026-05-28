@@ -9,7 +9,7 @@ description: Rules for generating and managing Rails database migrations, includ
 **ALWAYS generate migration files with the Rails generator — never create them by hand:**
 
 ```bash
-cd rx && bundle exec rails generate migration MigrationName
+env -C /Users/mike/rx/rx bundle exec rails generate migration MigrationName
 ```
 
 This gives you the correct timestamp automatically. Never hand-write the filename or its timestamp — the generator handles both.
@@ -30,6 +30,22 @@ date -u +%Y%m%d%H%M%S
 The dev database is shared and may contain migrations from unmerged branches being reviewed locally. Running `db:migrate` will apply those too, adding unrelated tables and columns to `schema.rb`.
 
 **ALWAYS** load and follow **`skills/database/clean-schema.md`** after running any migration — not just when you notice a diff.
+
+## `safety_assured` — Required for Callable Defaults
+
+`strong_migrations` cannot introspect lambda/proc defaults (e.g. `default: -> { "gen_random_uuid()" }`). It always requires `safety_assured` when a callable default is passed to `add_column`, regardless of whether the operation is actually safe.
+
+**ALWAYS wrap `add_column` calls that use a callable default in `safety_assured`.**
+
+For non-callable defaults and other operations, only add `safety_assured` if `strong_migrations` actually raises an error when you run the migration.
+
+## No Loops — List Each Table Individually
+
+**NEVER use a loop to apply the same operation across multiple tables.**
+
+List each `add_column`, `add_index`, `create_table`, etc. call individually, one per table.
+
+**Why:** Loops obscure what the migration actually does and make it harder to review, roll back selectively, or debug a failure mid-run.
 
 ## `t.references` on Legacy Serial Tables
 

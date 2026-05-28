@@ -25,7 +25,7 @@ gh pr view <PR#> --json headRefName
 Before doing anything else, check if the working tree has uncommitted changes:
 
 ```bash
-cd /Users/mike/rx/rx && git status --short
+git status --short
 ```
 
 **If there are uncommitted changes:**
@@ -39,7 +39,7 @@ cd /Users/mike/rx/rx && git status --short
 ## Step 2 — Update gems
 
 ```bash
-cd /Users/mike/rx/rx && bundle install
+env -C /Users/mike/rx/rx bundle install
 ```
 
 Report whether any gems were installed or updated. If bundle install fails, stop and report the error.
@@ -49,13 +49,13 @@ Report whether any gems were installed or updated. If bundle install fails, stop
 First check what's pending:
 
 ```bash
-cd /Users/mike/rx/rx && bundle exec rake db:migrate:status 2>&1 | grep down
+env -C /Users/mike/rx/rx bundle exec rake db:migrate:status 2>&1 | grep down
 ```
 
 If there are pending migrations, run them:
 
 ```bash
-cd /Users/mike/rx/rx && bundle exec rake db:migrate
+env -C /Users/mike/rx/rx bundle exec rake db:migrate
 ```
 
 Report which migrations ran.
@@ -65,7 +65,7 @@ Report which migrations ran.
 Migrations and bundle install can leave the working tree dirty (e.g. `db/schema.rb` updated). Revert all of it:
 
 ```bash
-cd /Users/mike/rx/rx && git checkout .
+git checkout .
 ```
 
 This undoes file changes only — database changes from migrations are kept.

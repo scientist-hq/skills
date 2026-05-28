@@ -6,14 +6,12 @@ This command reviews pull requests. The type of review depends on whether the PR
 
 ## Multi-Agent Dispatch (Primary Agent Only)
 
-When the primary agent (directly responding to the user) is asked to review a PR, dispatch 4 agents in parallel using the Agent tool:
+When the primary agent (directly responding to the user) is asked to review a PR, dispatch 2 agents in parallel using the Agent tool:
 
 1. **Security & data safety** — authorization gaps, XSS, SQL injection, IDOR, mass assignment, data integrity risks, sensitive data exposure
-2. **Performance & N+1** — queries inside loops, missing indexes, inefficient associations, Searchkick sync, memory bloat. Note: a single DB query in an AJAX endpoint is NOT an N+1 — flag only queries inside loops within a single request
-3. **Rails conventions & code quality** — service/presenter/builder patterns, model correctness (`optional: false`, `class_name:`, namespacing), test coverage gaps, RuboCop issues, migration safety
-4. **General review** — no specific focus; holistic review of the PR as a whole
+2. **General review** — holistic review of the PR: logic, correctness, edge cases, performance, N+1 queries, Rails conventions, test coverage, migration safety
 
-Collect all four results and present them to the user, grouped by agent, with a rolled-up summary table at the end sorted by severity.
+Collect both results and present them to the user, grouped by agent, with a rolled-up summary table at the end sorted by severity.
 
 Each agent prompt must include:
 - The PR URL or number

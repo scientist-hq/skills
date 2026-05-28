@@ -72,7 +72,7 @@ git checkout -- rx/db/schema.rb
 Redump the schema and confirm the diff is gone:
 
 ```bash
-cd rx && bundle exec rails db:schema:dump
+env -C /Users/mike/rx/rx bundle exec rails db:schema:dump
 git diff -- rx/db/schema.rb
 ```
 

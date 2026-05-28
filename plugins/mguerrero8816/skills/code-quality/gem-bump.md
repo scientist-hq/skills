@@ -20,7 +20,7 @@ grep "<gem_name>" rx/Gemfile
 This project uses [bootboot](https://github.com/Shopify/bootboot) for dual-boot, so there are two lock files to keep in sync.
 
 ```bash
-cd rx && bundle update <gem_name>
+env -C /Users/mike/rx/rx bundle update <gem_name>
 DEPENDENCIES_NEXT=1 bundle update <gem_name>
 ```
 

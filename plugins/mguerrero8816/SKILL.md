@@ -116,6 +116,7 @@ Then load the specific skill file for the current task.
 | Designing a new feature or discussing architecture | `skills/design/design-doc.md` |
 | Taking screenshots for PRs, docs, or demos | `skills/design/feature-screenshots.md` |
 | Working on anything that touches the request page display | `skills/design/request-page-anatomy.md` |
+| Adding or modifying a full-width gradient + wave hero on a storefront_bs5 page | `skills/design/storefront-wave-gradient.md` |
 
 ## Features
 
