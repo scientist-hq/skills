@@ -28,7 +28,7 @@ Present results as a markdown table:
 |------|-----------|-----------|---------|-----|--------|-------|
 
 - **Days**: number of days since `createdAt` — just the integer, no unit label.
-- **Reviewers**: comma-separated list of `login` values from `reviewRequests`, excluding any logins containing `copilot` or `[bot]`. Show `—` if empty.
+- **Reviewers**: unique, comma-separated list of reviewer logins — combine `reviewRequests[].login` (pending requests) with `reviews[].author.login` (submitted reviews), excluding any logins containing `copilot` or `[bot]`, and excluding the PR's own `author.login`. Show `—` if the deduplicated list is empty.
 - **Assignees**: comma-separated list of `login` values from `assignees`. Show `—` if empty.
 - **Copilot**: check `reviews` for any entry whose `author.login` contains `copilot`. Show `Yes` if found, `-` if not.
 - **URL**: the full `url` field — never truncate.
