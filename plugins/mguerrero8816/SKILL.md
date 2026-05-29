@@ -130,6 +130,12 @@ Then load the specific skill file for the current task.
 |------|------|
 | Working on or finding test data for the preferred suppliers feature | `skills/preferred-suppliers.md` |
 
+## Backoffice
+
+| When | File |
+|------|------|
+| Creating a new backoffice admin index/list page | `skills/backoffice-admin-index.md` |
+
 ## Database
 
 | When | File |
