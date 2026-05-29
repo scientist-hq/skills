@@ -9,7 +9,7 @@ description: Canonical patterns for creating Pg::Organization records in specs, 
 ```ruby
 let!(:organization) do
   Pg::Organization.create!(
-    name:      "Test Org #{SecureRandom.hex(4)}",
+    name: "Test Org #{SecureRandom.hex(4)}",
     subdomain: "test-#{SecureRandom.hex(4)}",
     canonical: true
   )
@@ -23,21 +23,21 @@ Only the root needs `canonical: true`. Children get `parent_id`.
 ```ruby
 let!(:grandparent_org) do
   Pg::Organization.create!(
-    name:      "Grandparent #{SecureRandom.hex(4)}",
+    name: "Grandparent #{SecureRandom.hex(4)}",
     subdomain: "grandparent-#{SecureRandom.hex(4)}",
     canonical: true
   )
 end
 let!(:parent_org) do
   Pg::Organization.create!(
-    name:      "Parent #{SecureRandom.hex(4)}",
+    name: "Parent #{SecureRandom.hex(4)}",
     subdomain: "parent-#{SecureRandom.hex(4)}",
     parent_id: grandparent_org.id
   )
 end
 let!(:organization) do
   Pg::Organization.create!(
-    name:      "Leaf #{SecureRandom.hex(4)}",
+    name: "Leaf #{SecureRandom.hex(4)}",
     subdomain: "leaf-#{SecureRandom.hex(4)}",
     parent_id: parent_org.id
   )

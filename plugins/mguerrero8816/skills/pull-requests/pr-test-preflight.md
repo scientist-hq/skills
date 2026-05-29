@@ -39,7 +39,7 @@ git status --short
 ## Step 2 — Update gems
 
 ```bash
-env -C /Users/mike/rx/rx bundle install
+bundle install
 ```
 
 Report whether any gems were installed or updated. If bundle install fails, stop and report the error.
@@ -49,13 +49,13 @@ Report whether any gems were installed or updated. If bundle install fails, stop
 First check what's pending:
 
 ```bash
-env -C /Users/mike/rx/rx bundle exec rake db:migrate:status 2>&1 | grep down
+bundle exec rake db:migrate:status 2>&1 | grep down
 ```
 
 If there are pending migrations, run them:
 
 ```bash
-env -C /Users/mike/rx/rx bundle exec rake db:migrate
+bundle exec rake db:migrate
 ```
 
 Report which migrations ran.

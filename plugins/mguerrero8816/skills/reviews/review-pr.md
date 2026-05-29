@@ -6,7 +6,9 @@ This command reviews pull requests. The type of review depends on whether the PR
 
 ## Multi-Agent Dispatch (Primary Agent Only)
 
-When the primary agent (directly responding to the user) is asked to review a PR, dispatch 2 agents in parallel using the Agent tool:
+When the primary agent (directly responding to the user) is asked to review a PR, first read `~/skills/plugins/mguerrero8816/skills/subagent-bootstrap.md` and include its full contents at the top of each subagent prompt.
+
+Then dispatch 2 agents in parallel using the Agent tool:
 
 1. **Security & data safety** — authorization gaps, XSS, SQL injection, IDOR, mass assignment, data integrity risks, sensitive data exposure
 2. **General review** — holistic review of the PR: logic, correctness, edge cases, performance, N+1 queries, Rails conventions, test coverage, migration safety
@@ -17,6 +19,7 @@ Each agent prompt must include:
 - The PR URL or number
 - Its specific focus (or "general holistic review" for agent 4)
 - The instruction: "You are a subagent. Do not dispatch further agents — perform the review yourself."
+- The full contents of `bash.md` under a "## Bash Rules" section
 
 ## Step 1: Determine PR Ownership
 

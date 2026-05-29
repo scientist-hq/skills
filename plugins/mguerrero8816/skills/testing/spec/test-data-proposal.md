@@ -15,7 +15,7 @@ description: Canonical patterns for creating Pg::Proposal (SOW and Change Order)
 ```ruby
 def create_proposal(qw, type: 'SOW', **attrs)
   Pg::Proposal.create!(
-    quoted_ware:   qw,
+    quoted_ware: qw,
     proposal_type: type,
     currency: Pg::Currency.new(currency: 'USD'),
     shipping: Pg::Shipping.new(cost: 0.0, free_shipping: true, tax: Pg::Tax.new(amount: 0.0)),

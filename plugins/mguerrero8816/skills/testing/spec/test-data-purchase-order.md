@@ -19,24 +19,24 @@ The `purchase_orders_only` scope (used by the through association) filters on `p
 ```ruby
 def create_purchase_order_for(sow, po_created_at:)
   cpo = Pg::CustomerPurchaseOrder.create!(
-    quote_group:   quote_group,
-    user:          user,
-    shipping:      Pg::Shipping.new(cost: 0.0, free_shipping: true, tax: Pg::Tax.new(amount: 0.0)),
-    currency:      Pg::Currency.new(currency: 'USD'),
-    po_number:     "PO-#{SecureRandom.hex(4)}",
+    quote_group: quote_group,
+    user: user,
+    shipping: Pg::Shipping.new(cost: 0.0, free_shipping: true, tax: Pg::Tax.new(amount: 0.0)),
+    currency: Pg::Currency.new(currency: 'USD'),
+    po_number: "PO-#{SecureRandom.hex(4)}",
     po_created_at: po_created_at
   )
   Pg::ProviderPurchaseOrder.create!(
-    quote_group:             quote_group,
-    user:                    user,
-    shipping:                Pg::Shipping.new(cost: 0.0, free_shipping: true, tax: Pg::Tax.new(amount: 0.0)),
-    currency:                Pg::Currency.new(currency: 'USD'),
-    quoted_ware:             quoted_ware,
-    provider:                provider,
-    ad_po_number:            "SCI-#{SecureRandom.hex(4)}",
-    po_created_at:           po_created_at,
+    quote_group: quote_group,
+    user: user,
+    shipping: Pg::Shipping.new(cost: 0.0, free_shipping: true, tax: Pg::Tax.new(amount: 0.0)),
+    currency: Pg::Currency.new(currency: 'USD'),
+    quoted_ware: quoted_ware,
+    provider: provider,
+    ad_po_number: "SCI-#{SecureRandom.hex(4)}",
+    po_created_at: po_created_at,
     customer_purchase_order: cpo,
-    proposal:                sow
+    proposal: sow
   )
   cpo
 end

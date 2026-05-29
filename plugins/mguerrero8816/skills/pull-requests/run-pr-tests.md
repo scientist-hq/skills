@@ -32,3 +32,7 @@ When a seed script is missing:
 ## Preflight First
 
 Always run `/pr-test-preflight` before starting any test steps.
+
+## Playwright
+
+Before executing any browser step, load `~/skills/plugins/mguerrero8816/skills/playwright/qa-rules.md`.

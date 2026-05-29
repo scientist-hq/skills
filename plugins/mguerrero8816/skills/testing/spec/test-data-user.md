@@ -7,13 +7,13 @@ description: Minimal pattern for creating a Pg::User in specs with the correct s
 ```ruby
 let!(:user) do
   Pg::User.create!(
-    first_name:            'Test',
-    last_name:             'User',
-    email:                 "test-#{SecureRandom.hex(4)}@example.com",
-    password:              'Sp3c$Password',
+    first_name: 'Test',
+    last_name: 'User',
+    email: "test-#{SecureRandom.hex(4)}@example.com",
+    password: 'Sp3c$Password',
     password_confirmation: 'Sp3c$Password',
-    privacy_policy:        true,
-    confirmed_at:          Time.now
+    privacy_policy: true,
+    confirmed_at: Time.now
   )
 end
 ```

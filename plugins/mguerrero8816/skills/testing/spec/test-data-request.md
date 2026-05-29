@@ -13,9 +13,9 @@ A "request" in the RX domain is a `Pg::QuoteGroup` with one or more `Pg::QuotedW
 ```ruby
 let!(:ware) do
   Pg::Ware.create!(
-    name:      "Test Ware #{SecureRandom.hex(4)}",
-    slug:      "test-ware-#{SecureRandom.hex(4)}",
-    snippet:   "A test ware.",
+    name: "Test Ware #{SecureRandom.hex(4)}",
+    slug: "test-ware-#{SecureRandom.hex(4)}",
+    snippet: "A test ware.",
     ware_type: "CustomService"
   )
 end
@@ -32,28 +32,28 @@ end
 ```ruby
 def create_quote_group_for(org, name: 'Test Quote Group')
   Pg::QuoteGroup.create!(
-    name:         name,
-    description:  'Test description',
+    name: name,
+    description: 'Test description',
     organization: org,
-    user:         user,
-    ware:         ware,
+    user: user,
+    ware: ware,
     shipping_address: Pg::ShippingAddress.create!(
       organization_name: "Test Org",
-      person_name:       "Test User",
-      street:            "123 Test St",
-      city:              "Test City",
-      state:             "CA",
-      zipcode:           "12345",
-      country:           "US"
+      person_name: "Test User",
+      street: "123 Test St",
+      city: "Test City",
+      state: "CA",
+      zipcode: "12345",
+      country: "US"
     ),
     billing_address: Pg::BillingAddress.create!(
       organization_name: "Test Org",
-      person_name:       "Test User",
-      street:            "123 Test St",
-      city:              "Test City",
-      state:             "CA",
-      zipcode:           "12345",
-      country:           "US"
+      person_name: "Test User",
+      street: "123 Test St",
+      city: "Test City",
+      state: "CA",
+      zipcode: "12345",
+      country: "US"
     )
   )
 end

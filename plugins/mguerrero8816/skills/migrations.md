@@ -9,7 +9,7 @@ description: Rules for generating and managing Rails database migrations, includ
 **ALWAYS generate migration files with the Rails generator — never create them by hand:**
 
 ```bash
-env -C /Users/mike/rx/rx bundle exec rails generate migration MigrationName
+bundle exec rails generate migration MigrationName
 ```
 
 This gives you the correct timestamp automatically. Never hand-write the filename or its timestamp — the generator handles both.

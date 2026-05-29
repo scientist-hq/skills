@@ -23,6 +23,12 @@ These are non-negotiable. Load all four at the start of every session regardless
 
 Then load the specific skill file for the current task.
 
+## Subagents
+
+| When | File |
+|------|------|
+| Dispatching any subagent via the Agent tool | `skills/subagent-bootstrap.md` |
+
 ## Maintenance
 
 | When | File |
