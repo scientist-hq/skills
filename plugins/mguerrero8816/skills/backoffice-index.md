@@ -1,13 +1,12 @@
 ---
-description: Canonical pattern for building backoffice admin list/index pages — controller, routes, view structure, filters, sorting, pagination, and Select2.
+description: Canonical pattern for building any backoffice list/index page — controller, routes, view structure, filters, sorting, pagination, and Select2.
 ---
 
 ## Controller
 
-- Namespace: `Backoffice::Admin` (or nested further, e.g. `Backoffice::Admin::Rfx`)
-- File: `app/controllers/backoffice/admin/<name>_controller.rb`
-- Auth: `before_action :authenticate_user!` + `before_action :ensure_admin`
+- Namespace matches the subdirectory: `Backoffice::Admin`, `Backoffice::Accounting`, `Backoffice::Admin::Rfx`, etc.
 - Layout: `backoffice_bs5_layout`
+- Auth varies by namespace — `ensure_admin` for admin pages; check existing controllers in the same namespace for the right guard
 - Pagination: `.paginate(page: params[:page], per_page: 25)` (will_paginate gem)
 
 ### Sorting pattern
@@ -26,40 +25,36 @@ SORT_COLUMNS = {
 scope = Model.joins(:association).order("#{SORT_COLUMNS[@sort_by]} #{@sort_order}")
 ```
 
-Add a `.joins` for every association column in `SORT_COLUMNS` — `includes` alone won't work for `ORDER BY` on association columns.
-
-Every column visible in the table should have a corresponding sort option.
+- Add `.joins` for every association column used in `SORT_COLUMNS` — `includes` alone won't work for `ORDER BY` on association columns
+- Every column visible in the table should have a corresponding sort option
 
 ## Route
 
-Add inside `namespace :admin` in `config/routes/backoffice_only.rb`. Nest further namespaces to match the controller module path:
+Routes live in `config/routes/backoffice_only.rb` under the appropriate namespace. The route helper name does **not** include `backoffice_` — the subdomain constraint is invisible to the helper:
 
 ```ruby
 namespace :admin do
+  resources :things, only: [:index]         # => admin_things_path
   namespace :rfx do
-    resources :projects, only: [:index]
+    resources :projects, only: [:index]     # => admin_rfx_projects_path
   end
 end
 ```
 
-Route helper will be `admin_<resource>_path` (not `backoffice_admin_...` — the backoffice subdomain constraint is not reflected in the helper name).
-
 ## View structure
-
-File: `app/views/backoffice/admin/<name>/index.html.haml`
 
 ```haml
 - content_for :title do
   Page Title
 
-- add_breadcrumb "Page Title", admin_resource_path
+- add_breadcrumb "Page Title", resource_path
 
 .py-3
   %h2.my-0.fs-2 Page Title
 
 .card
   .card-body
-    = form_tag(admin_resource_path, method: :get, class: "mb-3") do
+    = form_tag(resource_path, method: :get, class: "mb-3") do
       [filter form]
 
     .table-responsive
@@ -72,15 +67,14 @@ File: `app/views/backoffice/admin/<name>/index.html.haml`
           = will_paginate(@records, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, container: false)
 ```
 
-Key points:
-- Filters, table, and pagination all live inside **one** `.card > .card-body`
-- `.card` (no `.p-0`) so the card-body padding gives the table breathing room
-- Pagination is only rendered when `total_pages > 1`
-- Table uses `.mb-0` to avoid double-spacing before pagination
+- Filters, table, and pagination all inside **one** `.card > .card-body`
+- `.card` without `.p-0` — card-body padding gives the table breathing room
+- Pagination only rendered when `total_pages > 1`
+- `.mb-0` on the table to avoid double-spacing before pagination
 
 ## Filter form
 
-Use native BS5 classes throughout — avoid custom `l-flex`, `control-label`, `form-group` classes:
+Use native BS5 only — avoid custom `l-flex`, `form-group`, `control-label` classes:
 
 ```haml
 .d-flex.gap-3.align-items-end.flex-wrap
@@ -101,20 +95,19 @@ Use native BS5 classes throughout — avoid custom `l-flex`, `control-label`, `f
 ```
 
 - `.flex-fill` on every child — even distribution, no inline styles needed
-- Filter dropdowns (non-sort): `form-select basic-full-width-select2` — Select2 auto-initialises on that class
+- Filter dropdowns: `form-select basic-full-width-select2` — Select2 auto-initialises on that class
 - Sort dropdowns: plain `form-select`, no Select2
 - Prompt text: Title Case (`"All Orgs"`, `"All Statuses"`, `"All Types"`)
 - Text inputs: `form-control` (not `form-select`)
 - No `.form-group` wrapper (removed in BS5)
 - No `.control-label` (BS3/4 — use `.form-label`)
-- No `.input-group-btn` wrapper (removed in BS5 — button goes directly inside `.input-group`)
+- No `.input-group-btn` (removed in BS5 — button goes directly inside `.input-group`)
 
 ## Cross-subdomain links (backoffice → storefront)
 
-Use the storefront route helper with `host:` — do not manually construct URLs:
+Use the storefront route helper with `host:` — never construct URLs manually:
 
 ```ruby
-rfx_project_url(project, host: project.organization.host)
 quote_group_url(quote_group, host: quote_group.organization.host)
 ```
 
@@ -122,10 +115,7 @@ quote_group_url(quote_group, host: quote_group.organization.host)
 
 ## Helper for status badges
 
-If the model has a status enum, put badge class mappings in a helper module:
-
 ```ruby
-# app/helpers/backoffice/admin/<name>_helper.rb
 STATUS_BADGE_CLASSES = {
   "draft"    => "bg-secondary",
   "active"   => "bg-success",
@@ -141,8 +131,7 @@ In the view: `%span{ class: "badge #{model_status_badge_class(record.status)}" }
 
 ## Spec
 
-- File: `spec/controllers/backoffice/admin/<name>_controller_spec.rb`
-- `require 'spec_helper'` (matches sibling specs)
+- `require 'spec_helper'` (matches sibling specs in `spec/controllers/backoffice/`)
 - Hand-roll all records — no FactoryBot
-- Stub admin: `allow_any_instance_of(Pg::User).to receive(:is_admin?).and_return(true)`
-- Cover: index renders, each filter param narrows results, non-admin is blocked
+- Stub admin where needed: `allow_any_instance_of(Pg::User).to receive(:is_admin?).and_return(true)`
+- Cover: index renders, each filter param narrows results, access guard blocks unauthorised users

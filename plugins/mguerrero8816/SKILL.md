@@ -134,7 +134,7 @@ Then load the specific skill file for the current task.
 
 | When | File |
 |------|------|
-| Creating a new backoffice admin index/list page | `skills/backoffice-admin-index.md` |
+| Creating any new backoffice index/list page | `skills/backoffice-index.md` |
 
 ## Database
 
