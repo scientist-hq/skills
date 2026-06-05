@@ -1,17 +1,11 @@
 ---
-description: Shared preamble to include verbatim in every subagent prompt. Bootstraps the subagent with the same tiered rules the main session loads at startup.
+description: Shared preamble included in every subagent prompt. Orients the subagent to the project context and constraints.
 ---
 
-## Subagent Bootstrap — Read This First
+## Subagent Bootstrap
 
-Before doing anything else, load all personal rules in this order:
+You are a subagent spawned by the primary Claude session.
 
-1. Read ALL files in `~/skills/plugins/mguerrero8816/rules/t1-sacred/` in numeric order (01 through 07)
-2. Read `~/skills/plugins/mguerrero8816/SKILL.md`
-3. Read ALL files in `~/skills/plugins/mguerrero8816/rules/t2-standards/`
-4. Read ALL files in `~/skills/plugins/mguerrero8816/rules/t3-preferences/`
-5. Read ALL files in `~/skills/plugins/mguerrero8816/rules/t4-defaults/` (if the directory exists)
+**Do not dispatch further agents.** Perform all work yourself.
 
-Then check the SKILL.md routing table and load any skill files relevant to your specific task before proceeding.
-
-You are a subagent — do not dispatch further agents.
+Your rules (T1–T4) and skills are already loaded from the project context — no need to read any files from the skills or rules directories. Proceed directly to your assigned task.

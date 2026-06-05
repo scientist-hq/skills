@@ -6,7 +6,7 @@ model: sonnet
 
 ## Base: Open Proposal Form
 
-!`cat ~/skills/plugins/mguerrero8816/skills_symlink/playwright-open-proposal-form/skill.md`
+Invoke `Skill(playwright-open-proposal-form)` before proceeding.
 
 ---
 

@@ -89,6 +89,28 @@ See `spec-rules.md` — `change { }` used with `.not_to` or `.and` must be paren
   ```
 - ✅ GOOD: `redirect_to root_path unless user.admin?`
 
+## Layout/DotPosition — ActiveRecord Query Chains
+
+**Never start a new line with a leading dot** — Rubocop requires trailing dots on multi-line method chains.
+
+In practice, the cleanest solution for ActiveRecord queries is to **keep the chain on a single line**, even if it's long. The codebase does not split these onto multiple lines.
+
+**Examples:**
+- ❌ BAD (leading dots — Rubocop will flag this):
+  ```ruby
+  eligible_ids = Pg::Provider
+    .joins(:organization_providers)
+    .where(organization_providers: { organization: canonical_organization, published: true, purchasable: true })
+    .where(id: provider_ids)
+    .pluck(:id)
+  ```
+- ✅ GOOD (single line):
+  ```ruby
+  eligible_ids = Pg::Provider.joins(:organization_providers).where(organization_providers: { organization: canonical_organization, published: true, purchasable: true }).where(id: provider_ids).pluck(:id)
+  ```
+
+Long lines are acceptable — Rubocop's line-length cop is not enforced strictly here. Prefer a long single line over a multi-line leading-dot chain.
+
 ## Layout/ExtraSpacing
 
 **Never pad variable assignments with extra spaces to align them** — use a single space around `=`.

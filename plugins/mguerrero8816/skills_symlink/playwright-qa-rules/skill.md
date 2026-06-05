@@ -6,41 +6,41 @@ description: Rules and available skills for Playwright-based browser testing and
 
 ## Available Skills
 
-Personal skills for automating browser tasks. These live in `~/skills/plugins/mguerrero8816/skills/playwright/`.
+Personal skills for automating browser tasks.
 
-**`playwright-base`** — base Playwright skill (`~/skills/plugins/mguerrero8816/skills_symlink/playwright-base/skill.md`)
+**`playwright-base`** — base Playwright skill
 - Knows all dev credentials, org subdomains, and login flows
 - Use for general multi-step browser automation
 - Other browser skills build on this one
 
-**`/storefront-index`** — open the storefront index (`~/skills/plugins/mguerrero8816/skills_symlink/playwright-storefront-index/skill.md`)
+**`/storefront-index`** — open the storefront index
 - Use when the user says "open the storefront", "go to az.test", "open the [org] storefront", etc.
 - Defaults to `az` if no org is specified
 - ALWAYS use this skill instead of `playwright-base` when the task is just opening the storefront index
 
-**`/storefront-create-request`** — create a new request from the storefront (`~/skills/plugins/mguerrero8816/skills_symlink/playwright-storefront-create-request/skill.md`)
+**`/storefront-create-request`** — create a new request from the storefront
 - Use when the user wants to create a request or search for a service on the storefront
 - Opens the storefront index first, then searches "hbs" and selects Human Biological Samples
 - Builds on storefront-index
 
-**`/open-proposal-form`** — open the new proposal form (`~/skills/plugins/mguerrero8816/skills_symlink/playwright-open-proposal-form/skill.md`)
+**`/open-proposal-form`** — open the new proposal form
 - Use when the user wants to open a proposal form, inspect it, or get to the proposal creation page
 - Starts from the storefront request page: sends to suppliers → opens backoffice → selects a quoted ware → clicks Start Proposal
 - Stops at the open blank form and reports the URL — does NOT fill or submit
 
-**`/create-proposal`** — fill and submit a proposal (`~/skills/plugins/mguerrero8816/skills_symlink/playwright-create-proposal/skill.md`)
+**`/create-proposal`** — fill and submit a proposal
 - Use when the user wants to create and submit a full proposal (SOW, fees, line items)
 - Builds on open-proposal-form to get to the form, then fills and submits it
 
-**`/create-purchase-order`** — create a purchase order from a proposal (`~/skills/plugins/mguerrero8816/skills_symlink/playwright-create-purchase-order/skill.md`)
+**`/create-purchase-order`** — create a purchase order from a proposal
 - Use when the user wants to create a purchase order or complete the PO workflow
 - Builds on create-proposal, then returns to the storefront request page to initiate the PO
 
-**`/create-change-order`** — create a change order against an existing PO (`~/skills/plugins/mguerrero8816/skills_symlink/playwright-create-change-order/skill.md`)
+**`/create-change-order`** — create a change order against an existing PO
 - Use when the user wants to create a change order or modify scope on an in-progress request
 - Builds on send-po-to-netsuite; action is in the backoffice quoted ware sidebar, not the storefront
 
-**`/send-po-to-netsuite`** — send a PO to NetSuite (`~/skills/plugins/mguerrero8816/skills_symlink/playwright-send-po-to-netsuite/skill.md`)
+**`/send-po-to-netsuite`** — send a PO to NetSuite
 - Use when the user wants to send a PO to NetSuite or sync a purchase order
 - Goes to `backoffice/accounting/purchase_orders`, finds the PO, opens Actions → Send → Send Purchase Order & Sales Order to Netsuite
 - Note: AZ org will fail with `customerLegalEntity` error in dev — use an org with NetSuite configured (e.g. BMS) for a full end-to-end test
@@ -100,7 +100,7 @@ The browser only shows the surface. The log shows what actually happened server-
 tail -n 100 /Users/mike/rx/rx/log/development.log
 ```
 
-This is complementary to the Post-Run Investigation steps in `~/skills/plugins/mguerrero8816/skills_symlink/playwright-base/skill.md`, which handle browser-side diagnosis (selector mismatches, timing, login state). The log covers the server side of unexpected behavior.
+This is complementary to the Post-Run Investigation steps in the `playwright-base` skill, which handle browser-side diagnosis (selector mismatches, timing, login state). The log covers the server side of unexpected behavior.
 
 ## Browser Steps in PR Test Plans Are Not Optional
 

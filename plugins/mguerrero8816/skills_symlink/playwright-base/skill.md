@@ -107,12 +107,12 @@ After the task finishes, if any step failed, stalled, or produced unexpected res
 
 1. **Identify what went wrong** — name the specific step and what the actual vs. expected outcome was
 2. **Diagnose the cause** — was it a selector mismatch, a timing issue, a missing login state, an unexpected redirect, or a page error?
-3. **Suggest concrete instruction improvements** — propose specific edits to the relevant SKILL.md (this file or a child skill) that would prevent the same failure next time. Quote the current text and write the improved replacement.
+3. **Suggest concrete instruction improvements** — propose specific edits to the relevant skill file (this skill or a child skill) that would prevent the same failure next time. Quote the current text and write the improved replacement.
 4. **Report to the user** — present the diagnosis and proposed changes so the user can decide whether to apply them
 
 ## Authoring New Skills
 
-When suggesting skill improvements or helping write a new skill, refer to `~/skills/plugins/mguerrero8816/skills_symlink/playwright-authoring/skill.md`.
+When suggesting skill improvements or helping write a new skill, invoke `Skill(playwright-authoring)`.
 
 ## Common Flows
 

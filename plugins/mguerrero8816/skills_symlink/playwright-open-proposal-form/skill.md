@@ -6,7 +6,7 @@ model: sonnet
 
 ## Base: Create Request
 
-!`cat ~/skills/plugins/mguerrero8816/skills_symlink/playwright-storefront-create-request/skill.md`
+Invoke `Skill(playwright-storefront-create-request)` before proceeding.
 
 ---
 

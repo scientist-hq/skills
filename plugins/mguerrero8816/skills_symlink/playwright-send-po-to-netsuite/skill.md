@@ -6,7 +6,7 @@ model: sonnet
 
 ## Base: Create Purchase Order
 
-!`cat ~/skills/plugins/mguerrero8816/skills_symlink/playwright-create-purchase-order/skill.md`
+Invoke `Skill(playwright-create-purchase-order)` before proceeding.
 
 ---
 

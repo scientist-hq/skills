@@ -4,7 +4,7 @@ Reference this document when writing a new skill that builds on `playwright-base
 
 ## Step 0: Check for an Existing Skill to Build On
 
-Before writing anything, check whether an existing skill already gets the user to the starting point of your new skill. Read `SKILL.md` and scan the Playwright section. Ask: "where does the user need to be when my skill starts — does another skill already end there?"
+Before writing anything, check whether an existing skill already gets the user to the starting point of your new skill. Review the available `playwright-*` skills in the skill listing. Ask: "where does the user need to be when my skill starts — does another skill already end there?"
 
 The existing chain is:
 
@@ -17,20 +17,20 @@ storefront-index
                           └── create-purchase-order
 ```
 
-If your skill starts where an existing skill ends, embed that skill using the `!cat` pattern (see below) and write only the delta — the steps your skill adds beyond what the base already covers.
+If your skill starts where an existing skill ends, invoke the base skill and write only the delta — the steps your skill adds beyond what the base already covers.
 
-If your skill is standalone (it doesn't build on any existing flow), skip embedding and document everything from navigation.
+If your skill is standalone (it doesn't build on any existing flow), skip chaining and document everything from navigation.
 
 ---
 
-## Skill Chaining with `!cat`
+## Skill Chaining
 
-When a skill builds on another, embed the base skill's full content at the top using:
+When a skill builds on another, invoke the base skill at the top using `Skill(name)`:
 
 ```markdown
 ## Base: Accept SOW
 
-!`cat ~/skills/plugins/mguerrero8816/skills_symlink/playwright-accept-sow/skill.md`
+Invoke `Skill(playwright-accept-sow)` before proceeding.
 
 ---
 
@@ -40,10 +40,10 @@ Continuing after the base skill completes...
 ```
 
 Rules:
-- Use a `## Base: <Name>` heading before the `!cat` line so it's clear what's being embedded
-- Add a `---` divider after the embedded block before your new content
+- Use a `## Base: <Name>` heading before the `Skill()` invocation so it's clear what's being chained
+- Add a `---` divider after the base section before your new content
 - Start your section with "Continuing after..." so it's clear this is a delta, not a standalone flow
-- Only embed one level — don't add `!cat` in a skill that is itself embedded by another (the chain handles the nesting)
+- Only chain one level — don't invoke a base skill inside a skill that is itself chained by another (the chain handles the nesting)
 
 ---
 
@@ -140,4 +140,4 @@ If a select inside a modal uses UUID option values, `browser_select_option` will
 
 ## Snapshot Scope
 
-Instruct the agent to use targeted snapshots during normal execution and full-page snapshots only when diagnosing failures. See `~/skills/plugins/mguerrero8816/skills_symlink/playwright-base/skill.md` for the snapshot guidance to reference or copy.
+Instruct the agent to use targeted snapshots during normal execution and full-page snapshots only when diagnosing failures. See the `playwright-base` skill for the snapshot guidance to reference or copy.

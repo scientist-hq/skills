@@ -6,7 +6,7 @@ model: sonnet
 
 ## Base: Storefront Index
 
-!`cat ~/skills/plugins/mguerrero8816/skills_symlink/playwright-storefront-index/skill.md`
+Invoke `Skill(playwright-storefront-index)` before proceeding.
 
 ---
 

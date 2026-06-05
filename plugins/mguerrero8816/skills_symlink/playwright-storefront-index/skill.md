@@ -6,7 +6,7 @@ model: sonnet
 
 ## Base: Playwright QA
 
-!`cat ~/skills/plugins/mguerrero8816/skills_symlink/playwright-base/skill.md`
+Invoke `Skill(playwright-base)` before proceeding.
 
 ---
 

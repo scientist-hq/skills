@@ -35,4 +35,4 @@ Always run `/pr-test-preflight` before starting any test steps.
 
 ## Playwright
 
-Before executing any browser step, load `~/skills/plugins/mguerrero8816/skills_symlink/playwright-qa-rules/skill.md`.
+Before executing any browser step, invoke `Skill(playwright-qa-rules)`.

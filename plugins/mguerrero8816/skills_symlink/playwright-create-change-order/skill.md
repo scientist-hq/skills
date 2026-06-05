@@ -6,7 +6,7 @@ model: sonnet
 
 ## Base: Send PO to NetSuite
 
-!`cat ~/skills/plugins/mguerrero8816/skills_symlink/playwright-send-po-to-netsuite/skill.md`
+Invoke `Skill(playwright-send-po-to-netsuite)` before proceeding.
 
 ---
 

@@ -45,18 +45,7 @@ Content here.
 
 ### Updating the Routing Table
 
-Every new skill needs a row in `~/skills/plugins/mguerrero8816/SKILL.md`.
-
-- Add it to the most relevant section, or create a new section if none fits
-- The **When** column should be specific enough to trigger on the right task without false positives
-
-```markdown
-## My Category
-
-| When | File |
-|------|------|
-| Doing X or working on Y | `skills/my-skill.md` |
-```
+Skills are auto-discovered — no routing table entry needed.
 
 ### Category-Specific Authoring Guides
 

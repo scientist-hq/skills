@@ -6,13 +6,13 @@ model: sonnet
 
 ## Base: Create Proposal
 
-!`cat ~/skills/plugins/mguerrero8816/skills_symlink/playwright-create-proposal/skill.md`
+Invoke `Skill(playwright-create-proposal)` before proceeding.
 
 ---
 
 ## Base: Accept SOW
 
-!`cat ~/skills/plugins/mguerrero8816/skills_symlink/playwright-accept-sow/skill.md`
+Invoke `Skill(playwright-accept-sow)` before proceeding.
 
 ---
 
