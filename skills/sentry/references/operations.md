@@ -10,6 +10,8 @@ Operational details for working with the `scientist-inc` Sentry org — environm
 
 ## Auth Pattern
 
+**IMPORTANT:** Never interpolate tokens into command strings via f-strings or string concatenation — this leaks secrets into terminal approval messages visible in Slack. Always export to an env var first, then reference as `$VAR`.
+
 ```bash
 # Using 1Password service account
 export OP_SERVICE_ACCOUNT_TOKEN=$(grep OP_SERVICE_ACCOUNT_TOKEN ~/.env | cut -d= -f2-)
@@ -83,6 +85,12 @@ The rx repo has no formal issue templates. Follow the convention from existing i
 ```
 
 Include the Sentry link in the Problem section as `[RX-XXX](https://scientist-inc.sentry.io/issues/...)`.
+
+## Cron-Based Polling (Automated Triage)
+
+The `sentry-triage-poll` cron job (ID `ec59cf73424f`) polls every 10 minutes for new/escalating issues and delivers compact triage messages to `slack:C0B6CAX24TE`. It uses the script `~/.hermes/scripts/sentry-poll-new-issues.py` with state tracked in `.sentry-poll-state.json`.
+
+**Key gotcha:** If the team says "we're not getting Sentry notifications," check `~/.hermes/logs/agent.log` for delivery errors — the job status will still show "ok" because the agent ran fine even when Slack delivery fails. See `references/sentry-cron-delivery-debugging.md` for full diagnostic steps.
 
 ## Posting Comments on Sentry Issues
 
