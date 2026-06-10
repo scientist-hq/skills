@@ -138,7 +138,7 @@ kanban_cmd = [
   task_title,
   "--assignee", "default",
   "--body", task_body,
-  "--skill", "fix-rubocop",
+  "--skill", "fix-rubocop,claude-code",
   "--workspace", "dir:#{repo_path}",
   "--idempotency-key", idempotency_key,
   "--max-runtime", "30m",
