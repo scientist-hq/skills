@@ -55,8 +55,8 @@ end
 
 REPO_MAP = {
   "scientist-hq/rx" => File.expand_path("~/src/rx/rx"),
-  "scientist-hq/benchmate" => File.expand_path("~/src/benchmate"),
-  "scientist-labs/benchmate" => File.expand_path("~/src/benchmate")
+  "scientist-hq/test" => File.expand_path("~/src/test"),
+  "scientist-hq/benchmate" => File.expand_path("~/src/benchmate")
 }.freeze
 
 PROTECTED_BRANCHES = %w[main master develop staging production].freeze
