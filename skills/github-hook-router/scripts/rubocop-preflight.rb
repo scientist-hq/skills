@@ -136,7 +136,7 @@ task_body = JSON.generate({
 kanban_cmd = [
   "hermes", "kanban", "create",
   task_title,
-  "--assignee", "hermes",
+  "--assignee", "default",
   "--body", task_body,
   "--skill", "fix-rubocop",
   "--workspace", "dir:#{repo_path}",
