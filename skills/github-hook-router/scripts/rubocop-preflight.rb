@@ -81,7 +81,7 @@ conclusion = check_run["conclusion"]
 skip!("Not a failure (conclusion=#{conclusion})") unless conclusion == "failure"
 
 check_name = check_run["name"] || ""
-skip!("Not a rubocop check (name=#{check_name})") unless check_name.match?(/rubocop|lint|analysis/i)
+skip!("Not a rubocop check (name=#{check_name})") unless check_name.match?(/rubocop/i)
 
 # --- Gate 2: Protected branch? ---
 
@@ -138,7 +138,7 @@ kanban_cmd = [
   task_title,
   "--assignee", "default",
   "--body", task_body,
-  "--skill", "fix-rubocop,claude-code",
+  "--skill", "fix-rubocop", "--skill", "claude-code",
   "--workspace", "dir:#{repo_path}",
   "--idempotency-key", idempotency_key,
   "--max-runtime", "30m",
