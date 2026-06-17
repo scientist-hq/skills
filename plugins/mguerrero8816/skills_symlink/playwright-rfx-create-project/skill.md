@@ -56,7 +56,7 @@ bundle exec rake rfx_seed:types
    Replace the date with one 30 days from today.
 
 4. Leave **Allow Custom Line Items** unchecked unless specified
-5. Click **Create Project** — selector: `button[type=submit]`
+5. Click **Create Project** — selector: `input[type=submit]` (simple_form renders `f.button :submit` as an `<input>`, not a `<button>`)
 6. Confirm you land on the setup page (`/rfx/:uuid/setup`) and report the project UUID from the URL
 
 **After success**: record the project UUID — it's required for all subsequent RFX steps.
