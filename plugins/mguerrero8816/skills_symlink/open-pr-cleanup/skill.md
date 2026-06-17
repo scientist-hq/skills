@@ -4,18 +4,7 @@ description: Command for creating a draft pull request for removing unused code 
 
 # Open Code Cleanup Pull Request
 
-## Step 1: Load Universal PR Rules
-
-**CRITICAL: You MUST run `base-rules.md` immediately before doing anything else.** This loads all universal PR creation rules including:
-- Draft mode requirement (ALL PRs must be created in draft mode)
-- Branch checks
-- Context gathering
-- URL generation
-- And other essential rules
-
-**Run `base-rules.md` now before continuing with Step 2.**
-
-## Step 2: Apply Code Cleanup Specific Rules
+## Code Cleanup Specific Rules
 
 ### PR Title Format
 

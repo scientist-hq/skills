@@ -4,18 +4,7 @@ description: Command for creating a draft pull request targeting the production 
 
 # Open Hotfix Pull Request
 
-## Step 1: Load Universal PR Rules
-
-**CRITICAL: You MUST run `base-rules.md` immediately before doing anything else.** This loads all universal PR creation rules including:
-- Draft mode requirement (ALL PRs must be created in draft mode)
-- Branch checks
-- Context gathering
-- URL generation
-- And other essential rules
-
-**Run `base-rules.md` now before continuing with Step 2.**
-
-## Step 2: Apply Hotfix Specific Rules
+## Hotfix Specific Rules
 
 ### PR Title Format
 
@@ -125,11 +114,10 @@ Because active also looks at the existence of the obsoleted boolean #33768 actua
 
 ## Workflow Summary
 
-1. Run `base-rules.md` first (MANDATORY)
-2. Verify you're on the correct branch with `git branch --show-current`
-3. Gather context (commits, diff, files changed)
-4. Create draft PR with `--draft` flag and `--base production`
-5. Add labels: "Hotfix", "Type: Fix", and area/capability labels
-6. Include Slack link if applicable
-7. Explain root cause in description
-8. Provide detailed reproduction steps
+1. Verify you're on the correct branch with `git branch --show-current`
+2. Gather context (commits, diff, files changed)
+3. Create draft PR with `--draft` flag and `--base production`
+4. Add labels: "Hotfix", "Type: Fix", and area/capability labels
+5. Include Slack link if applicable
+6. Explain root cause in description
+7. Provide detailed reproduction steps

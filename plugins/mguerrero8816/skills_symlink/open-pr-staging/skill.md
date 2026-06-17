@@ -4,13 +4,7 @@ description: Command for creating a draft pull request targeting the staging bra
 
 # Open Staging Pull Request
 
-## Step 1: Load Universal PR Rules
-
-**CRITICAL: You MUST run `base-rules.md` immediately before doing anything else.**
-
-Run `base-rules.md` now before continuing with Step 2.
-
-## Step 2: Apply Staging-Specific Rules
+## Staging-Specific Rules
 
 ### PR Title Format
 
@@ -38,8 +32,7 @@ Follow the same description format as standard PRs from `base-rules.md`.
 
 ## Workflow Summary
 
-1. Run `base-rules.md` first (MANDATORY)
-2. Verify branch with `git branch --show-current`
-3. Gather context (commits, diff, files changed)
-4. Create draft PR with `--draft` and `--base staging`
-5. Add area and capability labels as appropriate
+1. Verify branch with `git branch --show-current`
+2. Gather context (commits, diff, files changed)
+3. Create draft PR with `--draft` and `--base staging`
+4. Add area and capability labels as appropriate
