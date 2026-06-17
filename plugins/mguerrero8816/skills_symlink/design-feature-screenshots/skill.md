@@ -6,7 +6,7 @@ description: Rules for taking and saving feature screenshots with Playwright, in
 
 ## Save Location
 
-All feature screenshots go to `/Users/mike/playwright_screenshots/`. Create a subfolder per feature (e.g. `preferred-supplier-screenshots/`). Never save screenshots inside the repo.
+All feature screenshots go to `.claude/screenshots/`. Create a subfolder per feature (e.g. `.claude/screenshots/preferred-supplier-screenshots/`). Never save screenshots inside the repo.
 
 ## Programmatic Bootstrap Tooltip Screenshots
 

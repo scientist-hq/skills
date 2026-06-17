@@ -26,9 +26,11 @@ If URLs are not already known, run:
 ```
 bundle exec rails runner "
   p = Rfx::Project.find_by(uuid: 'PROJECT_UUID')
-  p.rfx_providers.each { |rp| puts \"#{rp.provider.name}: https://backoffice.test/providers/#{rp.provider.to_param}/rfx/invitations/#{rp.uuid}/edit\" }
+  p.rfx_providers.each { |rp| puts \"#{rp.provider.name}: https://backoffice.test/providers/#{rp.provider.id}/rfx/invitations/#{rp.uuid}/edit\" }
 "
 ```
+
+**Important**: Use the provider's **numeric ID** (`rp.provider.id`), not the UUID or slug — the backoffice invitation routes use the integer ID in `:provider_id`. After accepting, the redirect uses the provider's UUID, so subsequent page URLs will swap to the UUID form — that is expected.
 
 ### Steps (repeat for each supplier)
 
@@ -72,4 +74,5 @@ bundle exec rails runner "
 
 - The **Submit Response** button is disabled until both acknowledgment checkboxes are checked — check them before clicking
 - Pricing validity uses `btn-check` (visually hidden radios) — always click the `<label>`, not the `<input>`
-- If there are RFI questions (`_rfi` partial), answer them before pricing — they appear above the pricing card
+- **Avoid RFI forms**: RFI questions are driven by the RFX type, not the line item tax item. To avoid a multi-question RFI during QA, choose a service category with 0 type forms — **Cell Line Authentication** (ID 1) and **RNA Sequencing** (ID 6) have no RFI. Check with: `Rfx::Type.all.map { |t| [t.name, t.rfx_type_forms.count] }`
+- If the project was already created with an RFI-generating type and you need to skip questions, the RFI is pure client-side Alpaca validation — use "Save for later" (`button.rfx-form-save-draft`, which has `formnovalidate`) to persist pricing data without answering RFI questions, then click Submit with acks checked

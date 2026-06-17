@@ -307,6 +307,7 @@
       "WebFetch(domain:www.mailgun.com)",
       "WebFetch(domain:www.rubydoc.info)",
       "WebSearch",
+      "Write(/Users/mike/rx/rx/.claude/screenshots/**)",
       "Write(/Users/mike/rx/rx/tmp/**)",
       "mcp__playwright__browser_click",
       "mcp__playwright__browser_close",

@@ -39,12 +39,16 @@ bundle exec rake rfx_seed:types
 
    **Project Name** (`#rfx_project_name`): a short descriptive test name, e.g. `QA Test - In Vitro ADME`
 
-   **Service Category** — this is a Select2 widget. Use `browser_evaluate` to select the first available type:
+   **Service Category** — this is a Select2 widget. Use `browser_evaluate` to set the value by ID:
    ```js
    const sel = document.getElementById('rfx_project_rfx_type_id');
-   sel.value = sel.options[1].value;
+   sel.value = '1'; // Cell Line Authentication — 0 RFI questions
    sel.dispatchEvent(new Event('change', { bubbles: true }));
    ```
+   **Tip**: Prefer RFX types with 0 type forms to avoid the 74-question RFI on the supplier invitation:
+   - ID 1: Cell Line Authentication (0 forms)
+   - ID 6: RNA Sequencing (0 forms)
+   Types with RFI: In Vitro ADME (4), Custom Antibodies (4), Real World Evidence (5)
 
    **Due Date** (`.rfx-due-date`) — jQuery datepicker, format `Month DD, YYYY`. Use `browser_evaluate` to set it without opening the picker UI:
    ```js

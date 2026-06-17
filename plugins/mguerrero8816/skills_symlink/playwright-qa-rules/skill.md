@@ -54,7 +54,7 @@ Personal skills for automating browser tasks.
 
 ## Screenshots
 
-**ALWAYS save Playwright screenshots to `/Users/mike/playwright_screenshots/` — NEVER save them inside the repo.**
+**ALWAYS save Playwright screenshots to `.claude/screenshots/` — NEVER save them inside the repo.**
 
 This applies to any screenshot taken via `browser_take_screenshot` or any other Playwright screenshot tool.
 
@@ -147,8 +147,8 @@ This rule applies when running a PR test plan or QA verification. It does NOT ap
 
 After confirming a browser test step passes:
 - Take a screenshot with `browser_take_screenshot`
-- Save to `/Users/mike/playwright_screenshots/<step-name>.png`
-- Tell the user the exact path: e.g. "Screenshot saved to `/Users/mike/playwright_screenshots/step2-bell-badge.png`"
+- Save to `.claude/screenshots/<step-name>.png`
+- Tell the user the exact path: e.g. "Screenshot saved to `.claude/screenshots/step2-bell-badge.png`"
 - This gives the user a visual record they can open and verify independently
 
 **When this applies:** running steps from a PR description, QA checklist, or explicit "verify X works" request.
