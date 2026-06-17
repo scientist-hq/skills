@@ -11,4 +11,4 @@ Print tables normally with full content. If the user indicates the table isn't r
 ## Load Specific Skills Before Certain Actions
 
 - Before calling any `mcp__playwright__` tool → invoke the `playwright-qa-rules` skill first
-- Before writing or editing any file in `~/skills/plugins/mguerrero8816/` → invoke the `authoring` skill first
+- Before writing or editing any file in `.claude/skills/` or `.claude/rules/` → invoke the `authoring` skill first

@@ -30,5 +30,5 @@ A local knowledge base exists at `~/knowledge/`. It contains domain reference ma
 
 ## Separation of Concerns
 
-- **Skills** (`~/skills/plugins/mguerrero8816/skills/`) — procedure: how to do things step by step
+- **Skills** (`.claude/skills/`) — procedure: how to do things step by step
 - **Knowledge** (`~/knowledge/`) — reference: what things are, how they work, known gotchas
