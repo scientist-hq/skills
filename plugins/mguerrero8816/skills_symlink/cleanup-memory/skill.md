@@ -20,7 +20,7 @@ find /Users/mike/.claude/projects -name "MEMORY.md" | sort
 | Stale dead code tracking or one-off notes | Drop |
 | Pointer to a skill that already exists | Drop |
 
-When in doubt, check whether the content is already captured in `~/skills/plugins/mguerrero8816/` before migrating.
+When in doubt, check whether the content is already captured in `.claude/skills/` or `.claude/rules/` before migrating.
 
 ### 3. Wipe each MEMORY.md
 

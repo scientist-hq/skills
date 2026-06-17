@@ -18,13 +18,12 @@ Before editing any view template and after making changes, dispatch browser veri
 
 **Workflow:**
 1. Identify the URL for the view being changed (load `skills/rx-urls.md` if needed)
-2. Read `~/skills/plugins/mguerrero8816/skills/subagent-bootstrap.md` and include its full contents at the top of each subagent prompt
-3. Dispatch a **before** subagent — include in its prompt:
-   - The subagent-bootstrap.md contents
+2. Dispatch a **before** subagent — include in its prompt:
+   - Invoke the subagent-bootstrap skill first
    - The URL to check and what element/state to confirm
-4. Wait for the before-state report
-5. Make the code change
-6. Dispatch an **after** subagent — include in its prompt:
-   - The subagent-bootstrap.md contents
+3. Wait for the before-state report
+4. Make the code change
+5. Dispatch an **after** subagent — include in its prompt:
+   - Invoke the subagent-bootstrap skill first
    - The URL and what change to verify
    - "Reload the page before checking — never trust the current browser state"

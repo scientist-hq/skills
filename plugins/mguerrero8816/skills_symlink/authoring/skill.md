@@ -14,7 +14,7 @@ description: How to write new skills and rules for this plugin — when to use e
 
 ### File Location
 
-Place skills in `~/skills/plugins/mguerrero8816/skills/` under the most relevant category folder. If no folder fits, create one or place it at the top level.
+Place skills in `.claude/skills/` under the most relevant category folder. If no folder fits, create one or place it at the top level.
 
 ```
 skills/
