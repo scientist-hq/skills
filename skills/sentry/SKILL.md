@@ -98,6 +98,21 @@ The skill loads SKILL.md → WORKFLOW.md → W-01 and walks through triage inter
 | test-writer | Writes a failing test that reproduces the Sentry error | agents/test-writer.md |
 | fix-author | Minimal fix + draft PR, in a git worktree | agents/fix-author.md |
 
+### Agent Spawning Mechanism
+
+**Use Claude Code print mode** — NOT `delegate_task` with ACP (Claude Code has no `--acp` flag).
+
+```bash
+cat <<'PROMPT' | claude --dangerously-skip-permissions -p \
+  --max-turns 30 \
+  --allowedTools 'Read,Bash(find*),Bash(grep*),Bash(git*),Bash(cat*),Bash(ls*),Bash(head*),Bash(tail*),Bash(wc*)' \
+  --output-format json 2>&1
+<agent prompt here>
+PROMPT
+```
+
+Run as a **background terminal process** (`terminal(background=true, ...)`) with `notify_on_complete=true` and `workdir` set to the repo/worktree path. Investigator runs typically take 2-5 minutes. Parse the JSON `result` field for the structured YAML output.
+
 ## References
 
 | File | Content |
@@ -105,6 +120,8 @@ The skill loads SKILL.md → WORKFLOW.md → W-01 and walks through triage inter
 | references/operations.md | Org details, auth, triage message format, classification, resolution workflow |
 | references/github-issue-linking-api.md | Undocumented Sentry API for linking/creating external GitHub issues |
 | references/rx-sentry-js-config.md | RX browser-side Sentry SDK setup (CDN loader, haml partial, noise patterns) |
+| references/rx-jquery-cdn-race-conditions.md | jQuery CDN load failures on login page — typeof guard pattern, Safari ITP |
+| references/sentry-cron-delivery-debugging.md | Debug the sentry-triage-poll cron job when Slack delivery fails silently |
 
 ## Templates
 
