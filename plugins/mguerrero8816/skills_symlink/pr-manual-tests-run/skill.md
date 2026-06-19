@@ -1,8 +1,19 @@
 ---
 description: Rules for executing PR test plans interactively, including step-by-step pacing, reconstructing missing seed scripts, and running the preflight first.
+args: Optional GitHub PR URL to test
 ---
 
 # PR Test Execution Rules
+
+## Resolving What to Test
+
+When invoked, determine the target PR in this order:
+
+1. **URL provided as args** — use it directly.
+2. **No URL** — check context: run `git branch --show-current` and look up the open PR for that branch with `gh pr view --json url`.
+3. **No open PR found** — ask the user: "Which PR URL should I run tests for?"
+
+Once the PR URL is resolved, fetch the test plan from the PR description before starting.
 
 ## Always Run Steps One at a Time
 
