@@ -27,12 +27,12 @@ Present a summary of the ticket to the user, then ask questions about anything:
 
 ## Step 3: Create the Worktree
 
-The scientist repo root is `/Users/ron/dev/scientist/`. Worktrees are placed
-as siblings to `rx/` inside it (the `rx-*` pattern is already in
-`.git/info/exclude`).
+The scientist repo root is your home monorepo checkout (default
+`~/dev/scientist/`). Worktrees are placed as siblings to `rx/` inside it
+(the `rx-*` pattern is already in `.git/info/exclude`).
 
 ```bash
-cd /Users/ron/dev/scientist
+cd ~/dev/scientist
 git fetch origin main
 git worktree add ./rx-<issue_number>-<short-description> \
   -b <issue_number>-<short-description> origin/main
@@ -43,8 +43,8 @@ git worktree add ./rx-<issue_number>-<short-description> \
 - Example: `rx-34500-add-bulk-export-button`
 
 Then tell the user:
-- Worktree is at `/Users/ron/dev/scientist/rx-<issue>-<slug>/`
-- To work there: open a new terminal, `cd /Users/ron/dev/scientist/rx-<issue>-<slug>/rx`, run `claude`
+- Worktree is at `~/dev/scientist/rx-<issue>-<slug>/`
+- To work there: open a new terminal, `cd ~/dev/scientist/rx-<issue>-<slug>/rx`, run `claude`
 - To boot the app: `~/bin/rx-serve start` from the worktree root (not the `rx/` subdir). It will prompt if a server is already running in another worktree and show any migrations that differ.
 - The current session is for planning only — hand off implementation to the new session.
 

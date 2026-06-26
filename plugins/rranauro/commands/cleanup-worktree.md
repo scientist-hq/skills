@@ -3,7 +3,7 @@ Clean up a feature-branch worktree after its PR has been merged on GitHub.
 **Arguments:** $ARGUMENTS
 Optional: a branch name, worktree path, or PR number. If omitted, infer from the current branch.
 
-This command targets the worktree case from `/rranauro:start-ticket` (worktree at `.claude/worktrees/<branch-name>/`). If the branch was bundled onto an existing worktree instead of getting its own, only Step 6's branch deletion applies — no worktree to remove.
+This command targets the worktree case from `/rranauro:start-ticket`, which creates sibling worktrees of the scientist monorepo at `<scientist-root>/rx-<branch-name>/` (e.g. `~/dev/scientist/rx-34500-add-bulk-export-button/`). If the branch was bundled onto an existing worktree instead of getting its own, only Step 6's branch deletion applies — no worktree to remove.
 
 **Step 1 — Resolve the target:**
 - If `$ARGUMENTS` is a PR number: `gh pr view <num> --json headRefName,state,mergedAt` and take `headRefName` as the branch.
@@ -11,7 +11,7 @@ This command targets the worktree case from `/rranauro:start-ticket` (worktree a
 - If `$ARGUMENTS` is a path: derive the branch from `git worktree list`.
 - If empty: use the current branch (`git branch --show-current`). If that's `main`, ask the user which worktree to clean up.
 
-Confirm the worktree path is `.claude/worktrees/<branch-name>/` via `git worktree list`. If it isn't listed there, surface what you found and ask the user before proceeding.
+Confirm the worktree path via `git worktree list` — it should be a sibling of the home checkout, `<scientist-root>/rx-<branch-name>/`. If it isn't listed there, surface what you found and ask the user before proceeding.
 
 **Step 2 — Verify the PR is merged:**
 - `gh pr view <branch-name> --json state,mergedAt,url,number`
@@ -19,7 +19,7 @@ Confirm the worktree path is `.claude/worktrees/<branch-name>/` via `git worktre
 - If no PR exists for the branch, STOP and ask the user before proceeding — the work may not be intended for cleanup.
 
 **Step 3 — Verify the worktree has no uncommitted work:**
-- `git -C .claude/worktrees/<branch-name> status --porcelain`
+- `git -C <scientist-root>/rx-<branch-name> status --porcelain`
 - If output is non-empty, STOP and report what's outstanding. Do NOT pass `--force` to `git worktree remove`; ask the user how to handle the leftovers.
 
 **Step 4 — Confirm the branch isn't active elsewhere:**
@@ -27,7 +27,7 @@ Confirm the worktree path is `.claude/worktrees/<branch-name>/` via `git worktre
 - If yes, STOP. Leave the worktree and branch alone — the user has live work there.
 
 **Step 5 — Remove the worktree (run from the main checkout):**
-- `git worktree remove .claude/worktrees/<branch-name>`
+- `git worktree remove <scientist-root>/rx-<branch-name>`
 - If the user is currently `cd`'d into the worktree being removed, ask them to switch to the main checkout first; otherwise the remove will fail.
 
 **Step 6 — Sync local main and delete the branch:**
