@@ -35,17 +35,17 @@ can override and proceed anyway.
 ## Step 2: Create the Review Worktree
 
 ```bash
-cd /Users/ron/dev/scientist
+cd ~/dev/scientist
 git fetch origin pull/<pr_number>/head:pr-<pr_number>-review
 git worktree add ./rx-review-<pr_number> pr-<pr_number>-review
 ~/bin/rx-worktree-init ./rx-review-<pr_number>
 ```
 
-- Worktree path: `/Users/ron/dev/scientist/rx-review-<pr>/`
+- Worktree path: `~/dev/scientist/rx-review-<pr>/`
 - Branch name: `pr-<pr>-review` (local, detached from the remote)
 
 Tell the user:
-- Worktree ready at `/Users/ron/dev/scientist/rx-review-<pr>/`
+- Worktree ready at `~/dev/scientist/rx-review-<pr>/`
 - Open a new terminal, `cd` there, run `claude`
 - To boot the app for in-browser testing: `~/bin/rx-serve start` from the worktree root
 - If a server is running in another worktree, `rx-serve` will warn and show migration differences before killing it
@@ -55,7 +55,7 @@ Tell the user:
 Spawn the `claude-reviewer` subagent with a self-contained prompt:
 
 - `pr_number` — the PR under review
-- `worktree_path` — `/Users/ron/dev/scientist/rx-review-<pr_number>/`
+- `worktree_path` — `~/dev/scientist/rx-review-<pr_number>/`
 - **PR intent (required):** author description + ticket acceptance criteria. Instruct the agent to *anchor every finding to this intent* — a concern outside the PR's intent is at most a one-line question.
 - **Severity gate:** no finding may be labeled a blocker/bug from diff-only reasoning. Anything not observed in a running app is **"suspected — needs in-app check,"** never a verdict. Findings are tiered: `confirmed-in-browser` / `suspected-from-code` / `nit`.
 
@@ -184,7 +184,7 @@ Only on explicit approval, run:
 
 ```bash
 ~/bin/rx-serve stop   # if still running
-cd /Users/ron/dev/scientist
+cd ~/dev/scientist
 git worktree remove ./rx-review-<pr_number>
 git branch -D pr-<pr_number>-review
 ```
