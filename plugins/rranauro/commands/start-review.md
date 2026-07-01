@@ -60,16 +60,74 @@ Spawn the `claude-reviewer` subagent with a self-contained prompt:
 - **Severity gate:** no finding may be labeled a blocker/bug from diff-only reasoning. Anything not observed in a running app is **"suspected — needs in-app check,"** never a verdict. Findings are tiered: `confirmed-in-browser` / `suspected-from-code` / `nit`.
 
 The agent reads the diff + changed files, opportunistically fetches any
-Copilot review, writes `rx/tmp/reviews/pr-<pr_number>/claude-review.md`, and
-returns a ≤200-word summary. It filters findings by author: for PRs
-authored by `rranauro` it reports all four categories (bug, security, perf,
-nit) plus Copilot reconciliation; for everyone else's PRs it reports only
-bugs and security.
+Copilot review, writes its report to the **absolute home path**
+`~/dev/scientist/rx/tmp/reviews/pr-<pr_number>/claude-review.md` (the home
+repo, never the worktree's `tmp/` — that path is worktree-specific and is
+destroyed on teardown), and returns a ≤200-word summary. It filters findings
+by author: for PRs authored by `rranauro` it reports all four categories
+(bug, security, perf, nit) plus Copilot reconciliation; for everyone else's
+PRs it reports only bugs and security.
 
 Relay the agent's summary to the user and surface the report path so the
 user can open the full file.
 
-## Step 4: Review Plan (optional)
+## Step 4: Generate the in-app walkthrough (always)
+
+Every review drops a self-contained `walkthrough.html` so the in-app test
+steps can be followed in the browser while you and Ron discuss findings in
+the terminal — without losing your place. Do this on **every** review, not
+just complex ones.
+
+**Always write it to the HOME repo, at an absolute path:**
+
+```
+~/dev/scientist/rx/tmp/reviews/pr-<pr_number>/walkthrough.html
+```
+
+`mkdir -p` the dir first. Never write it into the worktree's `tmp/` — that
+path is worktree-specific and vanishes on teardown; the home path is stable,
+opens the same in the browser regardless of which worktree runs the app, and
+survives worktree removal. It sits alongside `claude-review.md`.
+
+Seed it from two sources:
+- **The author's own in-app test instructions** (the PR "Instructions"
+  section) — one checklist row per step. Default to these; don't invent your
+  own steps unless Ron asks.
+- **The claude-reviewer findings** — especially `suspected-from-code` ones
+  that need an in-app check. Give each its own *starred* row with ✅/❌
+  verdict buttons, so exercising the feature confirms or refutes it.
+
+Requirements for the file (self-contained, no build step, no network):
+- Inline `<style>` + `<script>` only; must open via `file://`.
+- Header: PR number, title, author, and the **intent** (the review lens).
+- A pinned "findings to verify" panel listing the reviewer's suspected items.
+- An interactive checklist: one row per author test step; each row has a
+  checkbox, a notes textarea, and (for finding-linked rows) verdict buttons.
+- Persist **all** state in `localStorage` keyed by the PR number, so reloads
+  and tab-switching never lose progress. Include a Reset button and a
+  progress counter.
+
+The non-obvious part is the data-driven, self-persisting skeleton — the rest
+is presentation. Minimal shape to follow:
+
+```html
+<script>
+const STEPS = [ /* {id, title, desc, watch?, star?} per author step + finding */ ];
+const KEY = "pr<PR>-walkthrough-v1";
+let state = JSON.parse(localStorage.getItem(KEY) || "{}");
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); render(); }
+function render(){ /* checkbox + <textarea> + (star ? verdict buttons) per STEP,
+                     wired to state[step.id] = {done, note, verdict}; save() on change */ }
+render();
+</script>
+```
+
+Surface the `file://` path to Ron and tell him it persists after worktree
+teardown. Then walk him through the checklist per the colleague/self-review
+flow below — defaulting to the author's own steps — ticking rows (or letting
+him tick them) as you go.
+
+## Step 5: Review Plan (optional)
 
 If the PR is complex, consider creating a review-notes file at
 `rx/plans/pr-<pr_number>-review-notes.md` to capture:
@@ -115,7 +173,7 @@ The steps below apply only when Ron is reviewing his own PR. Goal: catch
 everything a colleague might flag, fix or discard it, and log the
 decisions so reviewers see the thought already done.
 
-### Step 5: Triage the claude-reviewer report
+### Step 6: Triage the claude-reviewer report
 
 For each finding, decide one of:
 - **Fix** — apply the change
@@ -133,7 +191,7 @@ notes"** heading so colleagues can see what's already been considered:
 - Deferred to #35639: extract `GridPanel::Scopes` presenter
 ```
 
-### Step 6: Act on Copilot's suggestions (if any)
+### Step 7: Act on Copilot's suggestions (if any)
 
 If the claude-reviewer report flagged any Copilot comments as "Agree" or
 worth acting on, run `/rranauro:review-copilot <pr>` — it triages each Copilot
@@ -143,7 +201,7 @@ specs, and pushes.
 Skip if all Copilot comments were "Disagree" or "Already covered" in the
 reconciliation.
 
-### Step 7: Fix the Claude-found issues
+### Step 8: Fix the Claude-found issues
 
 In the review worktree (or your feature worktree — your call):
 - Apply edits
@@ -152,7 +210,7 @@ In the review worktree (or your feature worktree — your call):
 - Exercise the feature in-browser via `~/bin/rx-serve start` from the
   worktree root
 
-### Step 8: Push fixes; optional second pass
+### Step 9: Push fixes; optional second pass
 
 Push your fixes. If the fix set was non-trivial, re-run
 `/rranauro:start-review <pr>` on the updated HEAD for a diff-only second pass to
@@ -185,9 +243,18 @@ Only on explicit approval, run:
 ```bash
 ~/bin/rx-serve stop   # if still running
 cd ~/dev/scientist
-git worktree remove ./rx-review-<pr_number>
+git worktree remove --force ./rx-review-<pr_number>   # --force if a run dirtied schema.rb via db:migrate
 git branch -D pr-<pr_number>-review
 ```
 
-Otherwise, leave it in place and remind the user of the teardown commands
-for when they're ready.
+The review artifacts (`claude-review.md` + `walkthrough.html`) live in the
+**home** repo at `rx/tmp/reviews/pr-<pr_number>/`, so worktree removal does
+**not** touch them — they persist across sessions. Remove that dir separately
+only if Ron asks to clear the artifacts too:
+
+```bash
+rm -rf ~/dev/scientist/rx/tmp/reviews/pr-<pr_number>
+```
+
+Otherwise, leave the worktree in place and remind the user of the teardown
+commands for when they're ready.
