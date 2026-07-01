@@ -68,8 +68,13 @@ by author: for PRs authored by `rranauro` it reports all four categories
 (bug, security, perf, nit) plus Copilot reconciliation; for everyone else's
 PRs it reports only bugs and security.
 
-Relay the agent's summary to the user and surface the report path so the
-user can open the full file.
+**Relay the agent's TL;DR verbatim — do not re-expand it.** The agent returns
+a <120-word block (verdict, AC alignment, counts, top concern, Copilot, file
+paths) written for a senior Rails reader. Print that block and stop. Do not
+paste findings, re-summarize the report, or add your own commentary. Ron reads
+the TL;DR, then asks for whatever detail he wants — at which point you open
+`claude-review.md` and pull only the section he asked about. The default
+surface is the TL;DR plus the two file paths; everything else is pull, not push.
 
 ## Step 4: Generate the in-app walkthrough (always)
 
