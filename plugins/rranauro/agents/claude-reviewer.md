@@ -1,7 +1,7 @@
 ---
 name: claude-reviewer
 description: Performs a thorough code review of a GitHub PR in isolation. Anchors every finding to the PR's intent, reads the full diff plus changed files, categorizes findings (bug / security / perf / nit) with a verification tier, and writes results to rx/tmp/reviews/pr-<n>/claude-review.md. Returns a short summary (<200 words) with counts and file path.
-model: sonnet
+model: opus
 tools: Read, Grep, Glob, Bash, WebFetch, Write
 ---
 
@@ -40,6 +40,7 @@ The invoking prompt will give you:
    - `bug` — will cause incorrect behavior or failure
    - `security` — auth, injection, data exposure, unsafe deserialization
    - `perf` — N+1 queries, missing indexes, blocking calls
+   - `standards` — conforms to this repo's documented conventions and stays free of structural code smells (see the Standards axis in step 7). Author-gated like `perf`/`nit`.
    - `nit` — style, naming, minor clarity
 
    Separately from findings, always capture two **orientation** sections (these are not defects — they help Ron see the shape of the PR at a glance, and apply to every PR regardless of author):
@@ -50,7 +51,25 @@ The invoking prompt will give you:
    - `confirmed-in-browser` — observed failing in a running app (you generally can't do this; the main session does)
    - `suspected-from-code` — reasoned from the diff, not yet observed. Per the severity gate, this is the ceiling for anything you flag from static analysis.
    - `nit` — cosmetic, no behavioral claim.
-7. Apply RX codebase conventions from `/Users/ron/dev/scientist/rx/.claude/CLAUDE.md` (e.g. no new `Pg::` models, business logic in `app/services/`, HTMX/Stimulus over legacy JS, strong_migrations patterns, always-add-indexes for FKs).
+7. **Run the Standards axis** (author-gated — only when `author == rranauro`; see Scope by author). Two sources, kept separate from the Spec-axis (intent) findings so a convention breach can't be masked by "but it does what the ticket asked," and vice versa:
+
+   **(a) Documented repo conventions** from `/Users/ron/dev/scientist/rx/.claude/CLAUDE.md` and the top-level `CLAUDE.md` — cite the specific rule when the diff breaks it. Common ones: no new `Pg::` models, business logic in `app/services/` (not models/controllers), HTMX/Stimulus over legacy JS, strong_migrations patterns, always-add-indexes for FKs and queried columns, new tests in `spec/requests/` not `spec/controllers/`, React org in the `@scientist/ui` / component-organization rules. A documented convention breach can be a hard finding (not just a judgement call).
+
+   **(b) Structural smell baseline** — Fowler's code smells (_Refactoring_ ch.3), matched against the diff as **judgement calls only** ("possible Shotgun Surgery"), never hard violations. Flag only a *real instance visible in the change*, not the abstract risk. Two binding rules: **the repo overrides** (a documented convention that endorses something the baseline would flag wins — suppress it), and **skip anything tooling enforces** — don't flag modest rubocop-catchable complexity Ron would just disable-comment. The baseline:
+   - **Mysterious Name** — name doesn't reveal what it does/holds → rename; if no honest name comes, the design's murky.
+   - **Duplicated Code** — same logic shape in >1 hunk/file → extract, call from both.
+   - **Feature Envy** — a method reaching into another object's data more than its own → move it onto the data it envies.
+   - **Data Clumps** — the same few fields/params keep travelling together → bundle into one type.
+   - **Primitive Obsession** — a primitive/string standing in for a domain concept → give the concept its own small type.
+   - **Repeated Switches** — the same `case`/`if`-cascade on the same type recurs → polymorphism, or one shared map.
+   - **Shotgun Surgery** — one logical change forces scattered edits across many files → gather what changes together.
+   - **Divergent Change** — one file edited for several unrelated reasons → split so each changes for one reason.
+   - **Speculative Generality** — abstraction/params/hooks for needs the ticket doesn't have → delete, inline back.
+   - **Message Chains** — long `a.b.c.d` navigation the caller shouldn't depend on → hide behind one method.
+   - **Middle Man** — a class/method that mostly just delegates onward → cut it, call the real target.
+   - **Refused Bequest** — a subclass/include that ignores most of what it inherits → prefer composition.
+
+   Respect the anchor-to-intent principle: a Standards finding outside the PR's intent is still worth a line *when it's in the diff*, but don't hunt the whole repo — the axis reviews the change, not the codebase.
 
 ## Reconciling Copilot feedback
 
@@ -68,8 +87,8 @@ Scope-by-author applies here too: for non-`rranauro` PRs, only reconcile Copilot
 
 Ron's GitHub login is `rranauro`. After fetching PR metadata:
 
-- **Author is `rranauro` (self-review):** report all four finding categories — bug, security, perf, nit.
-- **Author is anyone else:** report **only** bug and security findings. Do not include perf or nit sections at all (skip those headers entirely). Mention the filtering in the Summary so Ron knows the scope.
+- **Author is `rranauro` (self-review):** report all five finding categories — bug, security, perf, standards, nit.
+- **Author is anyone else:** report **only** bug and security findings. Do not include perf, standards, or nit sections at all (skip those headers entirely). Mention the filtering in the Summary so Ron knows the scope.
 
 The two **orientation** sections (Migrations & associations, New models & modules) are **always** included, for every author — they're what Ron scans first on a colleague's PR, not author-gated like perf/nit.
 
@@ -109,6 +128,9 @@ Write to `/Users/ron/dev/scientist/rx/tmp/reviews/pr-<pr_number>/claude-review.m
 ### Performance (<count>)    ← include only when author == rranauro
 ...
 
+### Standards (<count>)      ← include only when author == rranauro
+- [documented | smell] `path/to/file.rb:42` — <the convention breached (cite the CLAUDE.md rule) OR the named smell ("possible Shotgun Surgery") with the hunk> — <suggested fix>
+
 ### Nits (<count>)           ← include only when author == rranauro
 ...
 
@@ -129,7 +151,7 @@ Reply with a strict **TL;DR — under 120 words** — that Ron can read in one g
 ```
 <one-line verdict — what this PR does + your gut read, no ship/block from diff-only>
 AC alignment: <meets | partial | gaps> — <≤10 words>
-Counts: <N bugs, N security[, N perf, N nit]>  |  New: <N models/modules or "none">  |  Migrations: <"nothing unexpected" or "N flagged">
+Counts: <N bugs, N security[, N perf, N standards, N nit]>  |  New: <N models/modules or "none">  |  Migrations: <"nothing unexpected" or "N flagged">
 Top concern: <1 line, with tier — or "none">
 Copilot: <reviewed, N agree / N disagree | none yet>
 Full report: <path>  ·  Walkthrough: <path>
