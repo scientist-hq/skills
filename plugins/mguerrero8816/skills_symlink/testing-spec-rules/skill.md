@@ -121,3 +121,30 @@ Applies to: any controller spec testing a status/attribute change, both "it chan
 - ❌ BAD: Setting up PaperTrail, time-travel, POs, and org hierarchies in a model validation spec when the historical cap lookup already has its own spec file
 - ✅ GOOD: `allow(Proposals::HistoricalFeeCap).to receive(:for).with(proposal).and_return(1000)` — stub the covered collaborator, test only the validation boundary
 
+## Test Through the Real Persistence Path — No Spec-Only Saves
+
+**When the behavior under test creates or mutates records through a service or controller action, drive the spec through that real path. Never stand in a spec-only `save` / `save(validate: false)` / `persist!` helper to force the records into existence.**
+
+A fake save masks *where* persistence actually happens and lets a spec pass against code wired to the wrong layer — the classic trap is a builder/prefill service that returns an **unsaved** object (e.g. `Proposals::Build`, which only pre-fills a form). That is NOT the creation point; find the service that actually persists (e.g. `Proposals::Create#run`'s `save!`) and exercise it.
+
+- **Scaffolding the behavior depends on** (parent records) may be created directly — that's setup.
+- **The record under test** must be created by the real service/controller, so the spec exercises the actual integration (validations, params, callbacks).
+- If wiring the real path is painful (heavy params, many validations), that pain is signal — it's the integration you'd otherwise ship untested. Assemble the valid params up front (read a sibling spec that drives the same service) rather than discovering requirements one rescued validation at a time.
+
+**Examples:**
+- ❌ BAD: `co = Proposals::Build.run(...); co.save(validate: false)` then asserting on `co` — `Build` never persists in production; this tests nothing real.
+- ✅ GOOD: `Proposals::Create.new(proposal: nil, params: {...}).run` (exactly as the controller invokes it), then assert on the returned persisted record.
+
+## No View Specs
+
+**Do not write view specs (`type: :view`, files under `spec/views/`).** We do not test views in isolation.
+
+- When a change lives in a view/partial, put the logic somewhere testable and spec that instead:
+  - Extract the non-trivial logic (partitioning, totals, label resolution, conditionals) into a **helper or presenter** and unit-test the method.
+  - Or cover the rendered behavior through a **request/system spec** that exercises the real page, if end-to-end coverage is warranted.
+- Pure markup/layout with no logic needs no spec — rely on browser verification.
+
+**Example:**
+- ❌ BAD: `spec/views/shared/_accounting_milestones.html.haml_spec.rb` rendering the partial with `render partial:` and asserting on `rendered`
+- ✅ GOOD: extract the milestone grouping/subtotal logic into a presenter method and spec that method directly
+

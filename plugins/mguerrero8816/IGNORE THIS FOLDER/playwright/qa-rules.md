@@ -54,9 +54,15 @@ Personal skills for automating browser tasks. These live in `~/skills/plugins/mg
 
 ## Screenshots
 
-**ALWAYS save Playwright screenshots to `/Users/mike/playwright_screenshots/` — NEVER save them inside the repo.**
+**ALWAYS save Playwright screenshots to `/Users/mike/playwright_screenshots/` (the directory the repo's `.claude/screenshots` symlink points to) — NEVER anywhere inside the `rx` folder.**
 
-This applies to any screenshot taken via `browser_take_screenshot` or any other Playwright screenshot tool.
+This applies to any screenshot taken via `browser_take_screenshot` or any other Playwright screenshot tool — and to any subagent you dispatch for browser verification: put the absolute target path in its instructions.
+
+**ALWAYS pass an absolute path.** A bare or relative filename resolves against the current working directory — which is the `rx` repo — so it silently lands in the repo root and pollutes the working tree. This is the most common way screenshots end up inside `rx`.
+
+- ❌ BAD: `browser_take_screenshot(filename: "rfx-new-form.png")` — relative, lands in `rx/`
+- ❌ BAD: any path under `/Users/mike/rx/`
+- ✅ GOOD: `browser_take_screenshot(filename: "/Users/mike/playwright_screenshots/rfx-new-form.png")`
 
 ## Always Reload After Making Changes
 

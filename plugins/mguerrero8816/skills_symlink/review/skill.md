@@ -19,7 +19,7 @@ Collect both results and present them grouped by agent, with a rolled-up summary
 
 ## Step 3: Formatting Review (Own PRs Only)
 
-If the PR is authored by Michael/Mike, invoke `Skill(pr-base-rules)` and check:
+If the PR is authored by Michael/Mike, check that it follows the PR conventions:
 - Is it a draft PR?
 - Does it have the correct title format?
 - Does it have appropriate labels?

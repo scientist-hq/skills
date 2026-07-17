@@ -25,14 +25,14 @@ After suppliers have submitted, Scientist.com must confirm each response before 
 bundle exec rails runner "
   p = Rfx::Project.find_by(uuid: 'PROJECT_UUID')
   p.rfx_providers.where(status: 'submitted').each { |rp|
-    puts \"#{rp.provider.name}: https://#{p.organization.host}/rfx/#{p.uuid}/suppliers/#{rp.uuid}\"
+    puts \"#{rp.provider.name}: https://#{p.organization.host}/rfx/#{p.uuid}/providers/#{rp.uuid}\"
   }
 "
 ```
 
 ### Steps (repeat for each submitted supplier)
 
-1. Navigate to the supplier page: `https://az.test/rfx/{project_uuid}/suppliers/{rfx_provider_uuid}`
+1. Navigate to the supplier page: `https://az.test/rfx/{project_uuid}/providers/{rfx_provider_uuid}`
 
 2. Click **Confirm on behalf of Scientist.com** — it's inside a `button_to` form:
    ```

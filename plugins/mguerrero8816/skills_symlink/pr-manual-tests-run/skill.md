@@ -1,5 +1,5 @@
 ---
-description: Rules for executing PR test plans interactively, including step-by-step pacing, reconstructing missing seed scripts, and running the preflight first.
+description: Rules for executing PR test plans end-to-end, running the preflight first and then all steps without pausing, and reconstructing missing seed scripts.
 args: Optional GitHub PR URL to test
 ---
 
@@ -15,20 +15,23 @@ When invoked, determine the target PR in this order:
 
 Once the PR URL is resolved, fetch the test plan from the PR description before starting.
 
-## Always Run Steps One at a Time
+## Run All Steps Once Preflight Passes
 
-**NEVER run all test steps in a single pass. Always execute one step, pause, and wait for the user to confirm before moving to the next.**
-
-This is the default mode for all PR test plans, even if the user doesn't ask for it explicitly.
+**Run the full test plan end-to-end without pausing for confirmation.** Once `/pr-test-preflight` passes, execute every step in sequence on your own — do not stop to ask "okay" / "next" between steps.
 
 The pattern for each step:
 1. Announce which step you're running
 2. Execute it (console commands, seed scripts, browser automation, etc.)
 3. Report the result clearly — what you saw, what passed, what was unexpected
 4. For browser steps: take a screenshot and tell the user the path
-5. Wait for the user to say "okay" / "next" / "step N" before continuing
+5. Move straight to the next step
 
-Do not proceed to the next step on your own.
+**When to stop and surface to the user instead of continuing:**
+- The preflight fails — report why and stop; do not run any test steps.
+- A step fails or produces an unexpected result — report it and stop rather than pressing on through dependent steps.
+- A step needs a decision only the user can make (ambiguous data, destructive action, missing prerequisite you can't reconstruct).
+
+At the end, give a summary of all steps: what passed, what failed, and any screenshot paths.
 
 ## Reconstructing Missing Seed Scripts
 

@@ -138,3 +138,32 @@ Never combine a variable assignment with a control flow keyword (`break`, `retur
 - ✅ GOOD: `validate_fee_cap_floor`
 - ❌ BAD: `check_if_commission_fee_cap_exceeds_historical_value`
 - ✅ GOOD: `commission_over_cap?`
+
+## Never Splice New Lines Into an Existing Cohesive Block
+
+When adding a new assignment or statement, place it at the **end of the logical group it belongs to** — or start a new group below the existing one. Never wedge it into the middle of a cohesive run of related lines just because it references one of them.
+
+A dependency only sets a *lower bound* on placement (a line that reads `@predictions` must come after `@predictions` is set) — it does **not** mean the new line belongs immediately after its dependency. Find the block the new line belongs to; a line's home is decided by what group it's part of, not by which line it happens to reference.
+
+**Examples:**
+- ❌ BAD — a standalone `@canonical_lock` and a `@predictions`-derived `@prediction_model_names` spliced into the middle of a cohesive `po_context.*` unload:
+  ```ruby
+  @currency = po_context.currency
+  @cutoff = po_context.cutoff_date
+  @canonical_lock = Revenue::CutoffDate.for(canonical: true)
+  @predictions = po_context.predicted_revenues
+  @prediction_model_names = Revenue::PredictionModel.where(id: @predictions.filter_map(&:prediction_model_id).uniq).pluck(:id, :name).to_h
+  @gross_revenue = po_context.recognized_gross_revenues
+  @invoices = po_context.invoices
+  ```
+- ✅ GOOD — the `po_context.*` block stays intact; the standalone and derived lines form their own group below it:
+  ```ruby
+  @currency = po_context.currency
+  @cutoff = po_context.cutoff_date
+  @predictions = po_context.predicted_revenues
+  @gross_revenue = po_context.recognized_gross_revenues
+  @invoices = po_context.invoices
+
+  @canonical_lock = Revenue::CutoffDate.for(canonical: true)
+  @prediction_model_names = Revenue::PredictionModel.where(id: @predictions.filter_map(&:prediction_model_id).uniq).pluck(:id, :name).to_h
+  ```

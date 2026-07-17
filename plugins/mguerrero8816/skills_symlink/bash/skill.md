@@ -2,32 +2,13 @@
 description: Rules for using the Bash tool in Claude Code — command chaining and style.
 ---
 
-## Chain Commands Instead of Using Newlines
+## Avoiding Permission Prompts
 
-Never use newlines inside a single Bash tool call — newlines trigger permission prompts. Chain sequential commands with `&&` (stop on failure) or `;` (continue regardless). For independent commands, make parallel Bash tool calls instead.
+Everything about what trips a Bash permission prompt and how to avoid it — no `cd` guards, unapprovable binaries (`awk`/`sed`/`find -exec`), command substitution / shell variables, newlines, `#` comments, and preferring the Grep/Read tools for code inspection — lives in the always-on **"Avoiding Bash Permission Prompts"** rule (`rules/t4-defaults/bash-permission-prompts.md`). Follow it.
 
-- ❌ BAD: `cd rx\nbundle exec rspec spec/foo_spec.rb`
-- ✅ GOOD: `bundle exec rspec spec/foo_spec.rb` (CWD is already correct)
+## Git Commands in a Different Directory
 
-## Avoid `cd` and `env -C` Before Commands
+Use `git -C /path` — never `cd /path && git …`.
 
-Both `cd /path && command` and `env -C /path command` trigger permission prompts in Claude Code — `cd &&` for chaining, `env -C` because it cannot be statically analyzed.
-
-**Subagents already inherit the session CWD (`/Users/mike/rx/rx`) — run commands directly without any path prefix.**
-
-- ❌ BAD: `cd /Users/mike/rx/rx && bundle exec rspec spec/foo_spec.rb`
-- ❌ BAD: `env -C /Users/mike/rx/rx bundle exec rspec spec/foo_spec.rb`
-- ✅ GOOD: `bundle exec rspec spec/foo_spec.rb`
-
-**For git commands in a different directory:** use `git -C /path` (this is fine)
 - ❌ BAD: `cd /Users/mike/rx/rx && git log --oneline -1`
 - ✅ GOOD: `git -C /Users/mike/rx/rx log --oneline -1`
-
-**For non-git commands that genuinely need a different directory:** use absolute paths as arguments where possible. If CWD must change, there is no clean option — flag it rather than triggering a prompt.
-
-## No `#` Comments Inside Quoted Rails Runner Strings
-
-A newline followed by `#` inside a quoted argument triggers a security prompt ("can hide arguments from path validation"). Use `puts` instead — it's readable and passes validation.
-
-- ❌ BAD: `bundle exec rails runner "\n# move project\np.update_column(...)"`
-- ✅ GOOD: `bundle exec rails runner "puts 'move project'; p.update_column(...)"`
