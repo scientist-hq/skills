@@ -66,6 +66,8 @@ Labels: [relevant labels]
 [Other issues that must come first, or that this unblocks]
 ```
 
+**Only the Acceptance Criteria are binding.** Proposed Approach and Implementation Notes are the best guess at the time of writing — a downstream plan may supersede them freely, and doing so is not a scope change or a conflict. Keep implementation detail (exact files, methods, line numbers) valuable but non-authoritative; a plan that satisfies the ACs by another route has not violated the ticket. Only rephrase or revisit an AC if the *observable outcome* itself must change.
+
 Ask the user to confirm before running `gh issue create`. Create issues one at a time so the user can review each.
 
 **Phase 5 — Save a plan file:**
