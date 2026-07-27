@@ -11,7 +11,7 @@ Review and address GitHub Copilot's PR review comments one by one.
 
 **Step 2b — Fetch the Claude review (for dedup):**
 - Run `gh pr view {number} --json comments -q '.comments[] | select(.body | contains("<!-- claude-pr-review -->")) | .body'`.
-- This is the review posted by `~/.claude/scripts/pr-review.sh` (via the `pr-review-on-create` hook or a manual run). It's posted under Ron's gh user, not a bot login, so the HTML marker is the only reliable way to find it — don't filter by login.
+- This is the review posted by `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh` (via the `pr-review-on-create` hook or a manual run). It's posted under Ron's gh user, not a bot login, so the HTML marker is the only reliable way to find it — don't filter by login.
 - If none exists, skip this step silently and process Copilot's comments on their own.
 - Its inline findings are formatted `**\`<path>:<line>\`** — <finding>`. Parse those into a (path, line) set.
 

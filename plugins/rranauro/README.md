@@ -84,7 +84,7 @@ Open a NEW terminal, start a fresh Claude session, and run:
 
 Creates a separate worktree of the PR's head branch (so review state never collides with your dev branch), then picks up the Claude review.
 
-On your own PRs the review already exists — the `pr-review-on-create` hook fires on `gh pr create` and posts it as a PR comment marked `<!-- claude-pr-review -->`. For colleague PRs and second passes, `start-review` runs `~/.claude/scripts/pr-review.sh`, which writes to:
+On your own PRs the review already exists — the `pr-review-on-create` hook fires on `gh pr create` and posts it as a PR comment marked `<!-- claude-pr-review -->`. For colleague PRs and second passes, `start-review` runs `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh`, which writes to:
 
 ```
 rx/tmp/reviews/pr-<PR#>/claude-review.md
@@ -163,4 +163,4 @@ The dev terminal owns the feature branch; the review terminal owns a clean check
 
 - Keep the dev terminal's working tree clean before starting `/rranauro:start-review` — uncommitted changes there make the review picture noisy.
 - `/rranauro:architect` is conversational by design. If the approach changes mid-discussion, just say so — the plan file gets updated when you converge.
-- The PR comment marked `<!-- claude-pr-review -->` is the cross-terminal handoff for your own PRs — it's persistent and visible to colleagues. Colleague PRs fall back to `rx/tmp/reviews/pr-<PR#>/claude-review.md`. If you change PR# (e.g., reopen as new PR), rerun `~/.claude/scripts/pr-review.sh`.
+- The PR comment marked `<!-- claude-pr-review -->` is the cross-terminal handoff for your own PRs — it's persistent and visible to colleagues. Colleague PRs fall back to `rx/tmp/reviews/pr-<PR#>/claude-review.md`. If you change PR# (e.g., reopen as new PR), rerun `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh`.

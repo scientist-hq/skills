@@ -31,7 +31,7 @@ Copilot takes ~2-5 min. So the existing review usually has no Copilot
 reconciliation. If Copilot has since posted
 (`gh api repos/scientist-hq/rx/pulls/<pr_number>/reviews` — filter for
 `copilot` login) and reconciliation would be useful, offer to re-run
-`~/.claude/scripts/pr-review.sh` for a second pass that includes it. Ron can
+`${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh` for a second pass that includes it. Ron can
 decline and work from the original.
 
 ## Step 2: Create the Review Worktree
@@ -54,7 +54,7 @@ Tell the user:
 
 ## Step 3: Get the Claude review
 
-The review prompt lives in one place — `~/.claude/scripts/pr-review.sh`. It
+The review prompt lives in one place — `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh`. It
 anchors findings to the PR's intent, applies the severity gate (nothing
 observed in a running app is a verdict — only "suspected, needs in-app
 check"), opportunistically reconciles any Copilot review, and scopes by
@@ -77,7 +77,7 @@ it already lives where colleagues can see it.
 fixes have no hook trigger:
 
 ```bash
-~/.claude/scripts/pr-review.sh --source start-review <pr_number>
+${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh --source start-review <pr_number>
 ```
 
 Posting is decided by authorship: Ron's own PRs get the review posted as a
