@@ -9,10 +9,16 @@ Review and address GitHub Copilot's PR review comments one by one.
 - Also check `gh api repos/{owner}/{repo}/pulls/{number}/reviews --jq '.[] | select(.user.login | test("copilot|github-actions")) | {id, state, body}'` for top-level review comments.
 - If no comments found, tell the user "No Copilot review comments found" and stop.
 
+**Step 2b — Fetch the Claude review (for dedup):**
+- Run `gh pr view {number} --json comments -q '.comments[] | select(.body | contains("<!-- claude-pr-review -->")) | .body'`.
+- This is the review posted by `~/.claude/scripts/pr-review.sh` (via the `pr-review-on-create` hook or a manual run). It's posted under Ron's gh user, not a bot login, so the HTML marker is the only reliable way to find it — don't filter by login.
+- If none exists, skip this step silently and process Copilot's comments on their own.
+- Its inline findings are formatted `**\`<path>:<line>\`** — <finding>`. Parse those into a (path, line) set.
+
 **Step 3 — Process each comment:**
 For each comment, in order:
 
-1. **Show the comment** — display the file path, line number, and Copilot's feedback.
+1. **Show the comment** — display the file path, line number, and Copilot's feedback. If the Claude review flagged the same (path, line), say so and show its take alongside — two independent reads agreeing is worth knowing, but note that Claude also reasons from the diff alone, so agreement doesn't promote a suspicion to a verdict.
 2. **Read the relevant code** — read the file around the mentioned lines to understand context.
 3. **Assess the comment** — categorize it:
    - 🔴 **Must fix** — security issue, bug, or correctness problem

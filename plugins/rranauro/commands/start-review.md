@@ -25,12 +25,14 @@ Present a brief summary to the user, including the intent.
 the author *replied to or addressed* those comments — we assess that in the
 colleague-PR flow below.
 
-**If the author is `rranauro` (self-review)**, check whether GitHub's
-Copilot review has already posted comments
+**If the author is `rranauro` (self-review)**, note that the hook-posted
+review almost always predates Copilot — it fires at `gh pr create`, and
+Copilot takes ~2-5 min. So the existing review usually has no Copilot
+reconciliation. If Copilot has since posted
 (`gh api repos/scientist-hq/rx/pulls/<pr_number>/reviews` — filter for
-`copilot` login). If not, suggest the user wait ~2-5 min so the
-`claude-reviewer` agent can reconcile against Copilot in one pass. The user
-can override and proceed anyway.
+`copilot` login) and reconciliation would be useful, offer to re-run
+`~/.claude/scripts/pr-review.sh` for a second pass that includes it. Ron can
+decline and work from the original.
 
 ## Step 2: Create the Review Worktree
 
@@ -50,31 +52,46 @@ Tell the user:
 - To boot the app for in-browser testing: `~/bin/rx-serve start` from the worktree root
 - If a server is running in another worktree, `rx-serve` will warn and show migration differences before killing it
 
-## Step 3: Dispatch the `claude-reviewer` agent
+## Step 3: Get the Claude review
 
-Spawn the `claude-reviewer` subagent with a self-contained prompt:
+The review prompt lives in one place — `~/.claude/scripts/pr-review.sh`. It
+anchors findings to the PR's intent, applies the severity gate (nothing
+observed in a running app is a verdict — only "suspected, needs in-app
+check"), opportunistically reconciles any Copilot review, and scopes by
+author: full categories for `rranauro`, bugs and security only for everyone
+else.
 
-- `pr_number` — the PR under review
-- `worktree_path` — `~/dev/scientist/rx-review-<pr_number>/`
-- **PR intent (required):** author description + ticket acceptance criteria. Instruct the agent to *anchor every finding to this intent* — a concern outside the PR's intent is at most a one-line question.
-- **Severity gate:** no finding may be labeled a blocker/bug from diff-only reasoning. Anything not observed in a running app is **"suspected — needs in-app check,"** never a verdict. Findings are tiered: `confirmed-in-browser` / `suspected-from-code` / `nit`.
+**First check whether a review already exists.** For Ron's own PRs the
+`pr-review-on-create` hook fires on `gh pr create` and posts the review as a
+PR comment marked with `<!-- claude-pr-review -->`:
 
-The agent reads the diff + changed files, opportunistically fetches any
-Copilot review, writes its report to the **absolute home path**
-`~/dev/scientist/rx/tmp/reviews/pr-<pr_number>/claude-review.md` (the home
-repo, never the worktree's `tmp/` — that path is worktree-specific and is
-destroyed on teardown), and returns a ≤200-word summary. It filters findings
-by author: for PRs authored by `rranauro` it reports all four categories
-(bug, security, perf, nit) plus Copilot reconciliation; for everyone else's
-PRs it reports only bugs and security.
+```bash
+gh pr view <pr_number> --repo scientist-hq/rx --json comments \
+  -q '.comments[] | select(.body | contains("<!-- claude-pr-review -->")) | .body'
+```
 
-**Relay the agent's TL;DR verbatim — do not re-expand it.** The agent returns
-a <120-word block (verdict, AC alignment, counts, top concern, Copilot, file
-paths) written for a senior Rails reader. Print that block and stop. Do not
-paste findings, re-summarize the report, or add your own commentary. Ron reads
-the TL;DR, then asks for whatever detail he wants — at which point you open
-`claude-review.md` and pull only the section he asked about. The default
-surface is the TL;DR plus the two file paths; everything else is pull, not push.
+If that returns a review, use it — don't re-run. It's the persistent copy and
+it already lives where colleagues can see it.
+
+**Otherwise run the script.** Colleague PRs and second passes after pushing
+fixes have no hook trigger:
+
+```bash
+~/.claude/scripts/pr-review.sh --source start-review <pr_number>
+```
+
+Posting is decided by authorship: Ron's own PRs get the review posted as a
+comment; colleague PRs write to `~/dev/scientist/rx/tmp/reviews/pr-<pr_number>/claude-review.md`
+instead — the **absolute home path**, never the worktree's `tmp/`, which is
+worktree-specific and destroyed on teardown. Never pass `--post` on someone
+else's PR without Ron saying so.
+
+**Relay a ≤120-word TL;DR — do not re-expand the review.** Give Ron a verdict
+line, AC alignment, finding counts, the top concern (say so if it's
+`suspected-from-code`), whether Copilot has weighed in, and the comment URL or
+file path. Then stop. Do not paste findings or add commentary. Ron reads the
+TL;DR and asks for whatever detail he wants — at which point you pull only the
+section he asked about. Everything else is pull, not push.
 
 ## Step 4: Generate the in-app walkthrough (always)
 
@@ -98,7 +115,8 @@ Seed it from two sources:
 - **The author's own in-app test instructions** (the PR "Instructions"
   section) — one checklist row per step. Default to these; don't invent your
   own steps unless Ron asks.
-- **The claude-reviewer findings** — especially `suspected-from-code` ones
+- **The Claude review findings** (from the PR comment or the review file) —
+  especially `suspected-from-code` ones
   that need an in-app check. Give each its own *starred* row with ✅/❌
   verdict buttons, so exercising the feature confirms or refutes it.
 
@@ -178,7 +196,7 @@ The steps below apply only when Ron is reviewing his own PR. Goal: catch
 everything a colleague might flag, fix or discard it, and log the
 decisions so reviewers see the thought already done.
 
-### Step 6: Triage the claude-reviewer report
+### Step 6: Triage the Claude review
 
 For each finding, decide one of:
 - **Fix** — apply the change
@@ -198,7 +216,7 @@ notes"** heading so colleagues can see what's already been considered:
 
 ### Step 7: Act on Copilot's suggestions (if any)
 
-If the claude-reviewer report flagged any Copilot comments as "Agree" or
+If the Claude review flagged any Copilot comments as "Agree" or
 worth acting on, run `/rranauro:review-copilot <pr>` — it triages each Copilot
 comment, applies the valid ones in its own worktree, runs the affected
 specs, and pushes.
