@@ -1,3 +1,10 @@
+> **Profile first.** Before anything project-specific, read the dev-suite
+> profile ([PROFILE.md](../PROFILE.md)): `<project>/.claude/dev-suite.json`,
+> then `~/.claude/dev-suite.json`. Backticked keys (`repo.slug`,
+> `commands.test`, …) and `{{placeholders}}` below refer to it. Detect from
+> `git`/`gh` what the profile doesn't set; if an optional command is unset,
+> skip that step and say so — never guess a stack-specific command.
+
 Review and address GitHub Copilot's PR review comments one by one.
 
 **Step 1 — Find the PR:**
@@ -11,7 +18,7 @@ Review and address GitHub Copilot's PR review comments one by one.
 
 **Step 2b — Fetch the Claude review (for dedup):**
 - Run `gh pr view {number} --json comments -q '.comments[] | select(.body | contains("<!-- claude-pr-review -->")) | .body'`.
-- This is the review posted by `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh` (via the `pr-review-on-create` hook or a manual run). It's posted under Ron's gh user, not a bot login, so the HTML marker is the only reliable way to find it — don't filter by login.
+- This is the review posted by `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh` (via the `pr-review-on-create` hook or a manual run). It's posted under the user's gh user, not a bot login, so the HTML marker is the only reliable way to find it — don't filter by login.
 - If none exists, skip this step silently and process Copilot's comments on their own.
 - Its inline findings are formatted `**\`<path>:<line>\`** — <finding>`. Parse those into a (path, line) set.
 
@@ -48,11 +55,11 @@ For each comment, in order:
   - <path>:<line> [Optional] <one-line reasoning> — skipped (nitpick)
   ```
 
-  Use the same four categories from Step 3.3. **Include skipped comments too** — the durable record of "we considered this and decided not to act" is the point. If Step 6 delegates to `/rx:commit`, pass this body as the intended message rather than letting `/rx:commit` draft its own.
+  Use the same four categories from Step 3.3. **Include skipped comments too** — the durable record of "we considered this and decided not to act" is the point. If Step 6 delegates to a configured `commands.commit`, pass this body as the intended message rather than letting that command draft its own.
 - If no fixes were made (all comments skipped/ignored), do NOT create a commit. The evaluation summary lives only in the conversation; there is nothing to push.
 
 **Step 6 — Quality gates (if any fixes were made):**
-- Run the /rx:commit skill
+- Run `commands.commit` if the profile sets one; otherwise commit directly with `git`.
 
 **Step 7 — Push:**
 - Push the branch to origin.

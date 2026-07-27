@@ -13,7 +13,7 @@ Have an architectural discussion about a technical topic, exploring ideas and tr
 
 **Phase 1 — Grill the problem space (do not skip to Phase 2):**
 
-Interrogate the problem until you and the user share a model of it. Establish what they're trying to achieve, the motivation, and constraints (security, multi-tenancy, performance, Rails conventions). Grilling rules:
+Interrogate the problem until you and the user share a model of it. Establish what they're trying to achieve, the motivation, and constraints (security, multi-tenancy, performance, framework conventions). Grilling rules:
 
 - **One question at a time.** Ask, then wait for the answer before the next question — batching questions is bewildering and lets wrong assumptions slide through.
 - **Recommend an answer to every question.** Don't ask open-ended; put your best guess on the table so the user can confirm or correct it.
@@ -43,7 +43,7 @@ Shape the issues as **tracer-bullet vertical slices**, not horizontal layers:
 - Any **prefactoring** that makes the real change easy ("make the change easy, then make the easy change") is its own slice, filed first.
 - **Wide mechanical refactors are the exception** (rename a column, retype a shared symbol whose blast radius fans across the codebase): sequence them expand → migrate-in-batches → contract, each step its own issue, rather than forcing a vertical slice.
 - Give each issue its **Dependencies** — the issues that must complete before it can start (an issue with none can start immediately). This is the "Blocked by" edge; use it to order the set. For a stacked chain, base each PR on its blocker's branch (GitHub auto-retargets on merge).
-- Use the project's **domain glossary vocabulary** in titles and descriptions — the RX nomenclature the codebase already uses, not invented jargon. If a term is fuzzy, that's a Phase 1 grilling question, not a naming guess here.
+- Use the project's **domain glossary vocabulary** in titles and descriptions — the nomenclature the codebase already uses, not invented jargon. If a term is fuzzy, that's a Phase 1 grilling question, not a naming guess here.
 
 For each issue, show:
 ```

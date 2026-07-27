@@ -1,18 +1,27 @@
-Create a GitHub pull request for the current branch following the RX team's PR
-conventions and the repo's PR template, then start polling for Copilot's review.
+> **Profile first.** Before anything project-specific, read the dev-suite
+> profile ([PROFILE.md](../PROFILE.md)): `<project>/.claude/dev-suite.json`,
+> then `~/.claude/dev-suite.json`. Backticked keys (`repo.slug`,
+> `commands.test`, …) and `{{placeholders}}` below refer to it. Detect from
+> `git`/`gh` what the profile doesn't set; if an optional command is unset,
+> skip that step and say so — never guess a stack-specific command.
 
-This command follows the same conventions as `/rx:pr` (safety checks, label
-selection, issue linking, draft creation) — it is self-contained, so it does not
-invoke `/rx:pr`, but it must stay consistent with it. The two things it adds on
-top of `/rx:pr` are: (1) the PR body is filled from the repo's PR template, and
-(2) after the PR is created it kicks off Copilot-review polling.
+Create a GitHub pull request for the current branch following the project's PR
+conventions and its PR template, then start polling for Copilot's review.
+
+If the profile sets `commands.pr`, that command owns the house conventions
+(safety checks, label selection, issue linking, draft creation) and this one
+must stay consistent with it — it is self-contained and does not invoke it. The
+two things it adds are: (1) the PR body is filled from the repo's PR template,
+and (2) after the PR is created it kicks off Copilot-review polling.
 
 **Step 0 — Ready the branch:**
-- If there are uncommitted changes, run the `/rx:commit` skill first and confirm
-  the branch is ready for a pull request.
+- If there are uncommitted changes, run `commands.commit` if the profile sets
+  one (otherwise commit directly with `git`) and confirm the branch is ready for
+  a pull request.
 
 **Step 1 — Safety checks (stop if any fail):**
-1. **Not on main**: `git branch --show-current` — if `main` or `staging`, STOP.
+1. **Not on a protected branch**: `git branch --show-current` — if it matches
+   `repo.default_branch` (or a release branch like `staging`), STOP.
 2. **Clean working tree**: `git status` — if uncommitted changes remain, STOP and
    ask the user to commit or stash.
 3. **Pushed**: `git log origin/main..HEAD --oneline` — if the branch isn't pushed
@@ -27,14 +36,14 @@ top of `/rx:pr` are: (1) the PR body is filled from the repo's PR template, and
   `VerifyIssue` CI check fails PRs without a linked issue.
 
 **Step 3 — Determine labels:**
-Use the same label set as `/rx:pr` (keep these in sync with that command rather
-than inventing new ones):
-- Type (pick one): `Type: Feature` (new functionality), `Type: Improvement`
-  (enhances existing), `Type: Fix` (bug), `Type: Cleanup` (refactor),
-  `Type: Infrastructure` (tooling), `Hotfix` (urgent prod fix).
-- Add as applicable: `Migration` (DB migration included), `Style` (UI/design),
-  `Accessibility`, `Dependencies`, `Internal` (exclude from release notes).
-- Area as applicable: `Storefront`, `Backoffice`, `Accounting`, `Security`.
+Read the repo's actual labels with `gh label list --limit 100` and pick from
+those — never invent a label, and never assume another project's taxonomy.
+- Pick one type label if the repo has a type axis (e.g. a `Type: *` family).
+- Add applicable cross-cutting labels (migration, style, accessibility,
+  dependencies, release-notes exclusions).
+- Add an area label if the repo uses them.
+- If the profile sets `commands.pr`, keep this selection consistent with that
+  command rather than diverging.
 - If unsure, ASK.
 
 **Step 4 — Build the body from the repo PR template:**
@@ -43,10 +52,10 @@ than inventing new ones):
   generated-by footer. As of this writing the template sections are:
   - **Description** — what the PR does and which tickets it resolves. Include
     `Fixes #<issue>` here (the issue link the CI check requires). Confirm the
-    changes don't break scripts, configuration rules, or dynamic forms
-    (see `docs/Checking-Dynamic-Content.md`).
-  - **User Impact** — what changes for users, and which users (Researcher,
-    Supplier, Scientist Admin, etc.). Use "No user-facing changes" for internal
+    changes don't break adjacent configuration or generated content the
+    project calls out in its contributing docs.
+  - **User Impact** — what changes for users, and which user roles. Use the
+    role names the project's own docs use. "No user-facing changes" for internal
     work.
   - **Instructions** — numbered, specific QA steps for reviewers; reference real
     files/paths/URLs and what you ran to prove the change works.
