@@ -1,5 +1,13 @@
 # Restart Work on a Ticket
 
+
+> **Profile first.** Before anything project-specific, read the dev-suite
+> profile ([PROFILE.md](../PROFILE.md)): `<project>/.claude/dev-suite.json`,
+> then `~/.claude/dev-suite.json`. Backticked keys (`repo.slug`,
+> `commands.test`, …) and `{{placeholders}}` below refer to it. Detect from
+> `git`/`gh` what the profile doesn't set; if an optional command is unset,
+> skip that step and say so — never guess a stack-specific command.
+
 This command picks up where you left off on an in-progress GitHub issue by assessing current state and identifying remaining work.
 
 **Usage:** `/rranauro:restart-ticket <github_issue_url>`
@@ -35,7 +43,7 @@ Look for a plan file at `plans/<issue_number>-*.md`. If found, read it to unders
 ### Review What's Changed
 
 - Read the diff against main to understand what has been implemented so far
-- Check for any failing tests: `bundle exec rspec` on changed spec files
+- Check for any failing tests: `{{commands.test}}` on changed spec files
 - Look at `git status` for any uncommitted work in progress
 
 ## Step 3: Present a Status Report

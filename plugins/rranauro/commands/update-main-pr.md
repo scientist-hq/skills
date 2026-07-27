@@ -1,5 +1,13 @@
 # Update Main Pull Request
 
+
+> **Profile first.** Before anything project-specific, read the dev-suite
+> profile ([PROFILE.md](../PROFILE.md)): `<project>/.claude/dev-suite.json`,
+> then `~/.claude/dev-suite.json`. Backticked keys (`repo.slug`,
+> `commands.test`, …) and `{{placeholders}}` below refer to it. Detect from
+> `git`/`gh` what the profile doesn't set; if an optional command is unset,
+> skip that step and say so — never guess a stack-specific command.
+
 This command pushes new changes to an existing pull request and updates its description to reflect the latest state.
 
 **Usage:** `/rranauro:update-main-pr <github_pr_url>`
@@ -15,14 +23,14 @@ This command pushes new changes to an existing pull request and updates its desc
 
 ## Step 2: Run Checks Before Pushing
 
-Run rubocop on changed Ruby files and specs on affected modules:
+Run {{commands.lint}} on the changed files and {{commands.test}} on affected modules (skip either if the profile doesn't set it):
 
 ```bash
 # Lint changed Ruby files
-bundle exec rubocop $(git diff main...HEAD --name-only -- '*.rb')
+{{commands.lint}} $(git diff main...HEAD --name-only -- '*.rb')
 
 # Run specs for affected modules
-bundle exec rspec <spec files for changed models/services/controllers>
+{{commands.test}} <spec files for changed models/services/controllers>
 ```
 
 If either check fails, STOP and fix the issues before pushing. Do NOT push code that fails linting or specs.
@@ -60,7 +68,7 @@ EOF
 
 ## Step 6: Update Labels and Title if Needed
 
-- If the changes now touch new areas (e.g., added backoffice changes to a storefront-only PR), add the appropriate label
+- If the changes now touch new areas (e.g., a PR scoped to one area now touches another), add the appropriate label
 - If the PR title no longer accurately describes the work, update it with `gh pr edit <PR_NUMBER> --title "New title"`
 - Do NOT remove existing labels unless they're clearly wrong
 

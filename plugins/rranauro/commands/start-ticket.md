@@ -1,6 +1,14 @@
-# Start Work on an RX Ticket (Worktree-First)
+# Start Work on a Ticket (Worktree-First)
 
-RX-specific `/rranauro:start-ticket`: always creates a git worktree of the scientist
+
+> **Profile first.** Before anything project-specific, read the dev-suite
+> profile ([PROFILE.md](../PROFILE.md)): `<project>/.claude/dev-suite.json`,
+> then `~/.claude/dev-suite.json`. Backticked keys (`repo.slug`,
+> `commands.test`, …) and `{{placeholders}}` below refer to it. Detect from
+> `git`/`gh` what the profile doesn't set; if an optional command is unset,
+> skip that step and say so — never guess a stack-specific command.
+
+`/rranauro:start-ticket`: always creates a git worktree of the project's main checkout
 monorepo, symlinks personal/untracked files via the manifest, and hands off
 to a new Claude session in the worktree.
 
@@ -27,42 +35,42 @@ Present a summary of the ticket to the user, then ask questions about anything:
 
 ## Step 3: Create the Worktree
 
-The scientist repo root is your home monorepo checkout (default
-`~/dev/scientist/`). Worktrees are placed as siblings to `rx/` inside it
-(the `rx-*` pattern is already in `.git/info/exclude`).
+The main checkout root is your home monorepo checkout (default
+`{{repo.workspace_root}}/`). Worktrees are placed as siblings to the app checkout inside it
+(the `{{repo.worktree_prefix}}-*` pattern is already in `.git/info/exclude`).
 
 ```bash
-cd ~/dev/scientist
+cd {{repo.workspace_root}}
 git fetch origin main
-git worktree add ./rx-<issue_number>-<short-description> \
+git worktree add ./{{repo.worktree_prefix}}-<issue_number>-<short-description> \
   -b <issue_number>-<short-description> origin/main
-~/bin/rx-worktree-init ./rx-<issue_number>-<short-description>
+{{commands.worktree_init}} ./{{repo.worktree_prefix}}-<issue_number>-<short-description>
 ```
 
 - Branch name: `<issue_number>-<short-description>` (kebab-case)
-- Example: `rx-34500-add-bulk-export-button`
+- Example: `{{repo.worktree_prefix}}-34500-add-bulk-export-button`
 
 Then tell the user:
-- Worktree is at `~/dev/scientist/rx-<issue>-<slug>/`
-- To work there: open a new terminal, `cd ~/dev/scientist/rx-<issue>-<slug>/rx`, run `claude`
-- To boot the app: `~/bin/rx-serve start` from the worktree root (not the `rx/` subdir). It will prompt if a server is already running in another worktree and show any migrations that differ.
+- Worktree is at `{{repo.workspace_root}}/{{repo.worktree_prefix}}-<issue>-<slug>/`
+- To work there: open a new terminal, `cd {{repo.workspace_root}}/{{repo.worktree_prefix}}-<issue>-<slug>/{{repo.app_subdir}}`, run `claude`
+- To boot the app: `{{commands.serve}} start` from the worktree root (not the {{repo.app_subdir}} subdir). It will prompt if a server is already running in another worktree and show any migrations that differ.
 - The current session is for planning only — hand off implementation to the new session.
 
 ## Step 4: Create or Adopt a Plan
 
-Because `rx/plans/` is symlinked across all worktrees via the manifest, plan
+Because `{{paths.plans}}/` is symlinked across all worktrees via the manifest, plan
 files are always visible from the home worktree and every active worktree.
 
-**First check `rx/plans/`** for an existing file matching the issue number
-(e.g. `rx/plans/34500-*.md`). `/rranauro:architect` may have written one already.
+**First check `{{paths.plans}}/`** for an existing file matching the issue number
+(e.g. `{{paths.plans}}/34500-*.md`). `/rranauro:architect` may have written one already.
 
 **If an existing plan file is found:**
 1. Read it and present it to the user
 2. Ask whether it needs updates (add `Resolves #<issue>`, testing strategy, etc.)
-3. Rename to `rx/plans/<issue_number>-<short-description>.md` if it doesn't already follow the convention
+3. Rename to `{{paths.plans}}/<issue_number>-<short-description>.md` if it doesn't already follow the convention
 4. Apply any agreed changes
 
-**Otherwise create one** at `rx/plans/<issue_number>-<short-description>.md`:
+**Otherwise create one** at `{{paths.plans}}/<issue_number>-<short-description>.md`:
 
 ```markdown
 # <Issue Title>
@@ -95,7 +103,7 @@ Resolves #<issue_number>
 ## Important Notes
 
 - **Do NOT start coding** until the user confirms the plan
-- **Search `rx/docs/`** for relevant documentation before writing the plan
+- **Search the project's docs directory** for relevant documentation before writing the plan
 - **Search the codebase** for existing patterns
 - **Keep the plan focused** — avoid scope creep beyond the ticket
-- **One server at a time**: `rx-serve` enforces this across worktrees. If switching to a worktree that lacks migrations the running server has applied, it will warn and prompt.
+- **One server at a time**: `{{commands.serve}}` enforces this across worktrees. If switching to a worktree that lacks migrations the running server has applied, it will warn and prompt.

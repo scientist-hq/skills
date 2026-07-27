@@ -1,8 +1,16 @@
 # Start a PR Review (Worktree-First)
 
-RX-specific review flow: creates a dedicated worktree of the PR's head branch
+
+> **Profile first.** Before anything project-specific, read the dev-suite
+> profile ([PROFILE.md](../PROFILE.md)): `<project>/.claude/dev-suite.json`,
+> then `~/.claude/dev-suite.json`. Backticked keys (`repo.slug`,
+> `commands.test`, …) and `{{placeholders}}` below refer to it. Detect from
+> `git`/`gh` what the profile doesn't set; if an optional command is unset,
+> skip that step and say so — never guess a stack-specific command.
+
+Review flow: creates a dedicated worktree of the PR's head branch
 so you can verify behavior in-browser without disturbing your active feature
-branch. When the PR is authored by `rranauro`, the command doubles as the
+branch. When the PR is your own, the command doubles as the
 **comprehensive self-review** process — catch everything a colleague might
 flag before they see it.
 
@@ -19,74 +27,97 @@ Use the GitHub MCP tools or `gh` CLI to fetch:
 
 Present a brief summary to the user, including the intent.
 
+**Whose PR is this?** Compare the PR author to your own GitHub login —
+`gh api user -q .login`, or `identity.gh_user` from the profile if set. That
+comparison drives the two flows below; never hardcode a login. If the login
+can't be resolved, treat the PR as a colleague's: the conservative branch,
+since it withholds posting rather than publishing uninvited.
+
 **Check whether the author already received a Copilot review**
-(`gh api repos/scientist-hq/rx/pulls/<pr_number>/reviews` and
+(`gh api repos/{{repo.slug}}/pulls/<pr_number>/reviews` and
 `.../pulls/<pr_number>/comments`, filtered for `copilot` login) and whether
 the author *replied to or addressed* those comments — we assess that in the
 colleague-PR flow below.
 
-**If the author is `rranauro` (self-review)**, check whether GitHub's
-Copilot review has already posted comments
-(`gh api repos/scientist-hq/rx/pulls/<pr_number>/reviews` — filter for
-`copilot` login). If not, suggest the user wait ~2-5 min so the
-`claude-reviewer` agent can reconcile against Copilot in one pass. The user
-can override and proceed anyway.
+**If the PR is your own (self-review)**, note that the hook-posted
+review almost always predates Copilot — it fires at `gh pr create`, and
+Copilot takes ~2-5 min. So the existing review usually has no Copilot
+reconciliation. If Copilot has since posted
+(`gh api repos/{{repo.slug}}/pulls/<pr_number>/reviews` — filter for
+`copilot` login) and reconciliation would be useful, offer to re-run
+`${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh` for a second pass that includes it. the user can
+decline and work from the original.
 
 ## Step 2: Create the Review Worktree
 
 ```bash
-cd ~/dev/scientist
+cd {{repo.workspace_root}}
 git fetch origin pull/<pr_number>/head:pr-<pr_number>-review
-git worktree add ./rx-review-<pr_number> pr-<pr_number>-review
-~/bin/rx-worktree-init ./rx-review-<pr_number>
+git worktree add ./{{repo.worktree_prefix}}-review-<pr_number> pr-<pr_number>-review
+{{commands.worktree_init}} ./{{repo.worktree_prefix}}-review-<pr_number>
 ```
 
-- Worktree path: `~/dev/scientist/rx-review-<pr>/`
+- Worktree path: `{{repo.workspace_root}}/{{repo.worktree_prefix}}-review-<pr>/`
 - Branch name: `pr-<pr>-review` (local, detached from the remote)
 
 Tell the user:
-- Worktree ready at `~/dev/scientist/rx-review-<pr>/`
+- Worktree ready at `{{repo.workspace_root}}/{{repo.worktree_prefix}}-review-<pr>/`
 - Open a new terminal, `cd` there, run `claude`
-- To boot the app for in-browser testing: `~/bin/rx-serve start` from the worktree root
-- If a server is running in another worktree, `rx-serve` will warn and show migration differences before killing it
+- To boot the app for in-browser testing: `{{commands.serve}} start` from the worktree root
+- If a server is running in another worktree, `{{commands.serve}}` will warn and show migration differences before killing it
 
-## Step 3: Dispatch the `claude-reviewer` agent
+## Step 3: Get the Claude review
 
-Spawn the `claude-reviewer` subagent with a self-contained prompt:
+The review prompt lives in one place — `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh`. It
+anchors findings to the PR's intent, applies the severity gate (nothing
+observed in a running app is a verdict — only "suspected, needs in-app
+check"), opportunistically reconciles any Copilot review, and scopes by
+author: full categories for your own PRs, bugs and security only for everyone
+else.
 
-- `pr_number` — the PR under review
-- `worktree_path` — `~/dev/scientist/rx-review-<pr_number>/`
-- **PR intent (required):** author description + ticket acceptance criteria. Instruct the agent to *anchor every finding to this intent* — a concern outside the PR's intent is at most a one-line question.
-- **Severity gate:** no finding may be labeled a blocker/bug from diff-only reasoning. Anything not observed in a running app is **"suspected — needs in-app check,"** never a verdict. Findings are tiered: `confirmed-in-browser` / `suspected-from-code` / `nit`.
+**First check whether a review already exists.** For the user's own PRs the
+`pr-review-on-create` hook fires on `gh pr create` and posts the review as a
+PR comment marked with `<!-- claude-pr-review -->`:
 
-The agent reads the diff + changed files, opportunistically fetches any
-Copilot review, writes its report to the **absolute home path**
-`~/dev/scientist/rx/tmp/reviews/pr-<pr_number>/claude-review.md` (the home
-repo, never the worktree's `tmp/` — that path is worktree-specific and is
-destroyed on teardown), and returns a ≤200-word summary. It filters findings
-by author: for PRs authored by `rranauro` it reports all four categories
-(bug, security, perf, nit) plus Copilot reconciliation; for everyone else's
-PRs it reports only bugs and security.
+```bash
+gh pr view <pr_number> --repo {{repo.slug}} --json comments \
+  -q '.comments[] | select(.body | contains("<!-- claude-pr-review -->")) | .body'
+```
 
-**Relay the agent's TL;DR verbatim — do not re-expand it.** The agent returns
-a <120-word block (verdict, AC alignment, counts, top concern, Copilot, file
-paths) written for a senior Rails reader. Print that block and stop. Do not
-paste findings, re-summarize the report, or add your own commentary. Ron reads
-the TL;DR, then asks for whatever detail he wants — at which point you open
-`claude-review.md` and pull only the section he asked about. The default
-surface is the TL;DR plus the two file paths; everything else is pull, not push.
+If that returns a review, use it — don't re-run. It's the persistent copy and
+it already lives where colleagues can see it.
+
+**Otherwise run the script.** Colleague PRs and second passes after pushing
+fixes have no hook trigger:
+
+```bash
+${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh --source start-review <pr_number>
+```
+
+Posting is decided by authorship: the user's own PRs get the review posted as a
+comment; colleague PRs write to `{{repo.workspace_root}}/{{repo.app_subdir}}/{{paths.reviews}}/pr-<pr_number>/claude-review.md`
+instead — the **absolute home path**, never the worktree's `tmp/`, which is
+worktree-specific and destroyed on teardown. Never pass `--post` on someone
+else's PR without the user saying so.
+
+**Relay a ≤120-word TL;DR — do not re-expand the review.** Give the user a verdict
+line, AC alignment, finding counts, the top concern (say so if it's
+`suspected-from-code`), whether Copilot has weighed in, and the comment URL or
+file path. Then stop. Do not paste findings or add commentary. the user reads the
+TL;DR and asks for whatever detail he wants — at which point you pull only the
+section he asked about. Everything else is pull, not push.
 
 ## Step 4: Generate the in-app walkthrough (always)
 
 Every review drops a self-contained `walkthrough.html` so the in-app test
-steps can be followed in the browser while you and Ron discuss findings in
+steps can be followed in the browser while you and the user discuss findings in
 the terminal — without losing your place. Do this on **every** review, not
 just complex ones.
 
 **Always write it to the HOME repo, at an absolute path:**
 
 ```
-~/dev/scientist/rx/tmp/reviews/pr-<pr_number>/walkthrough.html
+{{repo.workspace_root}}/{{repo.app_subdir}}/{{paths.reviews}}/pr-<pr_number>/walkthrough.html
 ```
 
 `mkdir -p` the dir first. Never write it into the worktree's `tmp/` — that
@@ -97,8 +128,9 @@ survives worktree removal. It sits alongside `claude-review.md`.
 Seed it from two sources:
 - **The author's own in-app test instructions** (the PR "Instructions"
   section) — one checklist row per step. Default to these; don't invent your
-  own steps unless Ron asks.
-- **The claude-reviewer findings** — especially `suspected-from-code` ones
+  own steps unless the user asks.
+- **The Claude review findings** (from the PR comment or the review file) —
+  especially `suspected-from-code` ones
   that need an in-app check. Give each its own *starred* row with ✅/❌
   verdict buttons, so exercising the feature confirms or refutes it.
 
@@ -127,7 +159,7 @@ render();
 </script>
 ```
 
-Surface the `file://` path to Ron and tell him it persists after worktree
+Surface the `file://` path to the user and tell him it persists after worktree
 teardown. Then walk him through the checklist per the colleague/self-review
 flow below — defaulting to the author's own steps — ticking rows (or letting
 him tick them) as you go.
@@ -135,17 +167,17 @@ him tick them) as you go.
 ## Step 5: Review Plan (optional)
 
 If the PR is complex, consider creating a review-notes file at
-`rx/plans/pr-<pr_number>-review-notes.md` to capture:
+`{{paths.plans}}/pr-<pr_number>-review-notes.md` to capture:
 - Areas to scrutinize
 - Test scenarios to verify in-browser
 - Questions for the author
 
-Since `rx/plans/` is symlinked across worktrees, these notes stay visible
+Since `{{paths.plans}}/` is symlinked across worktrees, these notes stay visible
 from the home worktree too.
 
 ---
 
-## Colleague PR flow (author ≠ `rranauro`)
+## Colleague PR flow (author ≠ you)
 
 The author is the subject-matter expert. Goal: confirm the PR does what it
 intends, and surface genuine concerns as questions — not fix their code.
@@ -155,8 +187,8 @@ intends, and surface genuine concerns as questions — not fix their code.
   concluding anything.** Static analysis tells you *what to look at*, not
   *what to conclude*. (PR #36922 taught this: a confident diff-only "blocker"
   was refuted the moment the feature was exercised in-browser.)
-- **Default to the author's own test instructions** — step Ron through them
-  and check each off. Generate custom console snippets *only* if Ron asks.
+- **Default to the author's own test instructions** — step the user through them
+  and check each off. Generate custom console snippets *only* if the user asks.
 - **Trust the author's setup.** Don't triage or fact-check their instructions
   (a scope that errors locally, etc.) — work around it quietly; it's not ours
   to pin.
@@ -172,13 +204,13 @@ intends, and surface genuine concerns as questions — not fix their code.
 
 ---
 
-## Self-review addendum (author == `rranauro`)
+## Self-review addendum (author == you)
 
-The steps below apply only when Ron is reviewing his own PR. Goal: catch
+The steps below apply only when the user is reviewing his own PR. Goal: catch
 everything a colleague might flag, fix or discard it, and log the
 decisions so reviewers see the thought already done.
 
-### Step 6: Triage the claude-reviewer report
+### Step 6: Triage the Claude review
 
 For each finding, decide one of:
 - **Fix** — apply the change
@@ -198,7 +230,7 @@ notes"** heading so colleagues can see what's already been considered:
 
 ### Step 7: Act on Copilot's suggestions (if any)
 
-If the claude-reviewer report flagged any Copilot comments as "Agree" or
+If the Claude review flagged any Copilot comments as "Agree" or
 worth acting on, run `/rranauro:review-copilot <pr>` — it triages each Copilot
 comment, applies the valid ones in its own worktree, runs the affected
 specs, and pushes.
@@ -210,9 +242,9 @@ reconciliation.
 
 In the review worktree (or your feature worktree — your call):
 - Apply edits
-- `bundle exec rspec <changed specs>`
-- `bundle exec rubocop <changed files>`
-- Exercise the feature in-browser via `~/bin/rx-serve start` from the
+- `{{commands.test}} <changed specs>`
+- `{{commands.lint}} <changed files>`
+- Exercise the feature in-browser via `{{commands.serve}} start` from the
   worktree root
 
 ### Step 9: Push fixes; optional second pass
@@ -223,42 +255,42 @@ confirm nothing regressed.
 
 ---
 
-## Drafting comments for Ron
+## Drafting comments for the user
 
-- **Never post any comment without Ron's explicit permission.** Inline
+- **Never post any comment without the user's explicit permission.** Inline
   comments stay pending; never `submit_pending` unless he says submit/send.
 - Frame findings as **questions** that leave the author latitude to
   acknowledge, defer as out-of-scope, or ignore — unless it's a degenerate
   case they genuinely should fix.
-- **1-2 sentences max.** Avoid pipes `|`, tables, and heavy markup so Ron can
+- **1-2 sentences max.** Avoid pipes `|`, tables, and heavy markup so the user can
   paste straight into the GitHub review box.
 
 ---
 
 ## When Done
 
-**Do not tear down the worktree automatically.** Ron may want to keep it as
+**Do not tear down the worktree automatically.** the user may want to keep it as
 a work-in-progress review sandbox across sessions. Ask first:
 
-> "Review worktree `rx-review-<pr_number>` is still on disk. Remove it, or
+> "Review worktree `{{repo.worktree_prefix}}-review-<pr_number>` is still on disk. Remove it, or
 > keep it for ongoing work?"
 
 Only on explicit approval, run:
 
 ```bash
-~/bin/rx-serve stop   # if still running
-cd ~/dev/scientist
-git worktree remove --force ./rx-review-<pr_number>   # --force if a run dirtied schema.rb via db:migrate
+{{commands.serve}} stop   # if still running
+cd {{repo.workspace_root}}
+git worktree remove --force ./{{repo.worktree_prefix}}-review-<pr_number>   # --force if a run dirtied generated files
 git branch -D pr-<pr_number>-review
 ```
 
 The review artifacts (`claude-review.md` + `walkthrough.html`) live in the
-**home** repo at `rx/tmp/reviews/pr-<pr_number>/`, so worktree removal does
+**home** repo at `{{paths.reviews}}/pr-<pr_number>/`, so worktree removal does
 **not** touch them — they persist across sessions. Remove that dir separately
-only if Ron asks to clear the artifacts too:
+only if the user asks to clear the artifacts too:
 
 ```bash
-rm -rf ~/dev/scientist/rx/tmp/reviews/pr-<pr_number>
+rm -rf {{repo.workspace_root}}/{{repo.app_subdir}}/{{paths.reviews}}/pr-<pr_number>
 ```
 
 Otherwise, leave the worktree in place and remind the user of the teardown

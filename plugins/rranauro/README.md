@@ -1,6 +1,12 @@
-# rranauro — Worktree-First RX Workflow
+# rranauro — Worktree-First Ticket Workflow
 
-A two-terminal, worktree-based workflow for moving an RX ticket from "I have an issue number" to "human-ready PR" using Claude Code. Personal-share plugin, opt-in.
+A two-terminal, worktree-based workflow for moving a ticket from "I have an issue number" to "human-ready PR" using Claude Code. Personal-share plugin, opt-in.
+
+Project-specific values (repo slug, workspace layout, test/lint commands) come
+from a **dev-suite profile** — see [PROFILE.md](PROFILE.md) and copy
+[`dev-suite.example.json`](dev-suite.example.json) to `<project>/.claude/dev-suite.json`.
+Without one the commands still run, detecting what they can from `git` and `gh`
+and skipping steps whose command isn't configured.
 
 ## Install
 
@@ -21,7 +27,7 @@ Edit any installed command in `~/.claude/plugins/rranauro/` to match your style 
 
 ### 1. Plan the work — `/rranauro:architect`
 
-Open a fresh Claude session in the rx repo. Start the conversation naturally:
+Open a fresh Claude session in the project repo. Start the conversation naturally:
 
 ```
 /rranauro:architect Let's discuss this ticket <issue-URL> before we get started.
@@ -30,16 +36,16 @@ Open a fresh Claude session in the rx repo. Start the conversation naturally:
 Claude fetches the issue and walks Phase 1 (problem) → Phase 2 (approaches) → Phase 3 (converge). When the approach is settled, it saves a plan to:
 
 ```
-rx/plans/<issue_number>-<short-description>.md
+{{paths.plans}}/<issue_number>-<short-description>.md
 ```
 
 The plan is your contract with yourself for the rest of the workflow.
 
 ### 2. Set up the worktree — `/rranauro:start-ticket <ticket-URL-or-#>`
 
-Reads the issue and the matching plan from `rx/plans/`. Confirms scope before doing anything. Creates a git worktree of the scientist monorepo and runs `~/bin/rx-worktree-init` to symlink personal/untracked files (.claude/, plans/, .env, lib/local, etc.) via the manifest. Hands off to a new Claude session in the worktree.
+Reads the issue and the matching plan from `{{paths.plans}}/`. Confirms scope before doing anything. Creates a git worktree of the project's main checkout and runs `{{commands.worktree_init}}` to symlink personal/untracked files (.claude/, plans/, .env, lib/local, etc.) via the manifest. Hands off to a new Claude session in the worktree.
 
-Worktree path: `/Users/<you>/dev/scientist/rx-<issue>-<slug>/`
+Worktree path: `{{repo.workspace_root}}/{{repo.worktree_prefix}}-<issue>-<slug>/`
 
 ### 3. Implement
 
@@ -47,8 +53,8 @@ Work through the plan in the worktree's Claude session:
 
 - Write the code and the acceptance specs (RSpec) together.
 - Use `/rx:commit` to break work into clean, single-concern commits.
-- Run `bundle exec rspec spec/path/to/spec.rb` after each logical step.
-- Lint as you go: `bundle exec rubocop` on touched Ruby files.
+- Run `{{commands.test}} spec/path/to/spec.rb` after each logical step.
+- Lint as you go: `{{commands.lint}}` on touched Ruby files.
 
 ### 4. Open the PR — `/rx:pr`
 
@@ -59,7 +65,7 @@ Work through the plan in the worktree's Claude session:
 If the change needs in-browser verification a reviewer should run, drop a script in:
 
 ```
-rx/lib/local/<ticket>_test_in_app.rb
+<project scratch dir>/<ticket>_test_in_app.rb
 ```
 
 These files are untracked — upload the script as a comment on the PR rather than committing it. The convention keeps the PR clean and the scripts easy to iterate on.
@@ -82,18 +88,22 @@ Open a NEW terminal, start a fresh Claude session, and run:
 /rranauro:start-review <PR#>
 ```
 
-Creates a separate worktree of the PR's head branch (so review state never collides with your dev branch), spawns the `claude-reviewer` subagent, and writes findings to:
+Creates a separate worktree of the PR's head branch (so review state never collides with your dev branch), then picks up the Claude review.
+
+On your own PRs the review already exists — the `pr-review-on-create` hook fires on `gh pr create` and posts it as a PR comment marked `<!-- claude-pr-review -->`. For colleague PRs and second passes, `start-review` runs `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh`, which writes to:
 
 ```
-rx/tmp/reviews/pr-<PR#>/claude-review.md
+{{paths.reviews}}/pr-<PR#>/claude-review.md
 ```
+
+That script is the single source of the review prompt — the hook, `start-review`, and any manual re-run all go through it.
 
 ### 8. Apply review feedback in the dev terminal
 
 Switch back to your DEV terminal:
 
 ```
-Read rx/tmp/reviews/pr-<PR#>/claude-review.md and address the findings.
+Read the Claude review on PR <PR#> and address the findings.
 ```
 
 Claude reads the report, makes the fixes, and re-runs specs. Use `/rx:commit` per batch of fixes so each fix is a separate, reviewable commit.
@@ -144,7 +154,7 @@ Runs rubocop on changed Ruby files, runs targeted RSpec, pushes the branch, and 
 | `/rranauro:cleanup-worktree` | Remove a worktree after PR merges |
 | `/rranauro:worktree-gc` | Sweep all merged-branch worktrees |
 
-**`rx` plugin (team-shared, used in this workflow):**
+**`rx` plugin (team-shared; referenced when `commands.commit` / `commands.pr` point at it):**
 
 | Command | Purpose |
 |---------|---------|
@@ -153,10 +163,10 @@ Runs rubocop on changed Ruby files, runs targeted RSpec, pushes the branch, and 
 
 ## Why two terminals + worktrees?
 
-The dev terminal owns the feature branch; the review terminal owns a clean checkout of the same PR's head branch. Worktrees mean both sessions have a real working directory and an independent Rails server (via `rx-serve`). The review never fights with your in-progress edits, and applying review feedback is just file-paths-and-line-numbers from a known artifact.
+The dev terminal owns the feature branch; the review terminal owns a clean checkout of the same PR's head branch. Worktrees mean both sessions have a real working directory and an independent Rails server (via `{{commands.serve}}`). The review never fights with your in-progress edits, and applying review feedback is just file-paths-and-line-numbers from a known artifact.
 
 ## Tips
 
 - Keep the dev terminal's working tree clean before starting `/rranauro:start-review` — uncommitted changes there make the review picture noisy.
 - `/rranauro:architect` is conversational by design. If the approach changes mid-discussion, just say so — the plan file gets updated when you converge.
-- The review file at `rx/tmp/reviews/pr-<PR#>/claude-review.md` is the cross-terminal handoff. If you change PR# (e.g., reopen as new PR), rename or rerun.
+- The PR comment marked `<!-- claude-pr-review -->` is the cross-terminal handoff for your own PRs — it's persistent and visible to colleagues. Colleague PRs fall back to `{{paths.reviews}}/pr-<PR#>/claude-review.md`. If you change PR# (e.g., reopen as new PR), rerun `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh`.

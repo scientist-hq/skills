@@ -1,0 +1,29 @@
+{
+  "$comment": "Copy to <project>/.claude/dev-suite.json (per-project) or ~/.claude/dev-suite.json (fallback for every project). See PROFILE.md. Values below are the RX monorepo's real settings, kept as a worked example.",
+
+  "identity": {
+    "gh_user": null
+  },
+
+  "repo": {
+    "slug": "scientist-hq/rx",
+    "workspace_root": "~/dev/scientist",
+    "app_subdir": "rx",
+    "worktree_prefix": "rx",
+    "default_branch": "main"
+  },
+
+  "paths": {
+    "plans": "plans",
+    "reviews": "tmp/reviews"
+  },
+
+  "commands": {
+    "serve": "~/bin/rx-serve",
+    "worktree_init": "~/bin/rx-worktree-init",
+    "test": "bundle exec rspec",
+    "lint": "bundle exec rubocop",
+    "commit": "/rx:commit",
+    "pr": "/rx:pr"
+  }
+}
