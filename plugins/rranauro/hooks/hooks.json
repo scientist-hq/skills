@@ -1,0 +1,17 @@
+{
+  "description": "Runs the Claude PR review automatically when a `gh pr create` succeeds in a Claude Code Bash call, and posts it as a PR comment. Delegates to scripts/pr-review.sh — the same reviewer used by /rranauro:start-review and manual re-runs. Kill switch: export SKIP_PR_REVIEW=1.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/pr-review-on-create.sh\"",
+            "if": "Bash(gh pr create:*)"
+          }
+        ]
+      }
+    ]
+  }
+}

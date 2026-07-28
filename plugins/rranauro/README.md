@@ -23,6 +23,23 @@ Confirm install: type `/` and you should see `/rranauro:architect`, `/rranauro:s
 
 Edit any installed command in `~/.claude/plugins/rranauro/` to match your style — installs are local copies and yours to tinker with.
 
+### The PR-review hook
+
+Installing also enables one hook, declared in [`hooks/hooks.json`](hooks/hooks.json)
+and registered automatically — there is nothing to add to `settings.json`. When a
+`gh pr create` succeeds inside a Claude Code Bash call, it runs
+[`scripts/pr-review.sh`](scripts/pr-review.sh) against the new PR and posts the
+result as a comment marked `<!-- claude-pr-review -->`.
+
+It fires in **every** repo you open a PR from, by design — the review is useful on
+any PR you author, and running the suite outside its home project is how its
+portability gets exercised. Two things follow from that:
+
+- Reviews get posted to PRs in repos you may not control. `export SKIP_PR_REVIEW=1`
+  turns the hook off.
+- Review artifacts land under `{{paths.reviews}}` (default `tmp/reviews`). If a
+  project doesn't gitignore that path, they'll show up in `git status`.
+
 ## The Workflow
 
 ### 1. Plan the work — `/rranauro:architect`
@@ -90,7 +107,7 @@ Open a NEW terminal, start a fresh Claude session, and run:
 
 Creates a separate worktree of the PR's head branch (so review state never collides with your dev branch), then picks up the Claude review.
 
-On your own PRs the review already exists — the `pr-review-on-create` hook fires on `gh pr create` and posts it as a PR comment marked `<!-- claude-pr-review -->`. For colleague PRs and second passes, `start-review` runs `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh`, which writes to:
+On your own PRs the review already exists — the [`pr-review-on-create` hook](#the-pr-review-hook) fires on `gh pr create` and posts it as a PR comment marked `<!-- claude-pr-review -->`. For colleague PRs and second passes, `start-review` runs `${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh`, which writes to:
 
 ```
 {{paths.reviews}}/pr-<PR#>/claude-review.md
