@@ -89,7 +89,32 @@ EOF
 
 1. Print the PR URL
 2. Summarize: title, labels, linked issue, draft status
-3. Remind: "Mark as ready for review when you're satisfied: `gh pr ready`"
+3. If the change needs non-trivial setup to see, post the reviewer setup as a
+   PR comment (see below)
+4. Remind: "Mark as ready for review when you're satisfied: `gh pr ready`"
+
+## Reviewer Setup
+
+When a reviewer can't see the change without data that takes more than a minute to
+assemble — a rate card, a configured org, a multi-step workflow state — give them a
+setup they can run, as a **PR comment**, not a file.
+
+- Script artifacts useful to the reviewer are typically gitignored or otherwise kept
+  out of the diff, so they never reach the reviewer. Whatever they need must be
+  **inline in the comment**, self-contained, with no `require` of anything outside
+  the repo.
+- Prefer one paste-able `begin … end` block for `bundle exec rails console` over a
+  sequence of UI steps. UI paths rot and are easy to get subtly wrong; a script that
+  prints its result is checkable.
+- End the script by printing the **URLs to open** — the reviewer's next action, not a
+  description of it. Build URLs from `uuid`, not `id`: most RX show routes look up by
+  uuid and an integer id 404s.
+- Include the expected output so a reviewer knows immediately whether their run worked.
+- Seed a **control** alongside the case under test where the change is a delta (a line
+  with the feature and one without, priced identically). It turns "is this number
+  right?" into a visible comparison.
+- Run the block yourself before posting it. A setup script that fails on first paste
+  costs more than no script at all.
 
 ## Examples
 
