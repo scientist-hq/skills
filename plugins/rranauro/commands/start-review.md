@@ -55,6 +55,25 @@ mkdir -p {{repo.worktree_root}}
 cd {{repo.workspace_root}}
 git fetch origin pull/<pr_number>/head:pr-<pr_number>-review
 git worktree add {{repo.worktree_root}}/{{repo.worktree_prefix}}-review-<pr_number> pr-<pr_number>-review
+```
+
+**Now fire the review, before provisioning.** Unless Step 3's existing-review
+check already found one, start it detached so it runs in its own headless
+context while `{{commands.worktree_init}}` installs deps — that provisioning takes
+minutes, and the review has no reason to wait for it:
+
+```bash
+${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh --detach --source start-review <pr_number>
+```
+
+Run it from `{{repo.workspace_root}}`, not the worktree — the script resolves
+`repo.*` from `.claude/dev-suite.json` relative to its cwd, and that is what puts
+artifacts in the home checkout instead of the throwaway worktree.
+
+`--detach` returns immediately and logs to `~/.claude/logs/pr-review/<ts>-pr<n>.log`.
+Tell the user the review is running and where the log is, then continue:
+
+```bash
 {{commands.worktree_init}} {{repo.worktree_root}}/{{repo.worktree_prefix}}-review-<pr_number>
 ```
 
@@ -88,18 +107,31 @@ gh pr view <pr_number> --repo {{repo.slug}} --json comments \
 If that returns a review, use it — don't re-run. It's the persistent copy and
 it already lives where colleagues can see it.
 
-**Otherwise run the script.** Colleague PRs and second passes after pushing
-fixes have no hook trigger:
+**Otherwise collect the detached run.** Colleague PRs and second passes after
+pushing fixes have no hook trigger, so Step 2 already started one. It writes to:
+
+```
+{{repo.workspace_root}}/{{repo.app_subdir}}/{{paths.reviews}}/pr-<pr_number>/claude-review.md
+```
+
+Wait for that file to appear rather than re-running the script — a second
+invocation duplicates the work and the token spend. If it isn't there yet, say
+so and check again; if it never arrives, read the tail of
+`~/.claude/logs/pr-review/<ts>-pr<n>.log` for the failure and report it. A
+detached run that dies is silent by construction — the log is the only place it
+surfaces, so never assume success from the absence of an error.
+
+If Step 2 was skipped (resuming an old session, worktree already existed), run
+it in the foreground instead:
 
 ```bash
 ${CLAUDE_PLUGIN_ROOT}/scripts/pr-review.sh --source start-review <pr_number>
 ```
 
 Posting is decided by authorship: the user's own PRs get the review posted as a
-comment; colleague PRs write to `{{repo.workspace_root}}/{{repo.app_subdir}}/{{paths.reviews}}/pr-<pr_number>/claude-review.md`
-instead — the **absolute home path**, never the worktree's `tmp/`, which is
-worktree-specific and destroyed on teardown. Never pass `--post` on someone
-else's PR without the user saying so.
+comment; colleague PRs write to the file above — the **absolute home path**,
+never the worktree's `tmp/`, which is worktree-specific and destroyed on
+teardown. Never pass `--post` on someone else's PR without the user saying so.
 
 **Relay a ≤120-word TL;DR — do not re-expand the review.** Give the user a verdict
 line, AC alignment, finding counts, the top concern (say so if it's
