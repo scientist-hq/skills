@@ -22,7 +22,8 @@ your user-level `commands.test`.
 |-----|---------|---------------|
 | `identity.gh_user` | *(auto)* | Your GitHub login, used to tell your own PRs from a colleague's. Leave `null` to detect it at runtime via `gh api user -q .login` — that's correct for everyone and needs no config. |
 | `repo.slug` | *(auto)* | `owner/name`. Leave unset to infer via `gh repo view`. |
-| `repo.workspace_root` | *(git toplevel)* | The main checkout that holds sibling worktrees. Artifacts (reviews, plans) are written here so they survive worktree teardown — if you use worktrees, set this explicitly, or the fallback resolves to whichever worktree is current. |
+| `repo.workspace_root` | *(git toplevel)* | The main checkout. Artifacts (reviews, plans) are written here so they survive worktree teardown — if you use worktrees, set this explicitly, or the fallback resolves to whichever worktree is current. |
+| `repo.worktree_root` | *(`workspace_root`)* | Directory that holds worktrees. Point it at a dedicated dir (e.g. `<workspace_root>/worktrees`) so worktrees sit in one place instead of scattering as siblings — makes stale ones obvious and keeps whole-repo copies out of any path your linters and IDE index. Must be git-excluded if it lives inside the repo. |
 | `repo.app_subdir` | `""` | Subdirectory holding the app, for monorepos where the framework root isn't the git root. `""` means the repo root is the app root. |
 | `repo.worktree_prefix` | *(repo name)* | Prefix for worktree directory names — `<prefix>-<issue>-<slug>`. |
 | `repo.default_branch` | *(remote HEAD)* | Base branch for PRs and diffs. |
