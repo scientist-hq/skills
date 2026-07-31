@@ -36,23 +36,24 @@ Present a summary of the ticket to the user, then ask questions about anything:
 ## Step 3: Create the Worktree
 
 The main checkout root is your home monorepo checkout (default
-`{{repo.workspace_root}}/`). Worktrees are placed as siblings to the app checkout inside it
-(the `{{repo.worktree_prefix}}-*` pattern is already in `.git/info/exclude`).
+`{{repo.workspace_root}}/`). Every worktree goes under `{{repo.worktree_root}}/` — one
+dedicated directory, git-excluded, holding nothing but worktrees.
 
 ```bash
+mkdir -p {{repo.worktree_root}}
 cd {{repo.workspace_root}}
 git fetch origin main
-git worktree add ./{{repo.worktree_prefix}}-<issue_number>-<short-description> \
+git worktree add {{repo.worktree_root}}/{{repo.worktree_prefix}}-<issue_number>-<short-description> \
   -b <issue_number>-<short-description> origin/main
-{{commands.worktree_init}} ./{{repo.worktree_prefix}}-<issue_number>-<short-description>
+{{commands.worktree_init}} {{repo.worktree_root}}/{{repo.worktree_prefix}}-<issue_number>-<short-description>
 ```
 
 - Branch name: `<issue_number>-<short-description>` (kebab-case)
 - Example: `{{repo.worktree_prefix}}-34500-add-bulk-export-button`
 
 Then tell the user:
-- Worktree is at `{{repo.workspace_root}}/{{repo.worktree_prefix}}-<issue>-<slug>/`
-- To work there: open a new terminal, `cd {{repo.workspace_root}}/{{repo.worktree_prefix}}-<issue>-<slug>/{{repo.app_subdir}}`, run `claude`
+- Worktree is at `{{repo.worktree_root}}/{{repo.worktree_prefix}}-<issue>-<slug>/`
+- To work there: open a new terminal, `cd {{repo.worktree_root}}/{{repo.worktree_prefix}}-<issue>-<slug>/{{repo.app_subdir}}`, run `claude`
 - To boot the app: `{{commands.serve}} start` from the worktree root (not the {{repo.app_subdir}} subdir). It will prompt if a server is already running in another worktree and show any migrations that differ.
 - The current session is for planning only — hand off implementation to the new session.
 

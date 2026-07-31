@@ -51,17 +51,18 @@ decline and work from the original.
 ## Step 2: Create the Review Worktree
 
 ```bash
+mkdir -p {{repo.worktree_root}}
 cd {{repo.workspace_root}}
 git fetch origin pull/<pr_number>/head:pr-<pr_number>-review
-git worktree add ./{{repo.worktree_prefix}}-review-<pr_number> pr-<pr_number>-review
-{{commands.worktree_init}} ./{{repo.worktree_prefix}}-review-<pr_number>
+git worktree add {{repo.worktree_root}}/{{repo.worktree_prefix}}-review-<pr_number> pr-<pr_number>-review
+{{commands.worktree_init}} {{repo.worktree_root}}/{{repo.worktree_prefix}}-review-<pr_number>
 ```
 
-- Worktree path: `{{repo.workspace_root}}/{{repo.worktree_prefix}}-review-<pr>/`
+- Worktree path: `{{repo.worktree_root}}/{{repo.worktree_prefix}}-review-<pr>/`
 - Branch name: `pr-<pr>-review` (local, detached from the remote)
 
 Tell the user:
-- Worktree ready at `{{repo.workspace_root}}/{{repo.worktree_prefix}}-review-<pr>/`
+- Worktree ready at `{{repo.worktree_root}}/{{repo.worktree_prefix}}-review-<pr>/`
 - Open a new terminal, `cd` there, run `claude`
 - To boot the app for in-browser testing: `{{commands.serve}} start` from the worktree root
 - If a server is running in another worktree, `{{commands.serve}}` will warn and show migration differences before killing it
@@ -280,8 +281,10 @@ Only on explicit approval, run:
 ```bash
 {{commands.serve}} stop   # if still running
 cd {{repo.workspace_root}}
-git worktree remove --force ./{{repo.worktree_prefix}}-review-<pr_number>   # --force if a run dirtied generated files
+git worktree remove --force {{repo.worktree_root}}/{{repo.worktree_prefix}}-review-<pr_number>   # --force if a run dirtied generated files
 git branch -D pr-<pr_number>-review
+git worktree prune
+rm -rf {{repo.worktree_root}}/{{repo.worktree_prefix}}-review-<pr_number>   # untracked residue (tmp/, node_modules) git leaves behind
 ```
 
 The review artifacts (`claude-review.md` + `walkthrough.html`) live in the

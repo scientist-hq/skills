@@ -8,6 +8,7 @@
   "repo": {
     "slug": "scientist-hq/rx",
     "workspace_root": "~/dev/scientist",
+    "worktree_root": "~/dev/scientist/worktrees",
     "app_subdir": "rx",
     "worktree_prefix": "rx",
     "default_branch": "main"

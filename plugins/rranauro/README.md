@@ -62,7 +62,7 @@ The plan is your contract with yourself for the rest of the workflow.
 
 Reads the issue and the matching plan from `{{paths.plans}}/`. Confirms scope before doing anything. Creates a git worktree of the project's main checkout and runs `{{commands.worktree_init}}` to symlink personal/untracked files (.claude/, plans/, .env, lib/local, etc.) via the manifest. Hands off to a new Claude session in the worktree.
 
-Worktree path: `{{repo.workspace_root}}/{{repo.worktree_prefix}}-<issue>-<slug>/`
+Worktree path: `{{repo.worktree_root}}/{{repo.worktree_prefix}}-<issue>-<slug>/`
 
 ### 3. Implement
 
