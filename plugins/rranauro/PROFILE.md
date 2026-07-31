@@ -62,3 +62,9 @@ Scripts parse it with the `python3` already required elsewhere in the suite.
 Resolution is the same three-tier order, and the same detect-first principle:
 `pr-review.sh` resolves the current GitHub user from `gh api user` and only
 consults `identity.gh_user` as an override.
+
+**An absent profile is the normal case, not an error.** The `pr-review-on-create`
+hook ships with the plugin and fires in every repo you open a PR from, so
+`pr-review.sh` routinely runs in projects that have no `dev-suite.json` at all.
+It must fall through to detection and the built-in defaults without complaint —
+never prompt, never fail, never write a profile on the user's behalf.
