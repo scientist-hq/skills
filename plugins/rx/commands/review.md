@@ -6,7 +6,7 @@ Review code changes against Sacred Rules and Sacred Taste using a structured mul
 
 ## Tool Restrictions
 
-- ALLOWED: Read, Glob, Grep, Bash (git diff, git log, git status, bundle exec rubocop, bundle exec brakeman, gh pr diff), Write (review report file only)
+- ALLOWED: Read, Glob, Grep, Bash (git diff, git log, git status, bundle exec rubocop, bundle exec brakeman, gh pr diff, pnpm --filter @scientist/ui lint:exports), Write (review report file only)
 - FORBIDDEN: Edit, WebFetch, WebSearch, gh api (no posting — use `/post-review` for that)
 
 ## Authority Boundaries
@@ -43,6 +43,7 @@ Review target: $ARGUMENTS
 2. **Get the diff**: Run `git diff main...HEAD` (branch review) or `gh pr diff <number>` (PR review)
 3. **Run linters**: `bundle exec rubocop <changed_files>` on all changed Ruby files
 4. **Run security scan**: `bundle exec brakeman --only-files <changed_files>` (if controller/view/model changes)
+5. **If `packages/ui/src/index.ts` or `packages/ui/src/types.ts` appear in the diff**: run `pnpm --filter @scientist/ui lint:exports` and flag any violations as **MUST-FIX**
 5. **For each changed file:**
    a. Check every Sacred Rule — flag violations as **MUST-FIX** with rule ID, description, and `file_path:line_number`
    b. Check Sacred Taste — flag as **SUGGESTION** with taste ID, description, and `file_path:line_number`
