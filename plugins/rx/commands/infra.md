@@ -97,7 +97,7 @@ RX Rails App (this repo)
 
 - **Private gems** from `rubygems.pkg.github.com/scientist-hq`: `benchmate`, `scientist_api_v2`, `scientist_api_open_buy`, `scientist_open_api`
 - **Contribsys** (gems.contribsys.com): Sidekiq Pro (token via `BUNDLE_GEMS__CONTRIBSYS__COM`)
-- **Git gems**: `data_uri`, `jquery-fileupload-rails`, `k8s-ruby` (forked), `shortcode`, `red_cloth_formatters_plain`
+- **Git gems**: `data_uri`, `jquery-fileupload-rails`, `shortcode`, `red_cloth_formatters_plain`
 - **bootboot** dual-boot: `DEPENDENCIES_NEXT=1` tests next gem versions in CI before committing
 - CI runs `scientist_api_v2` and `scientist_api_open_buy` as separate matrix jobs — they have their own test suites
 

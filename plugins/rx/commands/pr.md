@@ -42,6 +42,16 @@ Also add area labels if applicable:
 
 If unsure about labels, ASK the user.
 
+## Hotfix Handling
+
+If the `Hotfix` label applies, three things differ from a normal PR. Handle each independently:
+
+1. **Base branch → `production`.** Hotfixes target `production`, not `main`. The default base is `main`, so STOP and ASK the user to confirm before switching. Only after they approve, open the PR with `--base production`. Never change the base without approval.
+
+2. **Title prefix → `HOTFIX:`.** Prefix the PR title with `HOTFIX: ` (e.g. `HOTFIX: Fix partial provider credit calculation`).
+
+3. **Branch name.** The branch name should contain `hotfix` (e.g. `<issue>-hotfix-<slug>`). If it doesn't, WARN the user and ask whether to continue — do NOT rename the branch automatically.
+
 ## PR Body Format
 
 Follow the team's established format:
@@ -89,32 +99,7 @@ EOF
 
 1. Print the PR URL
 2. Summarize: title, labels, linked issue, draft status
-3. If the change needs non-trivial setup to see, post the reviewer setup as a
-   PR comment (see below)
-4. Remind: "Mark as ready for review when you're satisfied: `gh pr ready`"
-
-## Reviewer Setup
-
-When a reviewer can't see the change without data that takes more than a minute to
-assemble — a rate card, a configured org, a multi-step workflow state — give them a
-setup they can run, as a **PR comment**, not a file.
-
-- Script artifacts useful to the reviewer are typically gitignored or otherwise kept
-  out of the diff, so they never reach the reviewer. Whatever they need must be
-  **inline in the comment**, self-contained, with no `require` of anything outside
-  the repo.
-- Prefer one paste-able `begin … end` block for `bundle exec rails console` over a
-  sequence of UI steps. UI paths rot and are easy to get subtly wrong; a script that
-  prints its result is checkable.
-- End the script by printing the **URLs to open** — the reviewer's next action, not a
-  description of it. Build URLs from `uuid`, not `id`: most RX show routes look up by
-  uuid and an integer id 404s.
-- Include the expected output so a reviewer knows immediately whether their run worked.
-- Seed a **control** alongside the case under test where the change is a delta (a line
-  with the feature and one without, priced identically). It turns "is this number
-  right?" into a visible comparison.
-- Run the block yourself before posting it. A setup script that fails on first paste
-  costs more than no script at all.
+3. Remind: "Mark as ready for review when you're satisfied: `gh pr ready`"
 
 ## Examples
 
