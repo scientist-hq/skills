@@ -198,7 +198,9 @@ Before creating the PR, gather:
 
 ```markdown
 **Description**
-What does this pull request do and which tickets does it resolve?
+One or two plain sentences: what changed, in human terms.
+
+Resolves #XXXXX. Then the detail — what the PR does and any technical notes.
 
 **User Impact**
 What changes for a user? Who are the users? (Researcher, Supplier, Scientist Admin, etc.)
@@ -214,10 +216,13 @@ What changes for a user? Who are the users? (Researcher, Supplier, Scientist Adm
 **Section Guidelines:**
 
 1. **Description**
-   - Start with issue reference using "Resolves #XXXXX" — this auto-closes the ticket when the PR merges
+   - **ALWAYS open with a short human-readable summary — one or two sentences, before anything else.** Someone who has never seen the ticket should finish it knowing what changed. Plain language: no class names, no file paths, no issue numbers, no jargon. Then the issue reference, then the detail.
+   - Put the summary first even when the PR is small or obvious. It is the only part most people read.
+   - ❌ BAD (opens on an identifier, and the reader has to already know the codebase): `Resolves #39615. #39611 let a Pg::ProposalTemplate own a milestone-group tree and #39761 made that tree travel onto a request. Nothing offered a supplier a phase, though...`
+   - ✅ GOOD: `Suppliers can now organise a proposal template's line items into named groups, and those groups stick when the template is saved or reused. Previously a template could only hold one flat list.`
+   - Issue reference goes on the line after the summary, using "Resolves #XXXXX" — this auto-closes the ticket when the PR merges
    - Only use "As part of #XXXXX" if the user explicitly says the ticket should stay open after merge
-   - Explain what the PR does
-   - Include relevant technical details
+   - Then explain what the PR does and include relevant technical details
 
 2. **User Impact**
    - What bug is fixed or feature is added

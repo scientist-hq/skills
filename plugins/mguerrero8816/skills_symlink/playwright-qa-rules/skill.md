@@ -45,6 +45,11 @@ Personal skills for automating browser tasks.
 - Goes to `backoffice/accounting/purchase_orders`, finds the PO, opens Actions → Send → Send Purchase Order & Sales Order to Netsuite
 - Note: AZ org will fail with `customerLegalEntity` error in dev — use an org with NetSuite configured (e.g. BMS) for a full end-to-end test
 
+**`playwright-netsuite-dev`** — drive NetSuite dev 0 itself
+- Use when the task is inside NetSuite: open a record, print a PDF template, check a SuiteScript
+- The only allowed remote environment, and only through Playwright — account `1725327`, no other
+- Mike does the logging in; stop and ask him if the browser lands on a login page
+
 **ALWAYS use the most specific skill available:**
 - ALWAYS run `/storefront-index` when the user wants to open or navigate to a storefront — do NOT use playwright-base directly
 - ALWAYS run `/storefront-create-request` when the user wants to create a request from the storefront

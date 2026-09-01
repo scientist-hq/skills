@@ -1,5 +1,5 @@
 ---
-description: Command for creating and maintaining a living feature design document in /Users/mike/design_docs/ throughout a design conversation.
+description: Command for creating and maintaining a living feature design document in /Users/mike/rx/rx/design_docs/ throughout a design conversation.
 ---
 
 # Design Doc
@@ -8,7 +8,7 @@ description: Command for creating and maintaining a living feature design docume
 
 When this command is invoked:
 1. Ask the user for the feature name if not already provided
-2. Create a new markdown file at `/tmp/design_docs/{feature_name}.md` using a slugified version of the feature name
+2. Create a new markdown file at `/Users/mike/rx/rx/design_docs/{feature_name}.md` using a slugified version of the feature name
 3. Write the current state of the design to that file
 4. As the design evolves during the conversation, update the file to reflect the latest decisions
 
@@ -25,11 +25,11 @@ The file should always reflect the current agreed-upon design, not a history of 
 
 ## File Location
 
-Always write to `/Users/mike/design_docs/`. Create the directory if it does not exist.
+Always write to `/Users/mike/rx/rx/design_docs/`. Create the directory if it does not exist.
 
 File naming: lowercase, words separated by underscores, `.md` extension.
-- e.g. "Quote Group Auto Document" → `/tmp/design_docs/quote_group_auto_document.md`
-- e.g. "Billing PO Legal Entity" → `/tmp/design_docs/billing_po_legal_entity.md`
+- e.g. "Quote Group Auto Document" → `/Users/mike/rx/rx/design_docs/quote_group_auto_document.md`
+- e.g. "Billing PO Legal Entity" → `/Users/mike/rx/rx/design_docs/billing_po_legal_entity.md`
 
 ## Document Structure
 
