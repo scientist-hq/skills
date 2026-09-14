@@ -159,7 +159,9 @@ If brakeman fails on obsolete ignore entries, see workflows/W-05-ci-fix-patterns
 
 ### PR body should include
 
-- Which Dependabot alert numbers this resolves
+- Which Dependabot alerts this resolves, linked by full URL
+  (`https://github.com/ORG/REPO/security/dependabot/N`), not bare `#N`
+  (GitHub autolinks `#N` to the issue/PR of that number, not the alert)
 - Changelog summary for each upgraded dependency
 - Breaking changes identified and how they were addressed
 - New specs added (if any)
@@ -176,7 +178,7 @@ For manual `security/*` branches, create an issue:
 ```bash
 ISSUE_URL=$(gh issue create --repo ORG/REPO \
   --title "Security: Batch N - description" \
-  --body "Resolves Dependabot alerts: #X, #Y, #Z" \
+  --body "Resolves Dependabot alerts: [alert X](https://github.com/ORG/REPO/security/dependabot/X), [alert Y](https://github.com/ORG/REPO/security/dependabot/Y), [alert Z](https://github.com/ORG/REPO/security/dependabot/Z)" \
   --label security)
 echo "Resolves $ISSUE_URL" >> /tmp/pr_body.md
 gh pr create --repo ORG/REPO \
