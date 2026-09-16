@@ -16,25 +16,44 @@ Dispatch these 3 agents in parallel using the Agent tool:
 2. **General review** — prompt: `"Review PR [URL] for general code quality. Invoke Skill(review-general) for your full instructions."`
 3. **Integration review** — prompt: `"Review PR [URL] for integration-seam defects. Invoke Skill(review-integration) for your full instructions."`
 
-### Scale the fleet to the diff
+### Three agents covers almost every PR
 
-Three agents is the floor, not the answer for every PR. Attention thins across a large diff, and a reviewer who has read 700 lines is not reading the 701st carefully.
+Never add a fourth agent to make a large diff feel covered. The three above read the same diff against different criteria, so each one finds what the others miss. A second general reviewer repeats the first, and each agent costs more than 100,000 tokens.
 
-Run `gh pr diff [PR] --name-only` and count the files first:
+Run `gh pr diff [PR] --name-only` and count the files first. Above ~30 files, add one more general reviewer and split the diff in half between the two general agents. Four agents is the ceiling. Never dispatch more.
 
-| Files changed | Dispatch |
-|---------------|----------|
-| Up to ~8 | the 3 above |
-| ~9 to ~20 | the 3 above, plus a second general reviewer scoped to a named half of the diff |
-| More than ~20 | the 3 above, plus one general reviewer per coherent area — controllers/actions, views/JS, specs |
-
-When you split by area, say so in each prompt: `"Restrict your review to <these files>."` Overlap is fine and cheap; a gap is not.
+When you split the diff, say so in each prompt: `"Restrict your review to <these files>."` Overlap is fine and cheap. A gap is not.
 
 Say in the output how many agents ran and how the diff was split. A reader needs to know whether a quiet area was reviewed or merely unassigned.
 
 Collect all results and present them grouped by agent, with a rolled-up summary table at the end sorted by severity.
 
 **Keep the presented output at summary level.** Each finding gets a heading, one to three sentences of what's wrong, and the `file.rb:line`. Do not include reproduction steps, attack walkthroughs, or severity essays in the review output — the point of the review is a scannable list of what needs attention.
+
+### Always triage the findings before you present them
+
+**Open the review with a verdict: which findings Mike must act on, which are worth one sentence, and which you would drop.** Do this every time, unprompted. Never hand over a flat list of everything the agents returned.
+
+The count of findings tracks the number of agents, not the number of defects. Three agents against a 30-line diff return about ten findings because each one is instructed to look hard and report what it sees. That is correct for detection and wrong for presentation. Triage at presentation time; never tell the agents to report less, because a suppressed finding is one nobody sees again.
+
+**Drop a finding when:**
+
+- It needs a deliberate, contrived actor. A console operator who renames or destroys a config key defeats most guards. The mechanism is real and the scenario is not.
+- The PR body already documents it. A PR that names its own bypass is not hiding a defect.
+- It concerns unmerged work. A constraint on an open issue is information for that author, not a finding on this PR.
+- It is a spec-strength nit on a spec that passes and already catches removal by another example.
+- The whole app has the gap and the library cannot close it — nil `whodunnit` on a model with no controller, for example.
+
+**Keep a finding when:** the fix is small and closes a real trap, it breaks a house rule, or it is a process question that needs an answer before merge.
+
+**Never inflate severity to justify reporting something.** Med means the author must act before merge. A contrived path and a documented bypass are Low or nothing.
+
+Dropped findings still appear, grouped under one **Would drop** heading at one line each. They get no section of their own and no row in the summary table, so the table carries only what Mike has to act on.
+
+**Verify a suggested fix is possible before you suggest it.** Read the schema and the surrounding code first. A fix that cannot be written makes the finding worthless.
+
+- ❌ BAD: "change that example to touch a neutral attribute" — the table has four columns, two of them timestamps, so no neutral attribute exists
+- ✅ GOOD: name the guard that is missing, and the sibling model that already has it
 
 ### Number the findings in one plain sequence
 

@@ -9,7 +9,7 @@ mguerrero8816/
 ├── README.md               # This file — for human reviewers
 ├── SKILL.md                # Navigation index — Claude reads this to find skill files
 ├── rules/                  # Tiered rules — always-on, loaded at session start
-│   ├── t1-sacred/          # Absolute rules — never override (01 through 07)
+│   ├── t1-sacred/          # Absolute rules — only rule 01 permits an exception (01 through 06)
 │   ├── t2-standards/       # Always-on standards — preferences yield to these
 │   ├── t3-preferences/     # Personal code style — always apply to Mike's code
 │   └── t4-defaults/        # Soft defaults — yield to everything above
@@ -123,5 +123,5 @@ Claude documentation anywhere else.
 
 <!-- SACRED_RULES_INJECTION_POINT -->
 
-[Sacred rules 01–07 are injected here automatically at session start]
+[Sacred rules 01–06 are injected here automatically at session start]
 ```

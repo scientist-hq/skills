@@ -1,6 +1,6 @@
 # No Remote Environments
 
-**Level:** MUST follow — the carve-out files below are the only exceptions
+**Level:** MUST follow — the carve-out files below, and rule 01, are the only exceptions
 **Category:** Safety
 
 ## Rule

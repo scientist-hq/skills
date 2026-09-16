@@ -127,6 +127,38 @@ This applies to:
 - When opening a PR that resolves a bug ticket, add the **"Type: Fix"** label
 - **NEVER** add the "Bug" label to a PR — "Bug" is for issues/tickets only, not PRs
 
+**Epic labels: inherit them from the top-level epic:**
+
+A PR resolves an issue. That issue can have a parent, and that parent can have its own parent. Walk the chain to the top. Add every label the top-level epic carries to the PR, except `Epic` and `Capitalizable`.
+
+The labels that must travel are the capitalization category labels — `Cap:CategoryExpansion` and similar. They carry finance reporting data, and a PR without them does not appear in those reports.
+
+- **Never add `Capitalizable` to a PR.** It belongs on the epic only. The team stopped putting it on PRs, and the `Cap:` label is the one the reports read.
+- `Epic` marks the issue as an epic. A PR is not an epic, so it never travels either.
+- `gh issue view` has no parent field. Use the GraphQL API to walk the chain.
+- Add the inherited labels in addition to the area and type labels above. They do not replace them.
+- If the resolved issue has no parent, there is no epic and there is nothing to inherit.
+
+Step 1 — walk the chain from the resolved issue to the top:
+
+```bash
+gh api graphql -f query='{ repository(owner:"scientist-hq", name:"rx") { issue(number:40764) { number title parent { number title parent { number title parent { number title } } } } } }'
+```
+
+The last non-null `parent` is the top-level epic. Add another `parent { number title }` level if the chain is deeper.
+
+Step 2 — read that epic's labels:
+
+```bash
+gh issue view 36564 --repo scientist-hq/rx --json labels
+```
+
+Step 3 — add them to the PR, minus `Epic` and `Capitalizable`:
+
+```bash
+gh pr edit 40840 --repo scientist-hq/rx --add-label "Cap:CategoryExpansion"
+```
+
 **Determine area by:**
 - Controller namespace (e.g., `Backoffice::` = backoffice)
 - Layout used (`backoffice_bs5_layout` = backoffice, `storefront_bs5_layout` = storefront)

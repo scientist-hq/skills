@@ -1,6 +1,6 @@
 # No Unauthorized Git Operations
 
-**Level:** MUST follow — no exceptions, no overrides
+**Level:** MUST follow — rule 01 is the only exception
 **Category:** Safety
 
 ## Rule
