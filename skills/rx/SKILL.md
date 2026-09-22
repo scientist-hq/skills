@@ -37,12 +37,21 @@ Load this file first, then load specific rules/patterns as needed for the task a
 |----|------|------|
 | SR-09 | Every PR must link to an issue or preceding PR (VerifyIssue CI) | references/verify-issue-ci-check.md |
 
+## Ruby Environment
+
+RX requires Ruby 3.3.8 managed via rbenv. Before running any ruby/bundle/rails/rspec/rubocop commands in terminal, prefix with:
+```
+export PATH="$HOME/.rbenv/shims:$PATH"
+```
+If a Ruby version isn't installed, fix it immediately with `rbenv install <version>` rather than silently failing. CI rubocop uses reviewdog to check only changed lines.
+
 ## Infrastructure References
 
 | Topic | File |
 |-------|------|
 | Bootboot dual-lockfile setup & sync procedure | references/bootboot-lockfiles.md |
 | VerifyIssue CI check — PR linking requirement | references/verify-issue-ci-check.md |
+| Worktree setup for running specs | references/worktree-spec-setup.md |
 
 ## Patterns (Reference implementations from the RX codebase)
 

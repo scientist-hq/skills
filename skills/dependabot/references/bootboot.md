@@ -83,6 +83,7 @@ git commit -m "Bump gem_name X.Y.Z → X.Y.W (both lockfiles)"
 ## Pitfalls
 
 - **Forgetting `Gemfile_next.lock`** is the #1 mistake. CI may not catch it immediately if the "next" build is only run on certain branches or schedules.
+- **Bootboot auto-update is unreliable.** Running `bundle update --conservative gem` may show "Updating the Gemfile_next.lock" in output, but the next lockfile sometimes stays at the old version. **Always explicitly run `DEPENDENCIES_NEXT=1 bundle update --conservative gem` and verify with grep.** Don't trust the "Updating" message alone.
 - **`DEPENDENCIES_NEXT=1` must be non-empty.** The Gemfile checks `!ENV['DEPENDENCIES_NEXT'].empty?`, so `DEPENDENCIES_NEXT=""` won't work.
 - **bootboot must be installed as a plugin.** The Gemfile guards on `Plugin.installed?('bootboot')`. If you're in a fresh checkout, run `bundle plugin install bootboot` first (or just `bundle install` which should handle it).
 - **Manual lockfile edits need both files.** If you're editing `Gemfile.lock` manually (e.g., Ruby version mismatch), you must make the equivalent edit in `Gemfile_next.lock` too.

@@ -33,8 +33,59 @@ gem specification devise-token_authenticatable --remote | grep -A5 dependencies
 
 | Target Upgrade | Blocking Gem | Status |
 |---------------|-------------|--------|
-| Devise 4→5 (rx) | `devise-token_authenticatable` v1.1.0 (last release: 2019) | Issue #36618 — needs fork or inline |
+| Devise 4→5 (rx) | `devise-token_authenticatable` v1.1.0 (last release: 2019, no Devise 5 support) | **RESOLVED (May 2026)** — inlined via branch `remove-devise-token-authenticatable`. Constraint was `>= 4.0.0, < 5.0.0`. Also present: `devise-security` (0.18.0) which only requires `>= 4.3.0` (not blocking). |
 | Devise 4→5 (benchmate) | None — clean upgrade | PR #1008 |
+
+## Inline Playbook (for unmaintained companion gems)
+
+When the blocking gem is small, unmaintained, and the functionality is well-understood, inlining is preferred over forking. Proven pattern (used for `devise-token_authenticatable` → rx, May 2026):
+
+### Investigation checklist
+
+1. **Map the gem's surface area** — fetch source from GitHub API:
+   ```bash
+   gh api repos/OWNER/GEM/contents/lib --jq '.[].path'
+   # Recursively fetch key files via base64 decode
+   ```
+2. **Find all references in the codebase:**
+   ```bash
+   grep -rn "gem_module_name\|GemClassName" app/ config/ spec/ --include="*.rb"
+   ```
+3. **Identify what's actually used** vs what the gem provides. Most gems provide 10 features; you use 2-3. Only inline what's used.
+4. **Check existing test coverage** — search spec/ for any exercise of the gem's behavior.
+
+### Two-phase execution (critical: spec BEFORE change)
+
+**Phase 1 — Harden specs on CURRENT code:**
+- Write request specs for the full auth/integration flow
+- Write model specs for any callbacks or class methods the gem provides
+- Run specs and confirm green BEFORE any code changes
+- Commit: "Add comprehensive [feature] specs before gem removal"
+
+**Phase 2 — Inline and remove:**
+- Create concern(s) or initializer(s) with the inlined logic
+- Update models to use concerns instead of gem modules
+- Remove gem from Gemfile, run `bundle install` (+ bootboot if applicable)
+- Remove any gem-specific initializer config blocks
+- Run Phase 1 specs — must still pass
+- Commit: "Remove [gem] and inline [feature] logic"
+
+### Delegation to Claude Code
+
+This is an ideal task for Claude Code print mode (single focused PR, clear boundaries):
+```bash
+cat /tmp/plan.md | claude --dangerously-skip-permissions -p \
+  'Implement this plan in two phases...' \
+  --allowedTools 'Read,Edit,Write,Bash' \
+  --max-turns 60 --model sonnet --output-format json
+```
+
+Key points:
+- Write a detailed plan file with the exact files, columns, and behavior to inline
+- Include the gem's source code analysis in the plan (saves Claude turns on discovery)
+- Use `--max-turns 60` — Phase 1 specs + Phase 2 implementation + running specs burns ~40-50 turns
+- Use a git worktree so the developer's working copy is undisturbed
+- Set git-mob for whoever requested the work before spawning Claude Code
 
 ## Rails Minor Version Jumps
 

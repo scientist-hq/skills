@@ -33,6 +33,7 @@ Load this file first, then load workflows and references as needed.
 | references/linked-issue-exemption.md | Fix linked-issue CI checks for Dependabot branches |
 | references/rails-72-upgrade.md | Rails 7.1→7.2 specific CI failures and fixes |
 | references/major-version-blockers.md | Companion gem ceiling detection and resolution |
+| references/nightly-cron-triage.md | Automated nightly triage: version comparison, dismissal, cron gotchas |
 | references/viewcomponent-4.md | ViewComponent 3→4 breaking changes and audit checklist |
 
 ## Key Principles
@@ -52,3 +53,10 @@ Load this file first, then load workflows and references as needed.
 - Both repos use `brakeman` with `--ensure-no-obsolete-ignore-entries` — stale ignores fail CI.
 - Private gems are hosted on `rubygems.pkg.github.com/scientist-hq` — bundle needs GitHub auth.
 - `.tool-versions` specifies Ruby via mise. On machines with system Ruby 2.6, run `eval "$(mise env)"` before any bundle commands.
+- **Label names differ by repo.** `"Type: Infrastructure"` exists on rx but NOT on benchmate. For benchmate, use only `"security"` and `"dependencies"`. Always handle label-not-found errors gracefully (retry without the missing label). Note: labels are case-insensitive for matching on GitHub's side.
+- **Dismissal API for false positives:** When installed version is outside the vulnerable range, dismiss via:
+  ```
+  gh api repos/scientist-hq/{repo}/dependabot/alerts/{n} -X PATCH \
+    -f state=dismissed -f dismissed_reason=not_used \
+    -f dismissed_comment="Dismissed by BigMac: installed version X.Y.Z is not in vulnerable range A.B.C"
+  ```
