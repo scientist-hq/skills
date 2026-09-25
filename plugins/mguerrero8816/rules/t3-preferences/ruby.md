@@ -2,168 +2,84 @@
 
 ## Model Method Ordering
 
-Always follow this order in Rails models:
+Use this order in Rails models:
 
-1. `include` / `extend` / `delegate` / `attr_reader` / `attr_writer` / `attr_accessor`
-2. Associations (`belongs_to`, `has_many`, etc.)
+1. `include`, `extend`, `delegate`, and `attr_*`
+2. Associations
 3. Validations
 4. Scopes
-5. Instance methods (including `to_param`)
+5. Instance methods, including `to_param`
 
-Never place `to_param` or other instance methods before scopes. Never place `attr_*` declarations at the bottom of the file or after method definitions.
+## Nil or Empty Arrays — `present?` in the View
 
-## Nil/Empty Array Checks — `present?` in Views, Not `presence` in Models
+Check `collection.present?` in the view. Do not call `.presence` on the array in the model to change `[]` to `nil`.
 
-When a view needs to distinguish between a populated array and an empty one, check `collection.present?` in the view — do not call `.presence` on the array in the model to coerce `[]` to `nil`.
-
-**Examples:**
-- ❌ BAD: `providers: provider_names.presence` in a model method, then `- if file[:providers]` in a view
+- ❌ BAD: `providers: provider_names.presence` in the model, then `- if file[:providers]` in the view
 - ✅ GOOD: `providers: provider_names` in the model, then `- if file[:providers].present?` in the view
 
 ## Local Variables That Shadow Method Names
 
-When a local variable name would shadow a same-class method name, prefix the local with context to make the distinction clear.
+Add a context prefix to a local variable that has the same name as a method in the class.
 
-**Examples:**
-- ❌ BAD: `provider_names = []` inside a method that also defines `def provider_names`
+- ❌ BAD: `provider_names = []` in a class that defines `def provider_names`
 - ✅ GOOD: `note_provider_names = []`
 
-## No Backslash String Line Continuation
+## No Backslash String Continuation
 
-Never split strings across lines using `\` — write the full string on one line. Long lines are acceptable.
+Never split a string across lines with `\`. Write it on one line.
 
-**Examples:**
-- ❌ BAD:
-  ```ruby
-  Rails.logger.error(
-    "[MyClass] something went wrong for " \
-    "id=#{record.id} status=#{record.status}"
-  )
-  ```
-- ✅ GOOD:
-  ```ruby
-  Rails.logger.error(
-    "[MyClass] something went wrong for id=#{record.id} status=#{record.status}"
-  )
-  ```
+## Parallel Arrays — Declare, Then Shovel
 
-## Parallel Array Building — Prefer Explicit Init + Shovel
+To build two arrays from one collection, declare both arrays and shovel into them in an `each`. Do not use `each_with_object` with destructured accumulators.
 
-When building two parallel arrays from a single collection, declare the arrays first and shovel into them — do not use `each_with_object` with destructured accumulators.
-
-**Examples:**
-- ❌ BAD:
-  ```ruby
-  names, ids = items.each_with_object([[], []]) do |item, (n, i)|
-    n << item.name
-    i << item.id
-  end
-  ```
-- ✅ GOOD:
-  ```ruby
-  names = []
-  ids = []
-  items.each do |item|
-    names << item.name
-    ids << item.id
-  end
-  ```
+```ruby
+names = []
+ids = []
+items.each do |item|
+  names << item.name
+  ids << item.id
+end
+```
 
 ## No Ternary Operators
 
-Never use ternary operators (`condition ? a : b`) — always use `if/else` instead. Applies to Ruby and JavaScript/CoffeeScript.
+Use `if/else`, never `condition ? a : b`, in Ruby, JavaScript, and CoffeeScript. A ternary is acceptable inside a scope lambda.
 
-**Exception:** Ternaries are acceptable inside scope lambdas where the `if/else` alternative would be significantly more verbose.
+- ✅ ACCEPTABLE: `scope :for_trigger, ->(source, action) { active.where(organization: source.respond_to?(:organization) ? source.organization : nil) }`
 
-**Examples:**
-- ❌ BAD: `obj.is_a?(Hash) ? obj[segment] : obj.public_send(segment)`
-- ✅ GOOD:
-  ```ruby
-  if obj.is_a?(Hash)
-    obj[segment]
-  else
-    obj.public_send(segment)
-  end
-  ```
-- ✅ ACCEPTABLE (scope lambda): `scope :for_trigger, ->(source, action) { active.where(organization: source.respond_to?(:organization) ? source.organization : nil) }`
+## No Assignment From a Conditional Block
 
-## No Assigning the Result of a Conditional Block
+Never write `variable = if …` or `variable = case …`. Assign inside each branch.
 
-Never write `variable = if condition ... end` — assign inside each branch instead. Applies to `if/else`, `case/when`, and any conditional block.
+```ruby
+if has_history
+  dv = current_dv.paper_trail.version_at(timestamp) || current_dv
+else
+  dv = current_dv
+end
+```
 
-**Examples:**
-- ❌ BAD:
-  ```ruby
-  dv = if has_history
-    current_dv.paper_trail.version_at(timestamp) || current_dv
-  else
-    current_dv
-  end
-  ```
-- ✅ GOOD:
-  ```ruby
-  if has_history
-    dv = current_dv.paper_trail.version_at(timestamp) || current_dv
-  else
-    dv = current_dv
-  end
-  ```
+## No Assignment and Control Flow on One Line
 
-## No Combined Assignment and Control Flow
+Never write `break x = nil` or `return result = some_method`. Assign on one line. Put `break`, `return`, or `next` on the next line.
 
-Never combine a variable assignment with a control flow keyword (`break`, `return`, `next`) on the same line. Assign first, then control flow on the next line.
+## Short Method Names
 
-**Examples:**
-- ❌ BAD: `break current_value = nil`
-- ❌ BAD: `return result = some_method`
-- ✅ GOOD:
-  ```ruby
-  current_value = nil
-  break
-  ```
-- ✅ GOOD:
-  ```ruby
-  result = some_method
-  return result
-  ```
+Use the shortest name that makes the intent clear. Do not repeat the class or the context. If a name has more than about 4 words, find a shorter one.
 
-## Method Naming — Keep It Short
-
-- **Always choose the shortest name that clearly conveys intent**
-- Avoid restating the subject, type, or surrounding context — the class and location already provide that
-- If a name is longer than ~4 words, look for a shorter equivalent before committing to it
-
-**Examples:**
 - ❌ BAD: `manual_fee_cap_amount_not_below_historical_cap`
 - ✅ GOOD: `validate_fee_cap_floor`
-- ❌ BAD: `check_if_commission_fee_cap_exceeds_historical_value`
-- ✅ GOOD: `commission_over_cap?`
 
-## Never Splice New Lines Into an Existing Cohesive Block
+## Never Put New Lines in the Middle of a Cohesive Block
 
-When adding a new assignment or statement, place it at the **end of the logical group it belongs to** — or start a new group below the existing one. Never wedge it into the middle of a cohesive run of related lines just because it references one of them.
+Put a new statement at the end of the group it belongs to, or start a new group below it. A dependency sets only the earliest position. It does not decide the group. Below, `@canonical_lock` and `@prediction_model_names` form their own group. They do not go between the `po_context.*` lines.
 
-A dependency only sets a *lower bound* on placement (a line that reads `@predictions` must come after `@predictions` is set) — it does **not** mean the new line belongs immediately after its dependency. Find the block the new line belongs to; a line's home is decided by what group it's part of, not by which line it happens to reference.
+```ruby
+@currency = po_context.currency
+@cutoff = po_context.cutoff_date
+@predictions = po_context.predicted_revenues
+@invoices = po_context.invoices
 
-**Examples:**
-- ❌ BAD — a standalone `@canonical_lock` and a `@predictions`-derived `@prediction_model_names` spliced into the middle of a cohesive `po_context.*` unload:
-  ```ruby
-  @currency = po_context.currency
-  @cutoff = po_context.cutoff_date
-  @canonical_lock = Revenue::CutoffDate.for(canonical: true)
-  @predictions = po_context.predicted_revenues
-  @prediction_model_names = Revenue::PredictionModel.where(id: @predictions.filter_map(&:prediction_model_id).uniq).pluck(:id, :name).to_h
-  @gross_revenue = po_context.recognized_gross_revenues
-  @invoices = po_context.invoices
-  ```
-- ✅ GOOD — the `po_context.*` block stays intact; the standalone and derived lines form their own group below it:
-  ```ruby
-  @currency = po_context.currency
-  @cutoff = po_context.cutoff_date
-  @predictions = po_context.predicted_revenues
-  @gross_revenue = po_context.recognized_gross_revenues
-  @invoices = po_context.invoices
-
-  @canonical_lock = Revenue::CutoffDate.for(canonical: true)
-  @prediction_model_names = Revenue::PredictionModel.where(id: @predictions.filter_map(&:prediction_model_id).uniq).pluck(:id, :name).to_h
-  ```
+@canonical_lock = Revenue::CutoffDate.for(canonical: true)
+@prediction_model_names = Revenue::PredictionModel.where(id: @predictions.filter_map(&:prediction_model_id).uniq).pluck(:id, :name).to_h
+```

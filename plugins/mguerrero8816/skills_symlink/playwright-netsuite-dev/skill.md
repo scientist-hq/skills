@@ -1,11 +1,11 @@
 ---
-description: How to drive NetSuite dev 0 (account 1725327) with Playwright — the one remote environment that is allowed, what is forbidden, and how the login handshake with Mike works. Load before any NetSuite browser navigation, PDF template print, or SuiteScript check.
+description: How to drive NetSuite dev 0 (account 1725327) with Playwright — a fully writable remote environment, what is forbidden, and how the login handshake with Mike works. Load before any dev 0 browser navigation, PDF template print, or SuiteScript check.
 tools: Read, mcp__playwright__browser_navigate, mcp__playwright__browser_click, mcp__playwright__browser_type, mcp__playwright__browser_wait_for, mcp__playwright__browser_select_option, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_evaluate
 ---
 
 ## The Account
 
-NetSuite dev 0, account **1725327**. This is the only NetSuite account you may open.
+NetSuite dev 0, account **1725327**. This skill covers that account only.
 
 Landing page, already logged in:
 
@@ -13,7 +13,10 @@ Landing page, already logged in:
 https://1725327.app.netsuite.com/app/center/card.nl?sc=-29&whence=
 ```
 
-Forbidden, with no exception: dev 4 (`2709218`), production (`4838887`), and every other account id.
+Forbidden, with no exception: production (`4838887`) and every other account id. Dev 4 (`2709218`)
+has its own read-only carve-out and its own skill — `Skill(playwright-netsuite-dev-4)`. This skill
+grants nothing there, and dev 4 stays read-only.
+
 The carve-out is `rules/t1-sacred/remote-env-carve-outs/netsuite-dev-0.md`. This skill is the
 procedure for it, not a widening of it. Where the two disagree, the carve-out wins.
 

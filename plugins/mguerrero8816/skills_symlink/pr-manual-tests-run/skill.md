@@ -1,5 +1,5 @@
 ---
-description: Rules for executing PR test plans end-to-end, running the preflight first and then all steps without pausing, and reconstructing missing seed scripts.
+description: Rules for executing PR test plans end-to-end, running the preflight first and then all steps without pausing, skipping any spec step, and reconstructing missing seed scripts.
 args: Optional GitHub PR URL to test
 ---
 
@@ -17,7 +17,7 @@ Once the PR URL is resolved, fetch the test plan from the PR description before 
 
 ## Run All Steps Once Preflight Passes
 
-**Run the full test plan end-to-end without pausing for confirmation.** Once `/pr-test-preflight` passes, execute every step in sequence on your own — do not stop to ask "okay" / "next" between steps.
+**Run the full test plan end-to-end without pausing for confirmation.** Once `/pr-test-preflight` passes, execute every step in sequence on your own — do not stop to ask "okay" / "next" between steps. Skip a spec step — see below.
 
 The pattern for each step:
 1. Announce which step you're running
@@ -32,6 +32,22 @@ The pattern for each step:
 - A step needs a decision only the user can make (ambiguous data, destructive action, missing prerequisite you can't reconstruct).
 
 At the end, give a summary of all steps: what passed, what failed, and any screenshot paths.
+
+## Never Run Specs — Skip Every Spec Step
+
+**A test plan is a manual plan. Skip any step that tells you to run specs, rspec, jest, vitest or rubocop.**
+
+GitHub runs the full suite and every linter on each push. A failure blocks the merge. A local run tells Mike nothing new. It also costs minutes and can fail for reasons that have nothing to do with the PR — a missing node package, a stale database, or a second rspec process on the same test database.
+
+- Skip the step. Say which step you skipped and why.
+- Report the branch state from GitHub instead: `gh pr checks <number> --repo scientist-hq/rx`.
+- This covers a spec step written into the plan, and a spec run you were about to add on your own.
+- Run the browser and console steps as normal. The rule covers specs and linters only.
+
+- ❌ BAD: `bundle exec rspec spec/helpers/proposal_helper_spec.rb` because step 8 asks for it
+- ❌ BAD: run the changed spec files at the end to confirm the PR is sound
+- ✅ GOOD: "Step 8 asks for rspec. Skipped — GitHub runs the suite and blocks the merge on a failure."
+- ✅ GOOD: `gh pr checks 41016 --repo scientist-hq/rx`
 
 ## Reconstructing Missing Seed Scripts
 
